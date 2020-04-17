@@ -22,10 +22,9 @@ public abstract class Character {
         this.imgView = new ImageView(imgArray[0]);
     }
 
-    public void move() {
-    }
+    public abstract void move();
 
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
         imgView.setX(x);
         imgView.setY(y);
     }

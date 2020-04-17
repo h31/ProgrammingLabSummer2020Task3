@@ -1,7 +1,6 @@
+import Controller.Controller;
+import Model.*;
 import Model.Character;
-import Model.Skeleton;
-import Model.SpriteAnimation;
-import Model.SpriteData;
 import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -20,22 +19,21 @@ public class Main extends Application {
         stage.setResizable(false);
         SpriteData sd = new SpriteData();
         ImageView imgView = new ImageView(new Image("background.png"));
-        Skeleton skeleton = new Skeleton(sd.getSKELETON_IDLE(), 800, 630);
+        //Skeleton skeleton = new Skeleton(sd.getSKELETON_IDLE(), 800, 630);
+        Player player = new Player(sd.getSKELETON_IDLE(), 800, 630);
         Group root = new Group();
-        root.getChildren().addAll(imgView, skeleton.getImgView());
+        root.getChildren().addAll(imgView, player.getImgView());
         Scene scene = new Scene(root, 1024, 768);
 
         final Animation animation = new SpriteAnimation(
                 Duration.millis(500),
-                skeleton.getImgView(),
-                skeleton
+                player.getImgView(),
+                player
         );
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
 
-
-        stage.setScene(scene);
-        stage.show();
+        Controller controller = new Controller(stage, scene, player);
     }
 
     public static void main(String[] args) {
