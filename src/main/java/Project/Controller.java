@@ -48,6 +48,7 @@ public class Controller {
     }
 
     public void startGame() {
+        Model.gameOver = false;
         Model.direction = Model.Direction.RIGHT;
         Model.snake.clear();
         Model.snake.add(b.createSnakePart());
@@ -55,6 +56,7 @@ public class Controller {
     }
 
     public static void gameOver() {
+        Model.gameOver = true;
         View.timeline.stop();
         Model.snake.clear();
     }

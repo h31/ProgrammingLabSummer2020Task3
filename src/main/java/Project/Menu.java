@@ -1,6 +1,5 @@
 package Project;
 
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +11,7 @@ public class Menu {
     public static Scene playNewGame() {
         BorderPane menu = new BorderPane();
         Label topLabel = new Label("          Welcome to Snake!\nTutorial:\nUse W, A, S, D to move\n" +
-                "Press ESC yo pause and unpause\nPress Enter to restart!");
+                "Press ESC to pause and unpause\nPress Enter to restart!");
         topLabel.setFont(Font.font(20));
         Button btn = new Button();
         btn.setText("Start the game");

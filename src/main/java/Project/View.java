@@ -38,14 +38,21 @@ public class View {
         Text scoreShower = new Text(0, 20, "Score: 0");
         scoreShower.setFont(Font.font(25));
 
+        Text gameOver = new Text(250, 320, "Game Over");
+        gameOver.setFont(Font.font(75));
+        gameOver.setFill(Color.RED);
+        gameOver.setVisible(false);
+
         KeyFrame frame = new KeyFrame(Duration.seconds(0.15), event -> {
             Model.part = createSnakePart();
             Model.moveSnake();
             scoreShower.setText("Score: " + Model.score);
+            if (Model.gameOver) gameOver.setVisible(true);
+            else gameOver.setVisible(false);
         });
         timeline.getKeyFrames().add(frame);
         timeline.setCycleCount(Timeline.INDEFINITE);
-        root.getChildren().addAll(scoreShower, meal, snakeBody);
+        root.getChildren().addAll(gameOver, scoreShower, meal, snakeBody);
         return root;
     }
 

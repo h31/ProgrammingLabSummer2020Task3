@@ -19,6 +19,7 @@ public class Model {
     static ObservableList<Node> snake;
     static Node meal;
     static Node part;
+    static boolean gameOver;
 
     public static void moveSnake() {
         int radius = bodySize / 2;
