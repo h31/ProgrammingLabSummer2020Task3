@@ -17,17 +17,15 @@ public class Main extends Application {
         stage.setHeight(768);
         stage.setTitle("Game");
         stage.setResizable(false);
-        SpriteData sd = new SpriteData();
-        ImageView imgView = new ImageView(new Image("background.png"));
+        //ImageView imgView1 = new ImageView(new Image("background.png"));
         //Skeleton skeleton = new Skeleton(sd.getSKELETON_IDLE(), 800, 630);
-        Player player = new Player(sd.getSKELETON_IDLE(), 800, 630);
+        Player player = new Player(800, 630);
         Group root = new Group();
-        root.getChildren().addAll(imgView, player.getImgView());
+        root.getChildren().addAll(new SpriteData.Background().getBACKGROUND_IMG(), player.getImgView());
         Scene scene = new Scene(root, 1024, 768);
 
         final Animation animation = new SpriteAnimation(
                 Duration.millis(500),
-                player.getImgView(),
                 player
         );
         animation.setCycleCount(Animation.INDEFINITE);

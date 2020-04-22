@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.Player;
-import javafx.animation.AnimationTimer;
+import Model.Status;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -24,15 +24,19 @@ public final class Controller {
             switch (e.getCode()) {
                 case DOWN:
                     player.setVelY(1.5);
+                    player.setAction(Status.WALK, player.getView());
                     break;
                 case UP:
                     player.setVelY(-1.5);
+                    player.setAction(Status.WALK, player.getView());
                     break;
                 case LEFT:
                     player.setVelX(-1.5);
+                    player.setAction(Status.WALK, Status.View.LEFT);
                     break;
                 case RIGHT:
                     player.setVelX(1.5);
+                    player.setAction(Status.WALK, Status.View.RIGHT);
                     break;
             }
             player.move();
@@ -42,10 +46,12 @@ public final class Controller {
                 case DOWN:
                 case UP:
                     player.setVelY(0);
+                    player.setAction(Status.IDLE, player.getView());
                     break;
                 case LEFT:
                 case RIGHT:
                     player.setVelX(0);
+                    player.setAction(Status.IDLE, player.getView());
                     break;
             }
         });

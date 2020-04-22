@@ -5,11 +5,9 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public final class SpriteAnimation extends Transition {
-    private ImageView imgView;
     private Character character;
 
-    public SpriteAnimation(Duration duration, ImageView imgView, Character character) {
-        this.imgView = imgView;
+    public SpriteAnimation(Duration duration, Character character) {
         this.character = character;
         setCycleDuration(duration);
     }
@@ -18,7 +16,7 @@ public final class SpriteAnimation extends Transition {
     @Override
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor((k * character.getImgArray().length)), character.getImgArray().length - 1);
-        imgView.setImage(character.getImgArray()[index]);
+        character.getImgView().setImage(character.getImgArray()[index]);
     }
 
 }
