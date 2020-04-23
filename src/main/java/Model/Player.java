@@ -1,20 +1,33 @@
 package Model;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 public class Player extends Character {
     private final SpriteData.Player sd = new SpriteData.Player();
     private double velY = 0;
     private double velX = 0;
+    public final Rectangle rectTest = new Rectangle(700, 500, 50,50);
 
     private final AnimationTimer movementAnim = new AnimationTimer() {
         @Override
         public void handle(long l) {
+            double posX = getImgView().getX() + getVelX();
+            double posY = getImgView().getY() + getVelY();
+            // Коллизия проверяет местоположение игрока наперед, чтобы не попасть на стенку.
+            getCOLLISION().setX(posX);
+            getCOLLISION().setY(posY);
+            if (rectTest.intersects(getCOLLISION().getBoundsInLocal())) {
+                System.out.println("COLLISION!");
+                return;
+            }
+
             getImgView().setX(getImgView().getX() + getVelX());
             getImgView().setY(getImgView().getY() + getVelY());
             setPosition(getImgView().getX(), getImgView().getY());
+            getCOLLISION().setX(getImgView().getX());
+            getCOLLISION().setY(getImgView().getY());
         }
     };
 

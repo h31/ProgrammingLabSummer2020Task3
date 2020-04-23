@@ -2,6 +2,7 @@ package Model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ public final class SpriteData {
             this.SKELETON_IDLE_RIGHT = getSprites("Skeleton_Idle_Right");
             this.SKELETON_WALK_LEFT = getSprites("Skeleton_Walk_Left");
             this.SKELETON_WALK_RIGHT = getSprites("Skeleton_Walk_Right");
-
             //this.SKELETON_ATTACK = getSprites("Skeleton_Attack");
         }
 

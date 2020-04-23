@@ -1,7 +1,6 @@
 package Model;
 
 import javafx.animation.Transition;
-import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public final class SpriteAnimation extends Transition {
