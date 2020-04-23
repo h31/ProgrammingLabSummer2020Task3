@@ -1,2 +1,2 @@
-# ProgrammingLabSummer2020Task3
-Game "Tetris"
+# Game "Tetris"
+Realise beta v0.1
