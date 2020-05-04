@@ -6,16 +6,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public final class Controller {
-        private final Stage primaryStage;
         private Scene primaryScene;
         private Player player;
 
-    public Controller(Stage stage, Scene scene, Player player) {
-        this.primaryStage = stage;
+    public Controller(Scene scene, Player player) {
         this.primaryScene = scene;
         this.player = player;
-        this.primaryStage.setScene(this.primaryScene);
-        this.primaryStage.show();
         moveTrigger();
     }
 
@@ -23,19 +19,19 @@ public final class Controller {
         primaryScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case DOWN:
-                    player.setVelY(1.5);
+                    player.setVelY(1.2);
                     player.setAction(Status.WALK, player.getView());
                     break;
                 case UP:
-                    player.setVelY(-1.5);
+                    player.setVelY(-1.2);
                     player.setAction(Status.WALK, player.getView());
                     break;
                 case LEFT:
-                    player.setVelX(-1.5);
+                    player.setVelX(-1.2);
                     player.setAction(Status.WALK, Status.View.LEFT);
                     break;
                 case RIGHT:
-                    player.setVelX(1.5);
+                    player.setVelX(1.2);
                     player.setAction(Status.WALK, Status.View.RIGHT);
                     break;
             }

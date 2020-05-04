@@ -2,8 +2,7 @@ package Model;
 
 public enum Status {
     IDLE,
-    WALK,
-    ATTACK;
+    WALK;
     public enum View {
         RIGHT,
         LEFT
