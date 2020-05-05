@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+
+<AnchorPane fx:id="field" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="400.0" style="-fx-background-color: #d9ddde;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <AnchorPane fx:id="AnchorPane1" layoutY="20.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane2" layoutX="100.0" layoutY="20.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane3" layoutX="200.0" layoutY="20.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane4" layoutX="300.0" layoutY="20.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane5" layoutY="120.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane6" layoutX="100.0" layoutY="120.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane7" layoutX="200.0" layoutY="120.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane8" layoutX="300.0" layoutY="120.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane9" layoutY="220.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane10" layoutX="100.0" layoutY="220.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane11" layoutX="200.0" layoutY="220.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane12" layoutX="300.0" layoutY="220.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane13" layoutY="320.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane14" layoutX="100.0" layoutY="320.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane fx:id="AnchorPane15" layoutX="200.0" layoutY="320.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <AnchorPane layoutX="300.0" layoutY="320.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-radius: 5; -fx-background-color: #060708;" />
+      <Label layoutX="14.0" prefHeight="23.0" prefWidth="52.0" text="Score:" />
+      <Label layoutX="130.0" layoutY="3.0" text="Record:" />
+      <Button fx:id="buttonRes" layoutX="317.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="52.0" style="-fx-background-color: #ff0000;" text="Restart" onAction="#restart">
+         <font>
+            <Font name="System Bold" size="9.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
