@@ -12,17 +12,25 @@ public class Main extends Application{
         Application.launch(args);
     }
 
-    @Override
     public void start(Stage stage) throws Exception {
-
         FXMLLoader loader = new FXMLLoader(new File("src/main/java/SystemParameters.fxml").toURI().toURL());
         Parent root = loader.load();
         Scene scene = new Scene(root);
-
         stage.setScene(scene);
-
-        stage.setTitle("Hello JavaFX");
-
         stage.show();
+
     }
+
+    public void planetSetup(SystemCharacteristic system) throws Exception {
+        int size = system.planet.size() + 1;
+        FXMLLoader loader = new FXMLLoader(new File("src/main/java/PlanetParameters.fxml").toURI().toURL());
+        Parent root1 = loader.load();
+        ControllerOfThePlanet controller = loader.getController();
+        controller.initialize(system);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
+
+    }
+
 }

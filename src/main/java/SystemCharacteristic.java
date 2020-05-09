@@ -21,9 +21,6 @@ public class SystemCharacteristic {
 
     public void setNumberOfPlanets (double num) {
         numberOfPlanets = (short) num;
-        for (int i = 1; i < numberOfPlanets; i++) {
-
-        }
     }
 
     public void setRadiusOfStar (String rad) {
@@ -55,7 +52,7 @@ public class SystemCharacteristic {
 
     public String toString() {
         return "SystemCharacteristic{" +
-                "planet=" + planet +
+                "planet=" + planet.toString() +
                 ", weightOfStar=" + weightOfStar +
                 ", radiusOfStar=" + radiusOfStar +
                 ", numberOfPlanets=" + numberOfPlanets +

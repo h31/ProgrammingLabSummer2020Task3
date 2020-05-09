@@ -5,7 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class Controller {
+public class ControllerOfTheMain {
 
     @FXML
     private Button apply;
@@ -19,18 +19,26 @@ public class Controller {
     private Slider number;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         apply.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            Stage stage = (Stage) apply.getScene().getWindow();
+            stage.close();
             SystemCharacteristic system = new SystemCharacteristic();
-            system.setNumberOfPlanets(number.getValue());
             system.setWeightOfStar(weight.getText());
             system.setFocusDistance(distance.getText());
             system.setRadiusOfStar(radius.getText());
+            system.setNumberOfPlanets(number.getValue());
+            for (int i = 1; i <= system.numberOfPlanets; i++) {
+                Main planet = new Main();
+                try {
+                    planet.planetSetup(system);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            System.out.println(system.toString());
-            Stage stage = (Stage) apply.getScene().getWindow();
-            stage.close();
+            }
         });
+
     }
 
 }
