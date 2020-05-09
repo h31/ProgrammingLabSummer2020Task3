@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Level;
 import Model.Player;
 import Model.Status;
 import javafx.scene.Scene;
@@ -7,11 +8,11 @@ import javafx.stage.Stage;
 
 public final class Controller {
         private Scene primaryScene;
-        private Player player;
+        private final Player PLAYER;
 
     public Controller(Scene scene, Player player) {
         this.primaryScene = scene;
-        this.player = player;
+        this.PLAYER = player;
         moveTrigger();
     }
 
@@ -19,35 +20,35 @@ public final class Controller {
         primaryScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case DOWN:
-                    player.setVelY(1.2);
-                    player.setAction(Status.WALK, player.getView());
+                    PLAYER.setVelY(1.4);
+                    PLAYER.setAction(Status.WALK, PLAYER.getView());
                     break;
                 case UP:
-                    player.setVelY(-1.2);
-                    player.setAction(Status.WALK, player.getView());
+                    PLAYER.setVelY(-1.4);
+                    PLAYER.setAction(Status.WALK, PLAYER.getView());
                     break;
                 case LEFT:
-                    player.setVelX(-1.2);
-                    player.setAction(Status.WALK, Status.View.LEFT);
+                    PLAYER.setVelX(-1.4);
+                    PLAYER.setAction(Status.WALK, Status.View.LEFT);
                     break;
                 case RIGHT:
-                    player.setVelX(1.2);
-                    player.setAction(Status.WALK, Status.View.RIGHT);
+                    PLAYER.setVelX(1.4);
+                    PLAYER.setAction(Status.WALK, Status.View.RIGHT);
                     break;
             }
-            player.move();
+            PLAYER.move();
         });
         primaryScene.setOnKeyReleased(e -> {
             switch (e.getCode()) {
                 case DOWN:
                 case UP:
-                    player.setVelY(0);
-                    player.setAction(Status.IDLE, player.getView());
+                    PLAYER.setVelY(0);
+                    PLAYER.setAction(Status.IDLE, PLAYER.getView());
                     break;
                 case LEFT:
                 case RIGHT:
-                    player.setVelX(0);
-                    player.setAction(Status.IDLE, player.getView());
+                    PLAYER.setVelX(0);
+                    PLAYER.setAction(Status.IDLE, PLAYER.getView());
                     break;
             }
         });

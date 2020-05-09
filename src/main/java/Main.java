@@ -7,6 +7,7 @@ import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -18,22 +19,32 @@ public class Main extends Application {
         stage.setHeight(768);
         stage.setTitle("Game");
         stage.setResizable(false);
-        Level level = new Level("Start");
-        Player player = new Player(800,600);
-        Scene scene = loadFirstScene(level, player);
+        Level level = new Level();
+        level.setLocation("First");
+        Player player = new Player(800,600, level);
+        Group root = getFirstGroup(level, player);
+        Scene scene = new Scene(root, 1024, 768);
         runAnimation(player); // Запускаю анимацию персонажа
-        new Controller(scene, player); // Запускаю контроллер, который будет ловить нажатие клавиш//
-        stage.setScene(scene);
-        View view = new View(stage, level);
+        new Controller(scene, player); // Запускаю контроллер, который будет ловить нажатие клавиш
+        View view = new View(stage, level, scene); // Создаю View, который будет отображать все изменения
         view.show();
-
     }
 
-    private Scene loadFirstScene(Level level, Player player) {
-        Group root = new Group();
-        root.getChildren().addAll(level.getLEVEL_IMG(), player.getImgView(), player.getCOLLISION(), player.rectTest);
-        Scene scene = new Scene(root, 1024, 768);
-        return scene;
+    public Group getFirstGroup(Level level, Player player) {
+        Group playerGroup = new Group();
+        Group levelGroup = new Group();
+        Group general = new Group(playerGroup, levelGroup);
+        playerGroup.toFront(); // Игрок находится на верхем слое
+        playerGroup.getChildren().addAll(player.getImgView(), player.getCOLLISION()); // Добавление всех элементов игрока
+        // Добавление всех элементов уровня
+        levelGroup.getChildren().add(level.getLEVEL_IMG());
+        for (Rectangle colShape : level.getCOLLISION()) {
+            levelGroup.getChildren().add(colShape);
+        }
+        for (Rectangle colShape : level.getTRIGGERS()) {
+            levelGroup.getChildren().add(colShape);
+        }
+        return general;
     }
 
     private void runAnimation(Player player) {

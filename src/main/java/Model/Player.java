@@ -25,26 +25,21 @@ public class Player {
     private ImageView imgView = new ImageView(SKELETON_IDLE_LEFT[0]); // Как выглядит сейчас
     private Image[] imgArray = SKELETON_IDLE_LEFT; // Массив кадров
     private final Rectangle COLLISION;
+    private final Level LEVEL;
 
     private double velY = 0;
     private double velX = 0;
-    public final Rectangle rectTest = new Rectangle(490, 388, 525,30);
-
-    {
-        rectTest.setFill(Color.YELLOW);
-        rectTest.setOpacity(0.25);
-    }
 
     private final AnimationTimer movementAnim = new AnimationTimer() {
         @Override
         public void handle(long l) {
+            // Коллизия проверяет местоположение игрока наперед, чтобы не попасть на стенку.
             double posX = getImgView().getX() + getVelX();
             double posY = getImgView().getY() + getVelY();
-            // Коллизия проверяет местоположение игрока наперед, чтобы не попасть на стенку.
             getCOLLISION().setX(posX);
             getCOLLISION().setY(posY);
-            if (rectTest.intersects(getCOLLISION().getBoundsInLocal())) {
-                System.out.println("COLLISION!");
+            if (LEVEL.isCollision(getCOLLISION())) {
+                System.out.println("Collision detected!");
                 return;
             }
 
@@ -55,7 +50,8 @@ public class Player {
             getCOLLISION().setY(getImgView().getY());
         }
     };
-    public Player(int x, int y) {
+    public Player(int x, int y, Level level) {
+        this.LEVEL = level;
         this.imgView.setX(x);
         this.imgView.setY(y);
         this.COLLISION = new Rectangle(x, y, imgView.getImage().getWidth(), imgView.getImage().getHeight());
@@ -63,7 +59,8 @@ public class Player {
         this.COLLISION.setOpacity(0.25);
     }
 
-    public Player() {
+    public Player(Level level) {
+        this.LEVEL = level;
         this.COLLISION = new Rectangle(this.imgView.getX(), this.imgView.getY(), imgView.getImage().getWidth(), imgView.getImage().getHeight());
         this.COLLISION.setFill(Color.BLUE);
         this.COLLISION.setOpacity(0.25);
