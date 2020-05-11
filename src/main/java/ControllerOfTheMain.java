@@ -14,8 +14,6 @@ public class ControllerOfTheMain {
     @FXML
     private TextField radius;
     @FXML
-    private TextField distance;
-    @FXML
     private Slider number;
 
     @FXML
@@ -25,7 +23,6 @@ public class ControllerOfTheMain {
             stage.close();
             SystemCharacteristic system = new SystemCharacteristic();
             system.setWeightOfStar(weight.getText());
-            system.setFocusDistance(distance.getText());
             system.setRadiusOfStar(radius.getText());
             system.setNumberOfPlanets(number.getValue());
             for (int i = 1; i <= system.numberOfPlanets; i++) {

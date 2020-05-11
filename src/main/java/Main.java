@@ -10,12 +10,23 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main extends Application{
+
+
+    double x = 400;
+    double y = 400;
+    double vx = 1;
+    double vy = 1;
+    double g = 6.67*Math.pow(10, -11);
+
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -44,34 +55,44 @@ public class Main extends Application{
     public void space(SystemCharacteristic system) throws Exception {
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: black;");
-        int radius = 20;
-        Scene scene = new Scene(canvas, 1200, 600, Color.BLACK);
-        Circle ball = new Circle(10, Color.RED);
-        ball.relocate(0, 10);
-        Circle sun = new Circle(scene.getWidth() / 2 + (system.focusDistance / 2), scene.getHeight() / 2, radius, Color.YELLOW);
-        {
-            Line crossLine1 = new Line();
-            crossLine1.setStartX(scene.getWidth() / 2 - (system.focusDistance / 2) + (radius / 2));
-            crossLine1.setStartY(scene.getHeight() / 2 - (radius / 2));
-            crossLine1.setEndX(scene.getWidth() / 2 - (system.focusDistance / 2) - (radius / 2));
-            crossLine1.setEndY(scene.getHeight() / 2 + (radius / 2));
-            crossLine1.setStrokeWidth(1.5);
-            crossLine1.setStroke(Color.RED);
-            Line crossLine2 = new Line();
-            crossLine2.setStartX(scene.getWidth() / 2 - (system.focusDistance / 2) - (radius / 2));
-            crossLine2.setStartY(scene.getHeight() / 2 - (radius / 2));
-            crossLine2.setEndX(scene.getWidth() / 2 - (system.focusDistance / 2) + (radius / 2));
-            crossLine2.setEndY(scene.getHeight() / 2 + (radius / 2));
-            crossLine2.setStrokeWidth(1.5);
-            crossLine2.setStroke(Color.RED);
-            canvas.getChildren().add(crossLine1);
-            canvas.getChildren().add(crossLine2);
-        }
-
-        canvas.getChildren().add(sun);
-        canvas.getChildren().add(ball);
         Stage stage = new Stage();
         stage.setTitle("Planet System");
+        int radius = 20;
+        Scene scene = new Scene(canvas, 1200, 600, Color.BLACK);
+        Circle sun = new Circle(scene.getWidth() / 2, scene.getHeight() / 2, radius, Color.YELLOW);
+
+
+
+
+        Circle point = new Circle();
+        point.setFill(Color.GREEN);
+        point.setCenterX(5);
+        point.setCenterY(5);
+        point.setRadius(15);
+
+        canvas.getChildren().addAll(point);
+        canvas.getChildren().add(sun);
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                double r = Math.sqrt(Math.pow(sun.getCenterX() - x, 2) + Math.pow(sun.getCenterY() - y, 2));
+                double ax = g * system.weightOfStar * (sun.getCenterX()-x) / Math.pow(r, 3);
+                double ay = g * system.weightOfStar * (sun.getCenterY()-y) / Math.pow(r, 3);
+                vx = vx + 1 * ax;
+                vy = vy + 1 * ay;
+                x = x + 1 * vx;
+                y = y + 1 * vy;
+                point.setCenterX(x);
+                point.setCenterY(y);
+                canvas.requestLayout();
+            }
+        }, 0, 50);
+
+
+
+
         stage.setScene(scene);
         stage.show();
 

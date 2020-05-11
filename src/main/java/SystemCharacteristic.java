@@ -5,7 +5,6 @@ public class SystemCharacteristic {
     double weightOfStar;
     double radiusOfStar;
     short numberOfPlanets;
-    double focusDistance;
 
     public void setWeightOfStar (String weight) {
         double weightDouble;
@@ -16,7 +15,7 @@ public class SystemCharacteristic {
             //здесь будет вызов MessageManager
             throw e;
         }
-        weightOfStar = weightDouble;
+        weightOfStar = weightDouble * Math.pow(10, 11);
     }
 
     public void setNumberOfPlanets (double num) {
@@ -38,25 +37,12 @@ public class SystemCharacteristic {
         radiusOfStar = radius;
     }
 
-    public void setFocusDistance (String foc) {
-        double focus;
-        try {
-            focus = Double.parseDouble(foc.trim());
-        }
-        catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
-        }
-        focusDistance = focus;
-    }
-
     public String toString() {
         return "SystemCharacteristic{" +
                 "planet=" + planet.toString() +
                 ", weightOfStar=" + weightOfStar +
                 ", radiusOfStar=" + radiusOfStar +
                 ", numberOfPlanets=" + numberOfPlanets +
-                ", focusDistance=" + focusDistance +
                 '}';
     }
 }
