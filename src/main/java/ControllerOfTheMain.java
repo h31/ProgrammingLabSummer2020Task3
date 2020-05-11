@@ -31,7 +31,8 @@ public class ControllerOfTheMain {
             for (int i = 1; i <= system.numberOfPlanets; i++) {
                 Main planet = new Main();
                 try {
-                    planet.planetSetup(system);
+                    //planet.planetSetup(system);
+                    planet.space(system); //временно
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

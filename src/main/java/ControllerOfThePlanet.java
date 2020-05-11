@@ -40,7 +40,14 @@ public class ControllerOfThePlanet {
             planet.setPerihelion(perihelionPl.getText());
             planet.setPosition(positionPl.getText());
             system.planet.add(planet);
-
+            if (system.planet.size() == system.numberOfPlanets) {
+                Main main = new Main();
+                try {
+                    main.space(system);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
     }

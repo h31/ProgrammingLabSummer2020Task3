@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class SystemCharacteristic {
-    ArrayList<PlanetCharacteristic> planet = new ArrayList<PlanetCharacteristic>();
+    ArrayList<PlanetCharacteristic> planet = new ArrayList<>();
     double weightOfStar;
     double radiusOfStar;
     short numberOfPlanets;
