@@ -3,10 +3,10 @@ import javafx.scene.paint.Color;
 public class PlanetCharacteristic {
     String name;
     String color;
-    double weight;
     double radius;
     double G;
-    double speed;
+    double speedX;
+    double speedY;
     int degrees;
     double positionX;
     double positionY;
@@ -52,9 +52,10 @@ public class PlanetCharacteristic {
         }
     }
 
-    public void setSpeed (String speedU) {
+    public void setSpeed (String speedU, String deg) {
         try {
-            speed = Double.parseDouble(speedU.trim());
+            speedX = Double.parseDouble(speedU.trim()) * Math.cos(Double.parseDouble(deg.trim()));
+            speedY = Double.parseDouble(speedU.trim()) * Math.sin(Double.parseDouble(deg.trim()));
         }
         catch (NumberFormatException e) {
             //здесь будет вызов MessageManager
@@ -62,16 +63,6 @@ public class PlanetCharacteristic {
         }
         if (radius > 100000) {
             //здесь будет вызов MessageManager
-        }
-    }
-
-    public void setDegrees (String deg) {
-        try {
-            degrees = Integer.parseInt(deg.trim());
-        }
-        catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
         }
     }
 
@@ -90,12 +81,12 @@ public class PlanetCharacteristic {
         return "{" +
                 "name=" + name +
                 "color=" + color +
-                ", weight=" + weight +
                 ", Gravitation constant=" + G +
                 ", radius=" + radius +
                 ", positionX=" + positionX +
                 ", positionY=" + positionY +
-                ", speed=" + speed +
+                ", speedX=" + speedX +
+                ", speedY=" + speedY +
                 ", degrees=" + degrees +
                 '}';
     }

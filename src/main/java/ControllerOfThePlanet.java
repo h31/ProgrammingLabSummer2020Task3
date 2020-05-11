@@ -40,17 +40,18 @@ public class ControllerOfThePlanet {
             planet.setG(gPl.getText());
             planet.setPositionX(positionXPl.getText());
             planet.setPositionY(positionYPl.getText());
-            planet.setSpeed(speedPl.getText());
-            planet.setDegrees(degreesPl.getText());
+            planet.setSpeed(speedPl.getText(), degreesPl.getText());
             system.planet.add(planet);
-            if (system.planet.size() == system.numberOfPlanets) {
-                Main main = new Main();
-                try {
-
+            Main main = new Main();
+            try {
+                if (system.planet.size() == system.numberOfPlanets) {
                     main.space(system);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+                else {
+                    main.planetSetup(system);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
