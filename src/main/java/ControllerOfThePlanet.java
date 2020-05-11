@@ -10,18 +10,21 @@ public class ControllerOfThePlanet {
     @FXML
     public TextField namePl;
     @FXML
-    public TextField weightPl;
-    @FXML
     public ColorPicker colorPl;
-    @FXML
-    public TextField perihelionPl;
     @FXML
     public TextField radiusPl;
     @FXML
-    public TextField positionPl;
-    @FXML
     public Button applyPl;
-
+    @FXML
+    public TextField gPl;
+    @FXML
+    public TextField positionXPl;
+    @FXML
+    public TextField positionYPl;
+    @FXML
+    public TextField degreesPl;
+    @FXML
+    public TextField speedPl;
 
 
     @FXML
@@ -32,15 +35,18 @@ public class ControllerOfThePlanet {
             stage.close();
             PlanetCharacteristic planet = new PlanetCharacteristic();
             planet.setName(namePl.getText());
-            planet.setWeight(weightPl.getText());
             planet.setColor(colorPl.getValue());
             planet.setRadius(radiusPl.getText());
-            planet.setPerihelion(perihelionPl.getText());
-            planet.setPosition(positionPl.getText());
+            planet.setG(gPl.getText());
+            planet.setPositionX(positionXPl.getText());
+            planet.setPositionY(positionYPl.getText());
+            planet.setSpeed(speedPl.getText());
+            planet.setDegrees(degreesPl.getText());
             system.planet.add(planet);
             if (system.planet.size() == system.numberOfPlanets) {
                 Main main = new Main();
                 try {
+
                     main.space(system);
                 } catch (Exception e) {
                     e.printStackTrace();

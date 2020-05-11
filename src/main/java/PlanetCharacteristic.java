@@ -1,4 +1,3 @@
-import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 
 public class PlanetCharacteristic {
@@ -6,8 +5,11 @@ public class PlanetCharacteristic {
     String color;
     double weight;
     double radius;
-    double perihelion;
-    short position;
+    double G;
+    double speed;
+    int degrees;
+    double positionX;
+    double positionY;
 
     public void setName (String nameU){
         name = nameU;
@@ -17,21 +19,19 @@ public class PlanetCharacteristic {
         color = colorU.toString();
     }
 
-    public void setWeight (String weightU) {
-        double weightDouble;
+    public void setPositionX (String positionXU) {
         try {
-            weightDouble = Double.parseDouble(weightU.trim());
+            positionX = Double.parseDouble(positionXU.trim());
         }
         catch (NumberFormatException e) {
             //здесь будет вызов MessageManager
             throw e;
         }
-        weight = weightDouble;
     }
 
-    public void setPerihelion (String perihelionU) {
+    public void setPositionY (String positionYU) {
         try {
-            perihelion = Double.parseDouble(perihelionU.trim());
+            positionX = Double.parseDouble(positionYU.trim());
         }
         catch (NumberFormatException e) {
             //здесь будет вызов MessageManager
@@ -40,7 +40,6 @@ public class PlanetCharacteristic {
     }
 
     public void setRadius (String radiusU) {
-
         try {
             radius = Double.parseDouble(radiusU.trim());
         }
@@ -53,9 +52,33 @@ public class PlanetCharacteristic {
         }
     }
 
-    public void setPosition (String num) {
+    public void setSpeed (String speedU) {
         try {
-            position = Short.parseShort(num.trim());
+            speed = Double.parseDouble(speedU.trim());
+        }
+        catch (NumberFormatException e) {
+            //здесь будет вызов MessageManager
+            throw e;
+        }
+        if (radius > 100000) {
+            //здесь будет вызов MessageManager
+        }
+    }
+
+    public void setDegrees (String deg) {
+        try {
+            degrees = Integer.parseInt(deg.trim());
+        }
+        catch (NumberFormatException e) {
+            //здесь будет вызов MessageManager
+            throw e;
+        }
+    }
+
+    public void setG (String GU) {
+        try {
+            G = Double.parseDouble(GU.trim());
+            G = G * Math.pow(10, -11);
         }
         catch (NumberFormatException e) {
             //здесь будет вызов MessageManager
@@ -65,11 +88,15 @@ public class PlanetCharacteristic {
 
     public String toString() {
         return "{" +
+                "name=" + name +
                 "color=" + color +
                 ", weight=" + weight +
+                ", Gravitation constant=" + G +
                 ", radius=" + radius +
-                ", perihelion=" + perihelion +
-                ", position=" + position +
+                ", positionX=" + positionX +
+                ", positionY=" + positionY +
+                ", speed=" + speed +
+                ", degrees=" + degrees +
                 '}';
     }
 

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeType;
@@ -65,7 +66,8 @@ public class Main extends Application{
 
 
         Circle point = new Circle();
-        point.setFill(Color.GREEN);
+
+        point.setFill(Paint.valueOf(system.planet.get(0).color));
         point.setCenterX(5);
         point.setCenterY(5);
         point.setRadius(15);
@@ -78,8 +80,8 @@ public class Main extends Application{
             @Override
             public void run() {
                 double r = Math.sqrt(Math.pow(sun.getCenterX() - x, 2) + Math.pow(sun.getCenterY() - y, 2));
-                double ax = g * system.weightOfStar * (sun.getCenterX()-x) / Math.pow(r, 3);
-                double ay = g * system.weightOfStar * (sun.getCenterY()-y) / Math.pow(r, 3);
+                double ax = system.planet.get(0).G * system.weightOfStar * (sun.getCenterX()-x) / Math.pow(r, 3);
+                double ay = system.planet.get(0).G * system.weightOfStar * (sun.getCenterY()-y) / Math.pow(r, 3);
                 vx = vx + 1 * ax;
                 vy = vy + 1 * ay;
                 x = x + 1 * vx;
