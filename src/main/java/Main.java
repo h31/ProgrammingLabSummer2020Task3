@@ -21,6 +21,7 @@ public class Main extends Application {
         view.setPLAYER(player);
         view.setLEVEL(level);
         view.showScene();
+
     }
 
     public static void main(String[] args) {
