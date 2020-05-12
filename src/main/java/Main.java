@@ -1,5 +1,4 @@
 import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -15,7 +14,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main extends Application{
 
@@ -25,7 +26,7 @@ public class Main extends Application{
     }
 
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(new File("src/main/java/SystemParameters.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File("src/main/resources/SystemParameters.fxml").toURI().toURL());
         Parent root = loader.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -34,7 +35,7 @@ public class Main extends Application{
     }
 
     public void planetSetup(SystemCharacteristic system) throws Exception {
-        FXMLLoader loader = new FXMLLoader(new File("src/main/java/PlanetParameters.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File("src/main/resources/PlanetParameters.fxml").toURI().toURL());
         Parent root1 = loader.load();
         ControllerOfThePlanet controller = loader.getController();
         controller.initialize(system);
@@ -44,7 +45,7 @@ public class Main extends Application{
 
     }
 
-    public void space(SystemCharacteristic system) throws Exception {
+    public void space(SystemCharacteristic system) {
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: black;");
         Stage stage = new Stage();
@@ -65,11 +66,25 @@ public class Main extends Application{
         pause.setLayoutX(560);
         canvas.getChildren().addAll(pause);
 
+        var ref = new Object() {
+            boolean p = false;
+        };
+        pause.setOnAction(event -> {
+            if (!ref.p) {
+                ref.p = true;
+                pause.setText("Play");
+            }
+            else {
+                ref.p = false;
+                pause.setText("Pause");
+            }
+        });
+
         Button faster = new Button("Faster");
         faster.setPrefWidth(80);
         faster.setLayoutX(650);
         canvas.getChildren().addAll(faster);
-
+        AtomicInteger s = new AtomicInteger(1);
 
 
         for (int i = 0; i < system.planet.size(); i++) {
@@ -102,31 +117,26 @@ public class Main extends Application{
 
             }));
             timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.setRate(50);
+
             timeline.play();
-            var ref = new Object() {
-                boolean p = false;
-            };
-            pause.setOnAction(event -> {
-                if (!ref.p) {
-                    timeline.pause();
-                    ref.p = true;
-                    pause.setText("Play");
-                }
-                else {
-                    timeline.play();
-                    ref.p = false;
-                    pause.setText("Pause");
-                }
-            });
 
-            slower.setOnAction(event -> {
-                timeline.setRate(timeline.getRate() - 5);
-            });
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (ref.p) {
+                        timeline.stop();
+                    }
+                    else {
+                        timeline.play();
+                    }
+                    slower.setOnAction(event -> s.getAndDecrement());
+                    faster.setOnAction(event -> s.getAndIncrement());
+                    timeline.setRate(50 + 5 * s.get());
+                }
 
-            faster.setOnAction(event -> {
-                timeline.setRate(timeline.getRate() + 5);
-            });
+
+            }, 0, 20);
 
         }
         stage.setScene(scene);
