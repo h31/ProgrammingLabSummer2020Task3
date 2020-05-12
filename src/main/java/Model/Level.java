@@ -25,11 +25,12 @@ public final class Level {
             new Rectangle(490, 388, 525, 30)
     };
     public static final Rectangle[] FIRST_TRIGGERS = {
-            new Rectangle(350, 388, 525, 30)
+            new Rectangle(350, 150, 320, 30)
     };
 
     {
         FIRST_TRIGGERS[0].setFill(Color.YELLOW);
+        START_TRIGGERS[0].setFill(Color.YELLOW);
     }
 
     public Level() {
@@ -61,7 +62,6 @@ public final class Level {
         } else {
             throw new IllegalArgumentException("There are no location such like this");
         }
-
     }
 
     public ImageView getLEVEL_IMG() {
@@ -78,23 +78,5 @@ public final class Level {
 
     public String getLocation() {
         return location;
-    }
-
-    public boolean isCollision(Rectangle playerCollision) {
-        for (Rectangle colShape : COLLISIONS) {
-            if (playerCollision.intersects(colShape.getBoundsInLocal())) {
-                return true;
-            }
-        }
-        for (Rectangle colShape : TRIGGERS) {
-            if (playerCollision.intersects(colShape.getBoundsInLocal())) {
-                this.setLocation("First");
-            }
-        }
-        return false;
-    }
-
-    public static void loadScene(Level level) {
-
     }
 }
