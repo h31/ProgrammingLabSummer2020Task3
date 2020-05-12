@@ -11,7 +11,7 @@ public class SystemCharacteristic {
     public void setWeightOfStar (String weight) {
         double weightDouble = 0;
         try {
-            weightDouble = Double.parseDouble(weight.trim());
+            weightDouble = Double.parseDouble(formatter(weight));
         }
         catch (NumberFormatException e) {
             message.error(11);
@@ -26,12 +26,16 @@ public class SystemCharacteristic {
     public void setRadiusOfStar (String rad) {
         double radius = 0;
         try {
-            radius = Double.parseDouble(rad.trim());
+            radius = Double.parseDouble(formatter(rad));
         }
         catch (NumberFormatException e) {
             message.error(12);
         }
         radiusOfStar = radius;
+    }
+
+    public String formatter(String in) {
+        return in.replace(',', '.').trim();
     }
 
     public String toString() {

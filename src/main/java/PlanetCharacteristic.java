@@ -22,7 +22,7 @@ public class PlanetCharacteristic {
 
     public void setPositionX (String positionXU) {
         try {
-            positionX = Double.parseDouble(positionXU.trim());
+            positionX = Double.parseDouble(formatter(positionXU));
         }
         catch (NumberFormatException e) {
             message.error(25);
@@ -31,7 +31,7 @@ public class PlanetCharacteristic {
 
     public void setPositionY (String positionYU) {
         try {
-            positionX = Double.parseDouble(positionYU.trim());
+            positionX = Double.parseDouble(formatter(positionYU));
         }
         catch (NumberFormatException e) {
             message.error(25);
@@ -40,7 +40,7 @@ public class PlanetCharacteristic {
 
     public void setRadius (String radiusU) {
         try {
-            radius = Double.parseDouble(radiusU.trim());
+            radius = Double.parseDouble(formatter(radiusU));
         }
         catch (NumberFormatException e) {
             message.error(22);
@@ -49,8 +49,8 @@ public class PlanetCharacteristic {
 
     public void setSpeed (String speedU, String deg) {
         try {
-            speedX = Double.parseDouble(speedU.trim()) * Math.cos(Double.parseDouble(deg.trim()));
-            speedY = Double.parseDouble(speedU.trim()) * Math.sin(Double.parseDouble(deg.trim()));
+            speedX = Double.parseDouble(formatter(speedU)) * Math.cos(Double.parseDouble(formatter(deg)));
+            speedY = Double.parseDouble(formatter(speedU)) * Math.sin(Double.parseDouble(formatter(deg)));
         }
         catch (NumberFormatException e) {
             message.error(24);
@@ -60,12 +60,16 @@ public class PlanetCharacteristic {
 
     public void setG (String GU) {
         try {
-            G = Double.parseDouble(GU.trim());
+            G = Double.parseDouble(formatter(GU));
             G = G * Math.pow(10, -11);
         }
         catch (NumberFormatException e) {
             message.error(21);
         }
+    }
+
+    public String formatter(String in) {
+        return in.replace(',', '.').trim();
     }
 
     public String toShortString() {
