@@ -42,7 +42,7 @@ public class ControllerOfThePlanet {
             planet.setPositionY(positionYPl.getText());
             planet.setSpeed(speedPl.getText(), degreesPl.getText());
             system.planet.add(planet);
-            Main main = new Main();
+            App main = new App();
             try {
                 if (system.planet.size() == system.numberOfPlanets) {
                     main.space(system);

@@ -26,7 +26,7 @@ public class ControllerOfTheMain {
             system.setRadiusOfStar(radius.getText());
             system.setNumberOfPlanets(number.getValue());
 
-                Main planet = new Main();
+                App planet = new App();
                 try {
                     planet.planetSetup(system);
                 } catch (Exception e) {
