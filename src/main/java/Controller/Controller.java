@@ -36,7 +36,7 @@ public final class Controller {
                     PLAYER.setAction(Status.WALK, Status.View.RIGHT);
                     break;
             }
-            PLAYER.move();
+            PLAYER.startWalkAnim();
         });
         primaryScene.setOnKeyReleased(e -> {
             switch (e.getCode()) {

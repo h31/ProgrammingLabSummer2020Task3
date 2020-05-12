@@ -1,10 +1,13 @@
 package Model;
 
+import View.View;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class Player {
 
@@ -42,12 +45,10 @@ public class Player {
                 System.out.println("Collision detected!");
                 return;
             }
-
-            getImgView().setX(getImgView().getX() + getVelX());
-            getImgView().setY(getImgView().getY() + getVelY());
-            setPosition(getImgView().getX(), getImgView().getY());
+            move(posX,posY);
             getCOLLISION().setX(getImgView().getX());
             getCOLLISION().setY(getImgView().getY());
+
         }
     };
     public Player(int x, int y, Level level) {
@@ -57,6 +58,7 @@ public class Player {
         this.COLLISION = new Rectangle(x, y, imgView.getImage().getWidth(), imgView.getImage().getHeight());
         this.COLLISION.setFill(Color.BLUE);
         this.COLLISION.setOpacity(0.25);
+        runAnimation();
     }
 
     public Player(Level level) {
@@ -64,6 +66,17 @@ public class Player {
         this.COLLISION = new Rectangle(this.imgView.getX(), this.imgView.getY(), imgView.getImage().getWidth(), imgView.getImage().getHeight());
         this.COLLISION.setFill(Color.BLUE);
         this.COLLISION.setOpacity(0.25);
+        runAnimation();
+    }
+
+
+    private void runAnimation() {
+        final Animation animation = new SpriteAnimation(
+                Duration.millis(500),
+                this
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
     }
 
     public Image[] getSKELETON_IDLE(Status.View view) {
@@ -88,7 +101,11 @@ public class Player {
         getImgView().setY(y);
     }
 
-    public void move() {
+    public void move(double posX, double posY) {
+        View.movePlayer(this, posX, posY);
+    }
+
+    public void startWalkAnim() {
         getMovementAnim().start();
     }
 

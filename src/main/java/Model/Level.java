@@ -1,6 +1,5 @@
 package Model;
 
-import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -41,7 +40,7 @@ public final class Level {
     }
 
     public void setLocation(String location) {
-        if (location == "Start") {
+        if (location.equals("Start")) {
             try {
                 this.getLEVEL_IMG().setImage(new Image("/Monsters_Creatures_Fantasy/All Characters.png"));
             } catch (NullPointerException e) {
@@ -50,7 +49,7 @@ public final class Level {
             this.location = "Start";
             this.COLLISIONS = START_COLLISIONS;
             this.TRIGGERS = START_TRIGGERS;
-        } else if (location == "First") {
+        } else if (location.equals("First")) {
             try {
                 this.getLEVEL_IMG().setImage(new Image("/Monsters_Creatures_Fantasy/Skeleton/Death.png"));
             } catch (NullPointerException e) {
@@ -62,6 +61,7 @@ public final class Level {
         } else {
             throw new IllegalArgumentException("There are no location such like this");
         }
+
     }
 
     public ImageView getLEVEL_IMG() {
@@ -88,7 +88,7 @@ public final class Level {
         }
         for (Rectangle colShape : TRIGGERS) {
             if (playerCollision.intersects(colShape.getBoundsInLocal())) {
-                this.setLocation("Start");
+                this.setLocation("First");
             }
         }
         return false;

@@ -11,20 +11,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class View {
-    private final Stage stage;
-    private Level level;
-    private Scene scene;
 
-
-    public View(Stage stage, Level level, Scene scene) {
-        this.stage = stage;
-        this.level = level;
-        this.scene = scene;
+    public static void movePlayer(Player player, double posX, double posY) {
+        player.setPosition(posX, posY);
     }
 
-    public void show() {
-        stage.setScene(this.scene);
-        stage.show();
-    }
+//    public static void updateLocation(Level level) {
+//
+//    }
 
 }
