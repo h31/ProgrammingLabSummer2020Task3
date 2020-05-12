@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,7 +18,6 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class App extends Application{
 
@@ -32,7 +32,6 @@ public class App extends Application{
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 
     public void planetSetup(SystemCharacteristic system) throws Exception {
@@ -43,7 +42,6 @@ public class App extends Application{
         Stage stage = new Stage();
         stage.setScene(new Scene(root1));
         stage.show();
-
     }
 
     public void space(SystemCharacteristic system) {
@@ -58,14 +56,9 @@ public class App extends Application{
         Tooltip.install(star, new Tooltip("Star \nWeight: " + system.weightOfStar + "\n" +
                 "Radius: " + system.radiusOfStar));
 
-        Button slower = new Button("Slower");
-        slower.setPrefWidth(80);
-        slower.setLayoutX(470);
-        canvas.getChildren().addAll(slower);
-
         Button pause = new Button("Pause");
         pause.setPrefWidth(80);
-        pause.setLayoutX(560);
+        pause.setLayoutX(1100);
         canvas.getChildren().addAll(pause);
 
         var ref = new Object() {
@@ -82,12 +75,8 @@ public class App extends Application{
             }
         });
 
-        Button faster = new Button("Faster");
-        faster.setPrefWidth(80);
-        faster.setLayoutX(650);
-        canvas.getChildren().addAll(faster);
-        AtomicInteger s = new AtomicInteger(1);
-
+        Slider slider = new Slider(0.0, 100.0, 0.0);
+        canvas.getChildren().add(slider);
 
         for (int i = 0; i < system.planet.size(); i++) {
             int finalI = i;
@@ -102,8 +91,7 @@ public class App extends Application{
             final double[] x = {system.planet.get(finalI).positionX + star.getCenterX()};
             final double[] y = {system.planet.get(finalI).positionY + star.getCenterY()};
 
-
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
                     double r = Math.sqrt(Math.pow(star.getCenterX() - x[0], 2) + Math.pow(star.getCenterY() - y[0], 2));
                     double ax = system.planet.get(finalI).G * system.weightOfStar * (star.getCenterX() - x[0]) / Math.pow(r, 3);
@@ -133,9 +121,7 @@ public class App extends Application{
                     else {
                         timeline.play();
                     }
-                    slower.setOnAction(event -> s.getAndDecrement());
-                    faster.setOnAction(event -> s.getAndIncrement());
-                    timeline.setRate(50 + 5 * s.get());
+                    timeline.setRate(1 + 5 * slider.getValue());
                 }
 
 
@@ -145,8 +131,6 @@ public class App extends Application{
         stage.setScene(scene);
 
         stage.show();
-
-
     }
 
 }

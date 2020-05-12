@@ -6,14 +6,15 @@ public class SystemCharacteristic {
     double radiusOfStar;
     short numberOfPlanets;
 
+    MessageManager message = new MessageManager();
+
     public void setWeightOfStar (String weight) {
-        double weightDouble;
+        double weightDouble = 0;
         try {
             weightDouble = Double.parseDouble(weight.trim());
         }
         catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
+            message.error();
         }
         weightOfStar = weightDouble * Math.pow(10, 11);
     }

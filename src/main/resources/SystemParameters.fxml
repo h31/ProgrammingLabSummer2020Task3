@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 <AnchorPane prefHeight="288.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ControllerOfTheMain">
+            fx:controller="ControllerOfTheSystem">
    <Text layoutX="26.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0"
          text="Configuring basic parameters of the planetary system">
       <font>

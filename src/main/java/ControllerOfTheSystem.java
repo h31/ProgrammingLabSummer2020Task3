@@ -5,7 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ControllerOfTheMain {
+public class ControllerOfTheSystem {
 
     @FXML
     private Button apply;
@@ -32,7 +32,6 @@ public class ControllerOfTheMain {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
 
         });
 
