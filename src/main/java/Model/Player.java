@@ -48,7 +48,7 @@ public class Player {
             if (isCollision()) {
                 return;
             }
-            move(posX,posY);
+            move(posX, posY);
             getCOLLISION().setX(getImgView().getX());
             getCOLLISION().setY(getImgView().getY());
 

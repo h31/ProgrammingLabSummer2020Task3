@@ -7,17 +7,17 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public final class Controller {
-        private Scene primaryScene;
-        private final Player PLAYER;
+    private Scene primaryScene;
+    private final Player PLAYER;
 
 
-        // 0 - up, 1 - down, 2 - left, 3 - right
-        private Boolean[] keyState = {
-                false,
-                false,
-                false,
-                false
-        };
+    // 0 - up, 1 - down, 2 - left, 3 - right
+    private Boolean[] keyState = {
+            false,
+            false,
+            false,
+            false
+    };
 
     public Controller(Scene scene, Player player) {
         this.primaryScene = scene;
@@ -90,6 +90,7 @@ public final class Controller {
             }
         });
     }
+
     private boolean multipleKeyPressed() {
         int counter = 0;
         for (boolean state : keyState) {

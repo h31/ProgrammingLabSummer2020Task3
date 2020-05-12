@@ -15,7 +15,6 @@ public class Main extends Application {
         stage.setHeight(768);
         stage.setTitle("Game");
         stage.setResizable(false);
-
         View view = new View(stage);
         Level level = new Level();
         Player player = new Player(view, level, 800,600);
