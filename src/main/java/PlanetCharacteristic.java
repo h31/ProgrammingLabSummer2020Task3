@@ -68,12 +68,24 @@ public class PlanetCharacteristic {
         }
     }
 
-    public String toString() {
+    public String toShortString() {
         return  "Planet " + name +
                 "\nColor " + color +
                 "\nGravitation constant " + G +
                 "\nRadius " + radius;
     }
 
+    public String toString() {
+        return "PlanetCharacteristic{" +
+                "name=" + name +
+                ", color=" + color +
+                ", gravitation constant=" + G +
+                ", radius=" + radius +
+                ", speedX=" + speedX +
+                ", speedY=" + speedY +
+                ", positionX=" + positionX +
+                ", positionY=" + positionY +
+                '}';
+    }
 
 }

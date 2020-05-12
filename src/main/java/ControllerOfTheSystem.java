@@ -4,8 +4,12 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ControllerOfTheSystem {
+
+    Logger log = LogManager.getLogger(MessageManager.class.getName());
 
     @FXML
     private Button apply;
@@ -24,20 +28,19 @@ public class ControllerOfTheSystem {
             SystemCharacteristic system = new SystemCharacteristic();
             try {
                 system.setWeightOfStar(weight.getText());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
                 system.setRadiusOfStar(radius.getText());
             } catch (Exception e) {
+                log.error("Exception " + e);
                 e.printStackTrace();
             }
             system.setNumberOfPlanets(number.getValue());
 
+            log.info(system.toString());
                 App planet = new App();
                 try {
                     planet.planetSetup(system);
                 } catch (Exception e) {
+                    log.error("Exception " + e);
                     e.printStackTrace();
                 }
 

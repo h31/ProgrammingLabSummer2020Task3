@@ -4,8 +4,13 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ControllerOfThePlanet {
+
+    Logger log = LogManager.getLogger(MessageManager.class.getName());
+
 
     @FXML
     public TextField namePl;
@@ -36,12 +41,19 @@ public class ControllerOfThePlanet {
             PlanetCharacteristic planet = new PlanetCharacteristic();
             planet.setName(namePl.getText());
             planet.setColor(colorPl.getValue());
-            planet.setRadius(radiusPl.getText());
-            planet.setG(gPl.getText());
-            planet.setPositionX(positionXPl.getText());
-            planet.setPositionY(positionYPl.getText());
-            planet.setSpeed(speedPl.getText(), degreesPl.getText());
+            try {
+                planet.setRadius(radiusPl.getText());
+                planet.setG(gPl.getText());
+                planet.setPositionX(positionXPl.getText());
+                planet.setPositionY(positionYPl.getText());
+                planet.setSpeed(speedPl.getText(), degreesPl.getText());
+
+            } catch (Exception e) {
+                log.error("Exception " + e);
+                e.printStackTrace();
+            }
             system.planet.add(planet);
+            log.info(planet.toString());
             App main = new App();
             try {
                 if (system.planet.size() == system.numberOfPlanets) {

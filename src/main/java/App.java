@@ -104,7 +104,7 @@ public class App extends Application{
                     planet.setCenterY(y[0]);
                     canvas.requestLayout();
 
-                Tooltip.install(planet, new Tooltip(system.planet.get(finalI).toString() + "\n"
+                Tooltip.install(planet, new Tooltip(system.planet.get(finalI).toShortString() + "\n"
                         + "Distance to the star " + r));
             }));
             timeline.setCycleCount(Animation.INDEFINITE);
