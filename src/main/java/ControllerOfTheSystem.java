@@ -22,8 +22,16 @@ public class ControllerOfTheSystem {
             Stage stage = (Stage) apply.getScene().getWindow();
             stage.close();
             SystemCharacteristic system = new SystemCharacteristic();
-            system.setWeightOfStar(weight.getText());
-            system.setRadiusOfStar(radius.getText());
+            try {
+                system.setWeightOfStar(weight.getText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                system.setRadiusOfStar(radius.getText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             system.setNumberOfPlanets(number.getValue());
 
                 App planet = new App();

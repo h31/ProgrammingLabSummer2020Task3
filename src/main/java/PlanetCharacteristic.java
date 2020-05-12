@@ -7,9 +7,10 @@ public class PlanetCharacteristic {
     double G;
     double speedX;
     double speedY;
-    int degrees;
     double positionX;
     double positionY;
+
+    MessageManager message = new MessageManager();
 
     public void setName (String nameU){
         name = nameU;
@@ -19,61 +20,51 @@ public class PlanetCharacteristic {
         color = colorU.toString();
     }
 
-    public void setPositionX (String positionXU) {
+    public void setPositionX (String positionXU) throws Exception {
         try {
             positionX = Double.parseDouble(positionXU.trim());
         }
         catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
+            message.error(25);
         }
     }
 
-    public void setPositionY (String positionYU) {
+    public void setPositionY (String positionYU) throws Exception {
         try {
             positionX = Double.parseDouble(positionYU.trim());
         }
         catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
+            message.error(25);
         }
     }
 
-    public void setRadius (String radiusU) {
+    public void setRadius (String radiusU) throws Exception {
         try {
             radius = Double.parseDouble(radiusU.trim());
         }
         catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
-        }
-        if (radius > 100000) {
-            //здесь будет вызов MessageManager
+            message.error(22);
         }
     }
 
-    public void setSpeed (String speedU, String deg) {
+    public void setSpeed (String speedU, String deg) throws Exception {
         try {
             speedX = Double.parseDouble(speedU.trim()) * Math.cos(Double.parseDouble(deg.trim()));
             speedY = Double.parseDouble(speedU.trim()) * Math.sin(Double.parseDouble(deg.trim()));
         }
         catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
+            message.error(24);
         }
-        if (radius > 100000) {
-            //здесь будет вызов MessageManager
-        }
+
     }
 
-    public void setG (String GU) {
+    public void setG (String GU) throws Exception {
         try {
             G = Double.parseDouble(GU.trim());
             G = G * Math.pow(10, -11);
         }
         catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
+            message.error(21);
         }
     }
 

@@ -8,13 +8,13 @@ public class SystemCharacteristic {
 
     MessageManager message = new MessageManager();
 
-    public void setWeightOfStar (String weight) {
+    public void setWeightOfStar (String weight) throws Exception {
         double weightDouble = 0;
         try {
             weightDouble = Double.parseDouble(weight.trim());
         }
         catch (NumberFormatException e) {
-            message.error();
+            message.error(11);
         }
         weightOfStar = weightDouble * Math.pow(10, 11);
     }
@@ -23,17 +23,13 @@ public class SystemCharacteristic {
         numberOfPlanets = (short) num;
     }
 
-    public void setRadiusOfStar (String rad) {
-        double radius;
+    public void setRadiusOfStar (String rad) throws Exception {
+        double radius = 0;
         try {
             radius = Double.parseDouble(rad.trim());
         }
         catch (NumberFormatException e) {
-            //здесь будет вызов MessageManager
-            throw e;
-        }
-        if (radius > 100000) {
-            //здесь будет вызов MessageManager
+            message.error(12);
         }
         radiusOfStar = radius;
     }
