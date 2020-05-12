@@ -1,16 +1,21 @@
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main extends Application{
 
@@ -44,10 +49,27 @@ public class Main extends Application{
         canvas.setStyle("-fx-background-color: black;");
         Stage stage = new Stage();
         stage.setTitle("Planet System");
-        int radius = 20;
+        double radius = system.radiusOfStar / 2;
         Scene scene = new Scene(canvas, 1200, 600, Color.BLACK);
         Circle sun = new Circle(scene.getWidth() / 2, scene.getHeight() / 2, radius, Color.YELLOW);
         canvas.getChildren().add(sun);
+
+
+        Button slower = new Button("Slower");
+        slower.setPrefWidth(80);
+        slower.setLayoutX(470);
+        canvas.getChildren().addAll(slower);
+
+        Button pause = new Button("Pause");
+        pause.setPrefWidth(80);
+        pause.setLayoutX(560);
+        canvas.getChildren().addAll(pause);
+
+        Button faster = new Button("Faster");
+        faster.setPrefWidth(80);
+        faster.setLayoutX(650);
+        canvas.getChildren().addAll(faster);
+
 
 
         for (int i = 0; i < system.planet.size(); i++) {
@@ -55,9 +77,7 @@ public class Main extends Application{
             Circle point = new Circle();
 
             point.setFill(Paint.valueOf(system.planet.get(i).color));
-            point.setCenterX(5);
-            point.setCenterY(5);
-            point.setRadius(15);
+            point.setRadius(system.planet.get(i).radius / 2);
             canvas.getChildren().addAll(point);
 
             final double[] vx = {system.planet.get(finalI).speedX};
@@ -66,27 +86,52 @@ public class Main extends Application{
             final double[] y = {system.planet.get(finalI).positionY + sun.getCenterY()};
 
 
-            Timer timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+
                     double r = Math.sqrt(Math.pow(sun.getCenterX() - x[0], 2) + Math.pow(sun.getCenterY() - y[0], 2));
                     double ax = system.planet.get(finalI).G * system.weightOfStar * (sun.getCenterX() - x[0]) / Math.pow(r, 3);
                     double ay = system.planet.get(finalI).G * system.weightOfStar * (sun.getCenterY() - y[0]) / Math.pow(r, 3);
                     vx[0] = vx[0] + 1 * ax;
                     vy[0] = vy[0] + 1 * ay;
-                    x[0] = x[0] + 1 * vx[0];
-                    y[0] = y[0] + 1 * vy[0];
+                    x[0] = (x[0] + vx[0] + Math.random() * 0.00001);
+                    y[0] = (y[0] + vy[0] + Math.random() * 0.00001);
                     point.setCenterX(x[0]);
                     point.setCenterY(y[0]);
                     canvas.requestLayout();
+
+
+            }));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.setRate(50);
+            timeline.play();
+            var ref = new Object() {
+                boolean p = false;
+            };
+            pause.setOnAction(event -> {
+                if (!ref.p) {
+                    timeline.pause();
+                    ref.p = true;
+                    pause.setText("Play");
                 }
-            }, 0, 50);
+                else {
+                    timeline.play();
+                    ref.p = false;
+                    pause.setText("Pause");
+                }
+            });
+
+            slower.setOnAction(event -> {
+                timeline.setRate(timeline.getRate() - 5);
+            });
+
+            faster.setOnAction(event -> {
+                timeline.setRate(timeline.getRate() + 5);
+            });
 
         }
         stage.setScene(scene);
-        stage.show();
 
+        stage.show();
 
 
     }
