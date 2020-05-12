@@ -21,7 +21,6 @@ import java.util.TimerTask;
 
 public class App extends Application{
 
-
     public static void main(String[] args) {
         Application.launch(args);
     }
@@ -61,21 +60,19 @@ public class App extends Application{
         pause.setLayoutX(1100);
         canvas.getChildren().addAll(pause);
 
-        var ref = new Object() {
-            boolean p = false;
-        };
+        final boolean[] p = {false};
+
         pause.setOnAction(event -> {
-            if (!ref.p) {
-                ref.p = true;
+            if (!p[0]) {
+                p[0] = true;
                 pause.setText("Play");
-            }
-            else {
-                ref.p = false;
+            } else {
+                p[0] = false;
                 pause.setText("Pause");
             }
         });
 
-        Slider slider = new Slider(0.0, 100.0, 0.0);
+        Slider slider = new Slider(0.0, 70.0, 0.0);
         canvas.getChildren().add(slider);
 
         for (int i = 0; i < system.planet.size(); i++) {
@@ -90,22 +87,20 @@ public class App extends Application{
             final double[] vy = {system.planet.get(finalI).speedY};
             final double[] x = {system.planet.get(finalI).positionX + star.getCenterX()};
             final double[] y = {system.planet.get(finalI).positionY + star.getCenterY()};
-
+            LogicManager logic = new LogicManager();
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
-                    double r = Math.sqrt(Math.pow(star.getCenterX() - x[0], 2) + Math.pow(star.getCenterY() - y[0], 2));
-                    double ax = system.planet.get(finalI).G * system.weightOfStar * (star.getCenterX() - x[0]) / Math.pow(r, 3);
-                    double ay = system.planet.get(finalI).G * system.weightOfStar * (star.getCenterY() - y[0]) / Math.pow(r, 3);
-                    vx[0] = vx[0] + 1 * ax;
-                    vy[0] = vy[0] + 1 * ay;
-                    x[0] = (x[0] + vx[0] + Math.random() * 0.00001);
-                    y[0] = (y[0] + vy[0] + Math.random() * 0.00001);
-                    planet.setCenterX(x[0]);
-                    planet.setCenterY(y[0]);
-                    canvas.requestLayout();
+                double distance = logic.distance(star.getCenterX(), x[0], star.getCenterY(), y[0]);
+                vx[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getCenterX(), x[0], distance);
+                vy[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getCenterY(), y[0], distance);
+                x[0] += vx[0];
+                y[0] += vy[0];
+                planet.setCenterX(x[0]);
+                planet.setCenterY(y[0]);
+                canvas.requestLayout();
 
                 Tooltip.install(planet, new Tooltip(system.planet.get(finalI).toShortString() + "\n"
-                        + "Distance to the star " + r));
+                        + "Distance to the star " + distance));
             }));
             timeline.setCycleCount(Animation.INDEFINITE);
 
@@ -115,22 +110,19 @@ public class App extends Application{
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    if (ref.p) {
+                    if (p[0]) {
                         timeline.stop();
-                    }
-                    else {
+                    } else {
                         timeline.play();
                     }
                     timeline.setRate(1 + 5 * slider.getValue());
                 }
 
-
             }, 0, 20);
 
         }
         stage.setScene(scene);
-
         stage.show();
+        stage.setOnCloseRequest(windowEvent -> System.exit(0));
     }
-
 }

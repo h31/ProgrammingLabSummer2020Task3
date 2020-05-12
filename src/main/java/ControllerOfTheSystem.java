@@ -43,9 +43,6 @@ public class ControllerOfTheSystem {
                     log.error("Exception " + e);
                     e.printStackTrace();
                 }
-
         });
-
     }
-
 }

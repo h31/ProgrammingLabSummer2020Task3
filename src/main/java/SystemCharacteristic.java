@@ -8,7 +8,7 @@ public class SystemCharacteristic {
 
     MessageManager message = new MessageManager();
 
-    public void setWeightOfStar (String weight) throws Exception {
+    public void setWeightOfStar (String weight) {
         double weightDouble = 0;
         try {
             weightDouble = Double.parseDouble(weight.trim());
@@ -23,7 +23,7 @@ public class SystemCharacteristic {
         numberOfPlanets = (short) num;
     }
 
-    public void setRadiusOfStar (String rad) throws Exception {
+    public void setRadiusOfStar (String rad) {
         double radius = 0;
         try {
             radius = Double.parseDouble(rad.trim());

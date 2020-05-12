@@ -20,7 +20,7 @@ public class PlanetCharacteristic {
         color = colorU.toString();
     }
 
-    public void setPositionX (String positionXU) throws Exception {
+    public void setPositionX (String positionXU) {
         try {
             positionX = Double.parseDouble(positionXU.trim());
         }
@@ -29,7 +29,7 @@ public class PlanetCharacteristic {
         }
     }
 
-    public void setPositionY (String positionYU) throws Exception {
+    public void setPositionY (String positionYU) {
         try {
             positionX = Double.parseDouble(positionYU.trim());
         }
@@ -38,7 +38,7 @@ public class PlanetCharacteristic {
         }
     }
 
-    public void setRadius (String radiusU) throws Exception {
+    public void setRadius (String radiusU) {
         try {
             radius = Double.parseDouble(radiusU.trim());
         }
@@ -47,7 +47,7 @@ public class PlanetCharacteristic {
         }
     }
 
-    public void setSpeed (String speedU, String deg) throws Exception {
+    public void setSpeed (String speedU, String deg) {
         try {
             speedX = Double.parseDouble(speedU.trim()) * Math.cos(Double.parseDouble(deg.trim()));
             speedY = Double.parseDouble(speedU.trim()) * Math.sin(Double.parseDouble(deg.trim()));
@@ -58,7 +58,7 @@ public class PlanetCharacteristic {
 
     }
 
-    public void setG (String GU) throws Exception {
+    public void setG (String GU) {
         try {
             G = Double.parseDouble(GU.trim());
             G = G * Math.pow(10, -11);
