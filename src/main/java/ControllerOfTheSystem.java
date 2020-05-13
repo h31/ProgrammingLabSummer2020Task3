@@ -19,9 +19,23 @@ public class ControllerOfTheSystem {
     private TextField radius;
     @FXML
     private Slider number;
+    @FXML
+    private void enabler(boolean[] w, boolean[] r) {
+        apply.setDisable(!w[0] || !r[0]);
+    }
 
     @FXML
     public void initialize() {
+        final boolean[] weightB = {false};
+        final boolean[] radiusB = {false};
+        weight.setOnKeyPressed(event -> {
+            weightB[0] = !weight.getText().equals("");
+            enabler(radiusB, weightB);
+        });
+        radius.setOnKeyPressed(event -> {
+            radiusB[0] = !radius.getText().equals("");
+            enabler(radiusB, weightB);
+        });
         apply.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             Stage stage = (Stage) apply.getScene().getWindow();
             stage.close();

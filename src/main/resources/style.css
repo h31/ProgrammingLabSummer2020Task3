@@ -1,0 +1,6 @@
+.window {
+    -fx-background-image: url("images/system.jpg");
+}
+.input {
+    -fx-opacity: 0.9;
+}
