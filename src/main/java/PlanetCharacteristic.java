@@ -31,7 +31,7 @@ public class PlanetCharacteristic {
 
     public void setPositionY (String positionYU) {
         try {
-            positionX = Double.parseDouble(formatter(positionYU));
+            positionY = Double.parseDouble(formatter(positionYU));
         }
         catch (NumberFormatException e) {
             message.error(25);
