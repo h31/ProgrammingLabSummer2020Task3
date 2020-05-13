@@ -24,6 +24,6 @@
       <TextField fx:id="positionYPl" layoutX="308.0" layoutY="267.0" opacity="0.6" prefHeight="29.0" prefWidth="80.0" promptText="Y km 10^" />
       <TextField fx:id="speedPl" layoutX="220.0" layoutY="305.0" opacity="0.6" prefHeight="29.0" prefWidth="80.0" promptText="km per second" />
       <TextField fx:id="degreesPl" layoutX="309.0" layoutY="305.0" opacity="0.6" prefHeight="29.0" prefWidth="80.0" promptText="°" />
-      <Button fx:id="applyPl" layoutX="200.0" layoutY="359.0" mnemonicParsing="false" text="APPLY" />
+      <Button fx:id="applyPl" disable="true" layoutX="200.0" layoutY="359.0" mnemonicParsing="false" text="APPLY" />
    </children>
 </AnchorPane>

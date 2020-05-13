@@ -11,31 +11,51 @@ public class ControllerOfThePlanet {
 
     Logger log = LogManager.getLogger(MessageManager.class.getName());
 
+    @FXML
+    private TextField namePl;
+    @FXML
+    private ColorPicker colorPl;
+    @FXML
+    private TextField radiusPl;
+    @FXML
+    private Button applyPl;
+    @FXML
+    private TextField gPl;
+    @FXML
+    private TextField positionXPl;
+    @FXML
+    private TextField positionYPl;
+    @FXML
+    private TextField degreesPl;
+    @FXML
+    private TextField speedPl;
 
-    @FXML
-    public TextField namePl;
-    @FXML
-    public ColorPicker colorPl;
-    @FXML
-    public TextField radiusPl;
-    @FXML
-    public Button applyPl;
-    @FXML
-    public TextField gPl;
-    @FXML
-    public TextField positionXPl;
-    @FXML
-    public TextField positionYPl;
-    @FXML
-    public TextField degreesPl;
-    @FXML
-    public TextField speedPl;
+    private int filled = 0;
 
+    private void enabler() {
+        applyPl.setDisable(filled != 7);
+    }
+
+    private void checker (String text) {
+        if (!text.equals("")) filled++;
+        else filled--;
+        enabler();
+    }
 
     @FXML
     public void initialize(SystemCharacteristic system){
 
+        namePl.setOnKeyPressed(event -> checker(namePl.getText()));
+        radiusPl.setOnKeyPressed(event -> checker(radiusPl.getText()));
+        gPl.setOnKeyPressed(event -> checker(gPl.getText()));
+        positionXPl.setOnKeyPressed(event -> checker(positionXPl.getText()));
+        positionYPl.setOnKeyPressed(event -> checker(positionYPl.getText()));
+        degreesPl.setOnKeyPressed(event -> checker(degreesPl.getText()));
+        speedPl.setOnKeyPressed(event -> checker(speedPl.getText()));
+
         applyPl.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+
             Stage stage = (Stage) applyPl.getScene().getWindow();
             stage.close();
             PlanetCharacteristic planet = new PlanetCharacteristic();
