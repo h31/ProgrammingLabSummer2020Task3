@@ -28,11 +28,11 @@ public class ControllerOfTheSystem {
     public void initialize() {
         final boolean[] weightB = {false};
         final boolean[] radiusB = {false};
-        weight.setOnKeyPressed(event -> {
+        weight.setOnKeyTyped(event -> {
             weightB[0] = !weight.getText().equals("");
             enabler(radiusB, weightB);
         });
-        radius.setOnKeyPressed(event -> {
+        radius.setOnKeyTyped(event -> {
             radiusB[0] = !radius.getText().equals("");
             enabler(radiusB, weightB);
         });

@@ -30,28 +30,33 @@ public class ControllerOfThePlanet {
     @FXML
     private TextField speedPl;
 
-    private int filled = 0;
+    boolean[] filled = new boolean[7];
 
-    private void enabler() {
-        applyPl.setDisable(filled != 7);
-    }
+    private boolean check = false;
 
-    private void checker (String text) {
-        if (!text.equals("")) filled++;
-        else filled--;
-        enabler();
+    private void enabler(String text, int num) {
+        filled[num] = !text.equals("");
+        for (boolean b : filled) {
+            if (!b) {
+                check = false;
+                break;
+            } else {
+                check = true;
+            }
+        }
+        applyPl.setDisable(!check);
     }
 
     @FXML
     public void initialize(SystemCharacteristic system){
 
-        namePl.setOnKeyPressed(event -> checker(namePl.getText()));
-        radiusPl.setOnKeyPressed(event -> checker(radiusPl.getText()));
-        gPl.setOnKeyPressed(event -> checker(gPl.getText()));
-        positionXPl.setOnKeyPressed(event -> checker(positionXPl.getText()));
-        positionYPl.setOnKeyPressed(event -> checker(positionYPl.getText()));
-        degreesPl.setOnKeyPressed(event -> checker(degreesPl.getText()));
-        speedPl.setOnKeyPressed(event -> checker(speedPl.getText()));
+        namePl.setOnKeyTyped(event -> enabler(namePl.getText(), 0));
+        radiusPl.setOnKeyTyped(event -> enabler(radiusPl.getText(), 1));
+        gPl.setOnKeyTyped(event -> enabler(gPl.getText(), 2));
+        positionXPl.setOnKeyTyped(event -> enabler(positionXPl.getText(), 3));
+        positionYPl.setOnKeyTyped(event -> enabler(positionYPl.getText(), 4));
+        degreesPl.setOnKeyTyped(event -> enabler(degreesPl.getText(), 5));
+        speedPl.setOnKeyTyped(event -> enabler(speedPl.getText(), 6));
 
         applyPl.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
