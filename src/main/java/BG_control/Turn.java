@@ -21,7 +21,7 @@ public class Turn  {
     public void startTurn(GridPane board){
         newTurnAlert();
         List<Integer> moveList = moveList(diceRoll());
-        board.add(diceView(diceRoll()),15,0);
+        board.add(diceView(diceRoll()),13,0);
         //while (!moveList.isEmpty()){
             //TODO()
         //}

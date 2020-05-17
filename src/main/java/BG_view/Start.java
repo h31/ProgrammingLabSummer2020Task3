@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import static BG_view.Board.TILE_WIDTH;
+
 public class Start extends Application {
 
     public static void main(String[] args) {
@@ -18,7 +20,7 @@ public class Start extends Application {
         theStage.setTitle("BackGammon");
 
         Group root = new Group();
-        Scene theScene = new Scene(root, 815,720);
+        Scene theScene = new Scene(root, TILE_WIDTH*14,TILE_WIDTH*12);
         theStage.setScene(theScene);
 
         BG_view.Board board = new BG_view.Board();

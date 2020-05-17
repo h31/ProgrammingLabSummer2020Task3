@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
-public class Column{
+public class Column {
     private Stack<Chip> column;
 
     public Column() {
