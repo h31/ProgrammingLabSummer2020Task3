@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import static BG_view.Board.CHIP_SIZE;
+
 public class Start extends Application {
 
     public static void main(String[] args) {
@@ -18,13 +20,14 @@ public class Start extends Application {
         theStage.setTitle("BackGammon");
 
         Group root = new Group();
-        Scene theScene = new Scene(root, 815,720);
+        Scene theScene = new Scene(root, CHIP_SIZE*14,CHIP_SIZE*12);
         theStage.setScene(theScene);
-
 
         Turn t = new Turn();
         BG_view.Board board = new BG_view.Board(t);
         GridPane grid = board.board();
+
+
         //
         grid.setGridLinesVisible(true);
         //
@@ -34,4 +37,5 @@ public class Start extends Application {
 
 
     }
+
 }

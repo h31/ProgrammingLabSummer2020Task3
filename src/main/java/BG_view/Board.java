@@ -1,5 +1,6 @@
 package BG_view;
 
+import BG_control.Move;
 import BG_control.Turn;
 import BG_model.ChipColor;
 import BG_model.Column;
@@ -18,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Board {
-
-    public final static List<Pair<Integer, Integer>> columnList = Arrays.asList(
+    public final static int CHIP_SIZE = 55;
+    private final static List<Pair<Integer, Integer>> columnList = Arrays.asList(
             new Pair<>(11, 1),
             new Pair<>(10, 1),
             new Pair<>(9, 1),
@@ -49,22 +50,25 @@ public class Board {
     );
     private BG_model.Board board = new BG_model.Board();
     private GridPane grid = new GridPane();
-    private boolean firstClick = true;
-
     private Turn t;
-    private int prevI = -1;
 
-    Board(Turn t) {
+    public Board(Turn t) {
         this.t = t;
     }
 
-    Button gButton(GridPane board) {
+
+
+    //TODO(оформление кнопки)
+    private Button gButton() {
         Button btn = new Button();
-        btn.setText(" New\nGame");
-        btn.setMaxHeight(55);
+        btn.setText("New\nGame");
+        btn.setMaxWidth(Double.MAX_VALUE);
+        btn.setMaxHeight(Double.MAX_VALUE);
+        btn.setStyle("-fx-background-color: #00FF00");
         btn.setOnAction(event -> {
+            btn.setStyle("-fx-background-color: grey");
             btn.setText("Next\nTurn");
-            t.startTurn();
+            t.startTurn(this);
         });
         return btn;
     }
@@ -89,61 +93,16 @@ public class Board {
         Pane bb = new Pane();
         bb.getChildren().add(column(board.getBoard().get(24), true));
         grid.add(bb, columnList.get(25).getKey(), columnList.get(25).getValue());
-        grid.add(gButton(grid), 13, 1);
+        grid.add(gButton(), 13, 1);
 
-        for (int i = 0; i < 26; i++) {
-            int finalI = i;
-            grid.getChildren().get(i).setOnMouseClicked(mouseEvent -> {
-                        if (t.getTurnCount() != 0) {
-                            if (board.getBoard().get(t.playerNumber() + 23).size() != 0) {
-                                grid.getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                firstClick = false;
-                                prevI = finalI;
-                            } else {
-                                if (firstClick) {
-                                    if (board.getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().get(finalI).onTop().ordinal()) {
-                                        grid.getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                        firstClick = false;
-                                        prevI = finalI;
-                                    }
-                                } else {
-                                    if (board.getBoard().get(finalI).size() == 0 | board.getBoard().get(finalI).onTop() == board.getBoard().get(prevI).onTop()) {
-                                        move(prevI, finalI);
-                                    } else if (board.getBoard().get(finalI).size() == 1) {
-                                        blotMove(finalI, board.getBoard().get(finalI).onTop());
-                                        move(prevI, finalI);
-                                    }
-                                    firstClick = true;
-                                    grid.getChildren().get(prevI).setStyle("-fx-background-color: none");
-                                    prevI = -1;
-                                }
-                            }
-                        }
-                    }
-            );
-        }
+        Move move = new Move(t, this);
+        move.setNormalMove();
         return grid;
-    }
-
-    private void move(int from, int to) {
-        board.move(from, to);
-        Pane prevNode = (Pane) grid.getChildren().get(from);
-        prevNode.getChildren().set(0, column(board.getBoard().get(from), prevI < 12));
-        Pane node = (Pane) grid.getChildren().get(to);
-        node.getChildren().set(0, column(board.getBoard().get(to), to < 12));
-    }
-
-    private void blotMove(int from, ChipColor color) {
-        board.move(from, color.ordinal() + 24);
-        Pane prevNode = (Pane) grid.getChildren().get(from);
-        prevNode.getChildren().set(0, column(board.getBoard().get(from), prevI < 12));
-        Pane node = (Pane) grid.getChildren().get(color.ordinal() + 24);
-        node.getChildren().set(0, column(board.getBoard().get(color.ordinal() + 24), color.ordinal() == 1));
     }
 
     private GridPane grid() {
 
-        ColumnConstraints column = new ColumnConstraints(55);
+        ColumnConstraints column = new ColumnConstraints(CHIP_SIZE);
         column.setPercentWidth(9.355);
 
 
@@ -151,7 +110,7 @@ public class Board {
             grid.getColumnConstraints().add(column);
         }
 
-        RowConstraints row = new RowConstraints(360);
+        RowConstraints row = new RowConstraints(CHIP_SIZE*6);
         row.setPercentHeight(50);
 
         grid.getRowConstraints().add(row);
@@ -160,7 +119,7 @@ public class Board {
         return grid;
     }
 
-    private VBox column(Column mColumn, boolean bottomLine) {
+    public VBox column(Column mColumn, boolean bottomLine) {
         VBox vColumn = new VBox();
         vColumn.setSpacing(0);
         boolean over = false;
@@ -175,13 +134,11 @@ public class Board {
             for (int i = 0; i < size; i++) {
                 vColumn.getChildren().add(chipCanvas(mColumn.onTop()));
             }
-            vColumn.setPadding(new Insets(20, 0, 0, 0));
             if (over) vColumn.getChildren().add(columnOverFlow(mColumn.size() - 5));
         } else {
             if (over) {
                 vColumn.getChildren().add(columnOverFlow(mColumn.size() - 5));
-                vColumn.setPadding(new Insets(0, 0, 20, 0));
-            } else vColumn.setPadding(new Insets(65 + (55 * (5 - mColumn.size())), 0, 20, 0));
+            } else vColumn.setPadding(new Insets(CHIP_SIZE + (CHIP_SIZE * (5 - mColumn.size())), 0, 0, 0));
             for (int i = 0; i < size; i++) {
                 vColumn.getChildren().add(chipCanvas(mColumn.onTop()));
             }
@@ -191,7 +148,7 @@ public class Board {
     }
 
     private Canvas chipCanvas(ChipColor color) {
-        Canvas canvas = new Canvas(55, 55);
+        Canvas canvas = new Canvas(CHIP_SIZE, CHIP_SIZE);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Image chip;
         switch (color) {
@@ -209,24 +166,25 @@ public class Board {
     }
 
     private Canvas columnOverFlow(int i) {
-        Canvas canvas = new Canvas(55, 65);
+        Canvas canvas = new Canvas(CHIP_SIZE, CHIP_SIZE);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         gc.setFill(Color.WHITE);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
-        Font theFont = Font.font("Arial", FontWeight.BOLD, i > 9 ? 30 : 50);
+        Font theFont = Font.font("Arial", FontWeight.BOLD, i > 9 ? CHIP_SIZE*0.6 : CHIP_SIZE*0.9);
         gc.setFont(theFont);
-        gc.fillText("+" + i, 0, 50);
-        gc.strokeText("+" + i, 0, 50);
+        gc.fillText("+" + i, 0, CHIP_SIZE*0.9);
+        gc.strokeText("+" + i, 0, CHIP_SIZE*0.9);
         return canvas;
     }
 
-    private Pair<Integer, Column> choose(int i) {
-        Column prevColumn = board.getBoard().get(i);
-        return new Pair<>(i, prevColumn);
+    public BG_model.Board getBoard() {
+        return board;
     }
 
-
+    public GridPane getGrid() {
+        return grid;
+    }
 }
 
