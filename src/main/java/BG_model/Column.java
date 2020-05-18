@@ -1,6 +1,5 @@
 package BG_model;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -11,29 +10,19 @@ public class Column {
         this.column = new Stack<Chip>();
     }
 
-    public Column(Stack<Chip> column){
-        this.column = column;
-    }
-
-    public Column(Chip[] column){
+    public Column(ChipColor color, int size ) {
+        if (size < 1) throw new IllegalArgumentException("");
         this.column = new Stack<Chip>();
-        for (Chip chip: column){
-            this.column.push(chip);
+        for (int i=0;i<size;i++){
+            this.column.push(new Chip(color));
         }
     }
 
-    public Column(List<Chip> column){
-        this.column = new Stack<Chip>();
-        for (Chip chip: column){
-            this.column.push(chip);
-        }
-    }
+    public void move(Column newColumn){
 
-    public boolean move(Column newColumn){
-        Stack<Chip> oldColumn = this.column;
         newColumn.put(new Chip(this.onTop()));
         this.column.pop();
-        return oldColumn != this.column;
+
     }
 
     public int size(){

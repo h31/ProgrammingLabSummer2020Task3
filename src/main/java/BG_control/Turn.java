@@ -16,24 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Turn  {
-    private int turnCount = 1;
+    private int turnCount = 0;
+    private GridPane grid;
 
-    public void startTurn(GridPane board){
+    public Turn(GridPane grid){
+        this.grid = grid;
+    }
+    public void startTurn(){
+        turnCount++;
         newTurnAlert();
         List<Integer> moveList = moveList(diceRoll());
-        board.add(diceView(diceRoll()),13,0);
-        //while (!moveList.isEmpty()){
-            //TODO()
-        //}
+        grid.add(diceView(diceRoll()),13,0);
+
 
     }
     private void newTurnAlert() {
         Alert alert = new Alert(AlertType.INFORMATION);
 
-        alert.setTitle("Turn:"+(turnCount+1)/29);
+        alert.setTitle("Turn:"+(turnCount+1)/2);
         alert.setHeaderText("Player "+ (playerNumber()+1) +" turn");
         alert.setContentText(null);
-        turnCount++;
         alert.showAndWait();
     }
 

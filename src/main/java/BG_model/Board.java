@@ -5,81 +5,45 @@ import java.util.List;
 
 import static BG_model.ChipColor.*;
 
-public class Board {
+public class Board{
     private List<Column> board;
-    private Column whiteBlot;
-    private Column blackBlot;
 
     public Board(){
-        final Chip white = new Chip(WHITE);
-        final Chip black = new Chip(BLACK);
+
         this.board = new ArrayList<Column>();
-        this.whiteBlot = new Column();
-        this.blackBlot = new Column();
 
-        board.add(new Column(new Chip[] { black, black } ));
+
+        board.add(new Column(BLACK,2));
         for (int i = 0; i < 4; i++){
             board.add(new Column());
         }
-        board.add(new Column(new Chip[] { white, white, white, white,white}));
+        board.add(new Column(WHITE,5));
         board.add(new Column());
-        board.add(new Column(new Chip[] { white, white, white}));
+        board.add(new Column(WHITE,3));
         for (int i = 0; i < 3; i++){
             board.add(new Column());
         }
-        board.add(new Column(new Chip[] { black, black, black, black,black}));
-        board.add(new Column(new Chip[] { white, white, white, white,white}));
+        board.add(new Column(BLACK,5));
+        board.add(new Column(WHITE,5));
         for (int i = 0; i < 3; i++){
             board.add(new Column());
         }
-        board.add(new Column(new Chip[] {black, black, black}));
+        board.add(new Column(BLACK,3));
         board.add(new Column());
-        board.add(new Column(new Chip[] { black, black, black, black,black}));
+        board.add(new Column(BLACK,5));
         for (int i = 0; i < 4; i++){
             board.add(new Column());
         }
-        board.add(new Column(new Chip[] { white, white } ));
+        board.add(new Column(WHITE,2 ));
+        board.add(new Column());
+        board.add(new Column());
     }
 
-    public boolean move (int from, int to){
-        if (board.get(from).onTop().equals(board.get(from).onTop())) {
-            return board.get(from).move(board.get(to));
-        } else if (board.get(to).size() == 1) {
-            if (board.get(to).onTop().equals(WHITE)) board.get(to).move(whiteBlot);
-            else board.get(to).move(blackBlot);
-            return board.get(from).move(board.get(to));
-        } else {
-            return false;
-        }
+    public void move (int from, int to){
+        board.get(from).move(board.get(to));
     }
 
-    public boolean blotMove (ChipColor color, int to){
-        if (color.equals(WHITE)) {
-            if (board.get(to).onTop().equals(color)) {
-                return whiteBlot.move(board.get(to));
-            } else if (board.get(to).size() == 1) {
-                board.get(to).move(blackBlot);
-                return whiteBlot.move(board.get(to));
-            }
 
-        } else {
-            if (board.get(23-to).onTop().equals(color)) {
-                return whiteBlot.move(board.get(23 - to));
-            } else if (board.get(23-to).size() == 1) {
-                board.get(23-to).move(whiteBlot);
-                return whiteBlot.move(board.get(to));
-            }
-        }
-        return false;
-    }
-
-    public Column getWhiteBlot(){
-        return whiteBlot;
-    }
-
-    public Column getBlackBlot(){
-        return blackBlot;
-    }
 
     public List<Column> getBoard(){
         return this.board;
