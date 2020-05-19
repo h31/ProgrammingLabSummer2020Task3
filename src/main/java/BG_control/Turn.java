@@ -30,10 +30,11 @@ public class Turn  {
     public void startTurn(Board board){
         turnCount++;
         newTurnAlert();
-        if (notEmptyBlot.get(playerNumber())){
-            new Move(this, board).setBlotMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK);
-        }
         List<Integer> moveList = moveList(diceRoll());
+        if (notEmptyBlot.get(playerNumber())){
+            Move.setBlotMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK, this,board);
+        }
+
         board.getGrid().add(diceView(),13,0);
 
 

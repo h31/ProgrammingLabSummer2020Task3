@@ -95,8 +95,8 @@ public class Board {
         grid.add(bb, columnList.get(25).getKey(), columnList.get(25).getValue());
         grid.add(gButton(), 13, 1);
 
-        Move move = new Move(t, this);
-        move.setNormalMove();
+
+        Move.setNormalMove(t, this);
         return grid;
     }
 
