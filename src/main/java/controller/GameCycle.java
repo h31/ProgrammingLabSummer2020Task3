@@ -2,20 +2,20 @@ package controller;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Lighting;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import model.*;
 import view.Tetris;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class GameCycle extends Pane {
+public class GameCycle extends GameField {
     FigureL figureL = new FigureL();
     FigureZ figureZ = new FigureZ();
     FigureT figureT = new FigureT();
@@ -26,116 +26,166 @@ public class GameCycle extends Pane {
     Random random = new Random();
     Figure figure;
 
-
-    public FigureI getFigureI() {
-        return figureI;
-    }
+    Button startButton = new Button("START");
 
     public GameCycle() {
-        figures.add(figureI);
         figures.add(figureL);
         figures.add(figureT);
-        figures.add(figureO);
         figures.add(figureZ);
+        figures.add(figureI);
+        figures.add(figureO);
+        Tetris tetris = new Tetris();
 
-         getChildren().add(field.getCanvas());
+        startButton.setStyle("-fx-background-color: #00ff00");
+        startButton.setFont(new Font(20));
+        startButton.setLayoutY(150);
+        startButton.setLayoutX(450);
 
-        getChildren().addAll(figureI, figureL, figureO, figureT, figureZ);
+        Lighting lighting = new Lighting();
+        DropShadow shadow = new DropShadow();
 
-        figure = figureI;
-        animation();
+        startButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> startButton.setEffect(shadow));
+
+        startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
+
+        startButton.setOnAction(actionEvent -> {
+            startButton.setEffect(lighting);
+            startGame();
+        });
+
+        getChildren().addAll(figureI, figureL, figureO, figureT, figureZ, tetris.getCanvas(), startButton);
+
+
+        keyController();
     }
 
+    private int keyPressedCount = 0;
 
-    Tetris field = new Tetris();
-    GraphicsContext graphicsContext = field.getCanvas().getGraphicsContext2D();
+    public void startGame() {
+        figure = figures.get(random.nextInt(figures.size()));
+    }
 
-  //  GameField gameField  = new GameField();;
+    //210//150
+    public void keyController() {
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(240), t -> {
+            if (figure == figureI) {
+                figureI.moveDown();
 
-    public void animation() {
-        //Анимация движения по экран
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(360), t -> {
-            if (figure.equals(figureI)) {
-                figureI.moveY();
-            } else if (figure.equals(figureL)) {
-                figureL.moveY();
-            } else if (figure.equals(figureO)) {
-                figureO.moveY();
-            } else if (figure.equals(figureT)) {
-                figureT.moveY();
-            } else if (figure.equals(figureZ)) {
-                figureZ.moveY();
-            }
-
-            getScene().setOnKeyPressed(event -> {
-                if (event.getCode() == KeyCode.LEFT) {
-                    figureI.moveXLeft();
-                    figureZ.moveXLeft();
-                    figureT.moveXLeft();
-                    figureO.moveXLeft();
-                    figureL.moveXLeft();
-                } else if (event.getCode() == KeyCode.RIGHT) {
-                    figureI.moveXRight();
-                    figureZ.moveXRight();
-                    figureT.moveXRight();
-                    figureO.moveXRight();
-                    figureL.moveXRight();
+                if (figureI.stop()) {
+                    figure = figures.get(random.nextInt(figures.size()));
+                    keyPressedCount = 0;
                 }
 
+            } else if (figure == figureL) {
+                figureL.moveDown();
+
+                if (figureL.stop()) {
+                    figure = figures.get(random.nextInt(figures.size()));
+                    keyPressedCount = 0;
+                }
+            } else if (figure == figureO) {
+                figureO.moveDown();
+
+                if (figureO.stop()) {
+                    figure = figures.get(random.nextInt(figures.size()));
+
+                }
+            } else if (figure == figureT) {
+                figureT.moveDown();
+
+                if (figureT.stop()) {
+                    figure = figures.get(random.nextInt(figures.size()));
+                    keyPressedCount = 0;
+
+                }
+            } else if (figure == figureZ) {
+                figureZ.moveDown();
+
+                if (figureZ.stop()) {
+                    figure = figures.get(random.nextInt(figures.size()));
+                    keyPressedCount = 0;
+
+                }
+            }
+
+
+            startButton.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.LEFT) {
+                    if (figure == figureI) {
+                        figureI.moveLeft();
+                    } else if (figure == figureL) {
+                        figureL.moveLeft();
+                    } else if (figure == figureO) {
+                        figureO.moveLeft();
+                    } else if (figure == figureT) {
+                        figureT.moveLeft();
+                    } else if (figure == figureZ) {
+                        figureZ.moveLeft();
+                    }
+
+                } else if (event.getCode() == KeyCode.RIGHT) {
+                    if (figure == figureL) {
+                        figureL.moveRight();
+                    } else if (figure == figureI) {
+                        figureI.moveRight();
+                    } else if (figure == figureO) {
+                        figureO.moveRight();
+                    } else if (figure == figureT) {
+                        figureT.moveRight();
+                    } else if (figure == figureZ) {
+                        figureZ.moveRight();
+                    }
+                } else if (event.getCode() == KeyCode.UP) {
+                    if (figure == figureI) {
+                        keyPressedCount++;
+                        if (keyPressedCount == 1) {
+                            figureI.changeForm();
+                        } else if (keyPressedCount == 2) {
+                            figureI.returnForm();
+                            keyPressedCount = 0;
+                        }
+                    } else if (figure == figureL) {
+                        keyPressedCount++;
+                        if (keyPressedCount == 1) {
+                            figureL.changeFirstForm();
+                        } else if (keyPressedCount == 2) {
+                            figureL.changeSecondForm();
+                        } else if (keyPressedCount == 3) {
+                            figureL.changeThirdForm();
+                        } else if (keyPressedCount == 4) {
+                            figureL.returnForm();
+                            keyPressedCount = 0;
+                        }
+                    } else if (figure == figureT) {
+                        keyPressedCount++;
+                        if (keyPressedCount == 1) {
+                            figureT.changeFirstForm();
+                        } else if (keyPressedCount == 2) {
+                            figureT.changeSecondForm();
+                        } else if (keyPressedCount == 3) {
+                            figureT.changeThirdForm();
+                        } else if (keyPressedCount == 4) {
+                            figureT.returnToDefaultForm();
+                            keyPressedCount = 0;
+                        }
+                    } else if (figure == figureZ) {
+                        keyPressedCount++;
+                        if (keyPressedCount == 1) {
+                            figureZ.changeForm();
+                        } else if (keyPressedCount == 2) {
+                            figureZ.returnForm();
+                            keyPressedCount = 0;
+                        }
+                    }
+                }
             });
 
-            setFigure();
+            clearRow();
+            drawFigure();
 
         }));
-
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
     }
 
-    public void setFigure() {
-        if (figureI.stop()) {
-            graphicsContext.setFill(Color.GREENYELLOW);
-            graphicsContext.fillRect(figureI.getX(), figureI.getY(), 100, 25);
-
-            figureI.setY(-50);
-            figureI.setDeltaY(25);
-
-            figure = figures.get(random.nextInt(figures.size()));
-        } else if (figureO.stop()) {
-            graphicsContext.setFill(Color.RED);
-            graphicsContext.fillRect(figureO.getX(), figureO.getY() - 25, 50, 50);
-
-            figureO.setY(-50);
-            figureO.setDeltaY(25);
-
-            figure = figures.get(random.nextInt(figures.size()));
-        } else if (figureL.stop()) {
-            graphicsContext.setFill(Color.YELLOW);
-            graphicsContext.fillRect(figureL.getLowRow().getX(), figureL.getLowRow().getY() - 25, 50, 25);//настроить приземление
-            graphicsContext.fillRect(figureL.getColumn().getX(), figureL.getColumn().getY() - 25, 25, 75);
-
-            figureL.setRowY(-50);
-            figureL.setColumnY(-100);
-            figureL.setDeltaY(25);
-            figure = figures.get(random.nextInt(figures.size()));
-
-        } else if (figureZ.stop()) {
-            graphicsContext.setFill(Color.ORANGE);
-            graphicsContext.fillRect(figureZ.getUpRow().getX(), figureZ.getUpRow().getY(), figureZ.getUpRow().getWidth(), figureZ.getUpRow().getHeight());
-            graphicsContext.fillRect(figureZ.getDownRow().getX(), figureZ.getDownRow().getY(), figureZ.getDownRow().getWidth(), figureZ.getDownRow().getHeight());
-
-
-            figureZ.setY(-50);
-            figureZ.setDeltaY(25);
-            figure = figures.get(random.nextInt(figures.size()));
-        } else if (figureT.stop()) {
-            graphicsContext.setFill(Color.PURPLE);
-            graphicsContext.fillRect(figureT.getColumn().getX(), figureT.getColumn().getY(), figureT.getColumn().getWidth(), figureT.getColumn().getHeight());
-            graphicsContext.fillRect(figureT.getRow().getX(), figureT.getRow().getY(), figureT.getRow().getWidth(), figureT.getRow().getHeight());
-
-            figureT.setY(-50);
-            figureT.setDeltaY(25);
-            figure = figures.get(random.nextInt(figures.size()));
-        }
-    }
 }

@@ -1,17 +1,13 @@
 package model;
 
-import javafx.scene.layout.Pane;
+public abstract class Figure extends GameField {
 
-public  class Figure extends Pane {
-   public Figure() {
-    }
+    public abstract void moveDown();
 
-    public  void moveY(){};
+    public abstract void moveLeft();
 
-    public  void moveXLeft(){};
+    public abstract void moveRight();
 
-    public  void moveXRight(){};
-
-    //public abstract boolean stop();
+    public abstract boolean stop();
 }
 
