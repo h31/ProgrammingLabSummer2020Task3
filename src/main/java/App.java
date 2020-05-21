@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
@@ -15,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,29 +48,22 @@ public class App extends Application{
         stage.show();
     }
 
-    public void space(SystemCharacteristic system) {
+    public void space(SystemCharacteristic system) throws FileNotFoundException {
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-image: url(images/background.jpg)");
         Stage stage = new Stage();
         stage.setTitle("Planet System");
         double radius = system.radiusOfStar / 2;
         Scene scene = new Scene(canvas, 1200, 600, Color.BLACK);
-        Circle star = new Circle(scene.getWidth() / 2, scene.getHeight() / 2, radius);
 
-            RadialGradient gradientStar = new RadialGradient(0,
-                    .1,
-                    star.getCenterX(),
-                    star.getCenterY(),
-                    star.getRadius(),
-                    false,
-                    CycleMethod.NO_CYCLE,
-                    new Stop(0, Color.ORANGE),
-                    new Stop(1, Color.BLACK));
-
-
-        star.setFill(gradientStar);
+        Image image = new Image(new FileInputStream("src/main/resources/images/star.png"));
+        ImageView star = new ImageView(image);
+        star.setX(scene.getWidth() / 2 - radius);
+        star.setY(scene.getHeight() / 2 - radius);
+        star.setFitHeight(radius * 2);
+        star.setFitWidth(radius * 2);
+        star.setPreserveRatio(true);
         canvas.getChildren().add(star);
-
 
         Tooltip.install(star, new Tooltip("Star \nWeight: " + system.weightOfStar + "\n" +
                 "Radius: " + system.radiusOfStar));
@@ -102,14 +99,14 @@ public class App extends Application{
 
             final double[] vx = {system.planet.get(finalI).speedX};
             final double[] vy = {system.planet.get(finalI).speedY};
-            final double[] x = {system.planet.get(finalI).positionX + star.getCenterX()};
-            final double[] y = {system.planet.get(finalI).positionY + star.getCenterY()};
+            final double[] x = {system.planet.get(finalI).positionX + star.getX() + star.getFitWidth() / 2};
+            final double[] y = {system.planet.get(finalI).positionY + star.getY() + star.getFitHeight() / 2};
             LogicManager logic = new LogicManager();
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
-                double distance = logic.distance(star.getCenterX(), x[0], star.getCenterY(), y[0]);
-                vx[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getCenterX(), x[0], distance);
-                vy[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getCenterY(), y[0], distance);
+                double distance = logic.distance(star.getX() + star.getFitWidth() / 2, x[0], star.getY() + star.getFitHeight() / 2, y[0]);
+                vx[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
+                vy[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
                 x[0] += vx[0];
                 y[0] += vy[0];
                 planet.setCenterX(x[0]);
