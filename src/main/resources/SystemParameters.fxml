@@ -13,15 +13,15 @@
             <Font size="16.0" />
          </font>
       </Text>
-      <TextField id="weight" fx:id="weight" layoutX="220.0" layoutY="121.0" promptText="kg * 10^11" styleClass="input" />
-      <TextField id="starRadius" fx:id="radius" layoutX="220.0" layoutY="157.0" promptText="*10^4 km" styleClass="input" />
-      <Slider fx:id="number" blendMode="ADD" blockIncrement="1.0" cache="true" cacheHint="SCALE" layoutX="220.0" layoutY="193.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="40.0" prefWidth="162.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="input" value="1.0">
+      <TextField id="weight" fx:id="weight" layoutX="220.0" layoutY="121.0" promptText="kg * 10^11" styleClass="field" />
+      <TextField id="starRadius" fx:id="radius" layoutX="220.0" layoutY="157.0" promptText="*10^4 km" styleClass="field" />
+      <Slider fx:id="number" blendMode="ADD" blockIncrement="1.0" cache="true" cacheHint="SCALE" layoutX="220.0" layoutY="193.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="40.0" prefWidth="162.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="field" value="1.0">
          <effect>
             <Bloom />
          </effect></Slider>
       <Text fill="WHITE" layoutX="87.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weight of star" />
       <Text fill="WHITE" layoutX="87.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Radius of star" />
       <Text fill="WHITE" layoutX="87.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of planets" />
-      <Button fx:id="apply" alignment="TOP_CENTER" disable="true" layoutX="207.0" layoutY="235.0" mnemonicParsing="false" text="APPLY" />
+      <Button styleClass="button" fx:id="apply" alignment="TOP_CENTER" disable="true" layoutX="207.0" layoutY="235.0" mnemonicParsing="false" text="APPLY" />
    </children>
 </AnchorPane>

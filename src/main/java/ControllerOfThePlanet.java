@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ControllerOfThePlanet {
 
-    Logger log = LogManager.getLogger(MessageManager.class.getName());
+    Logger log = LogManager.getLogger(ControllerOfThePlanet.class.getName());
 
     @FXML
     private TextField namePl;
@@ -34,8 +34,8 @@ public class ControllerOfThePlanet {
 
     private boolean check = false;
 
-    private void enabler(String text, int num) {
-        filled[num] = !text.equals("");
+    private void enabler(boolean test, int num) {
+        filled[num] = test;
         for (boolean b : filled) {
             if (!b) {
                 check = false;
@@ -49,14 +49,14 @@ public class ControllerOfThePlanet {
 
     @FXML
     public void initialize(SystemCharacteristic system){
-
-        namePl.setOnKeyTyped(event -> enabler(namePl.getText(), 0));
-        radiusPl.setOnKeyTyped(event -> enabler(radiusPl.getText(), 1));
-        gPl.setOnKeyTyped(event -> enabler(gPl.getText(), 2));
-        positionXPl.setOnKeyTyped(event -> enabler(positionXPl.getText(), 3));
-        positionYPl.setOnKeyTyped(event -> enabler(positionYPl.getText(), 4));
-        degreesPl.setOnKeyTyped(event -> enabler(degreesPl.getText(), 5));
-        speedPl.setOnKeyTyped(event -> enabler(speedPl.getText(), 6));
+        String regex = "[0-9]+([.,][0-9]+)?";
+        namePl.setOnKeyTyped(event -> enabler(!namePl.getText().isBlank(), 0));
+        radiusPl.setOnKeyTyped(event -> enabler(radiusPl.getText().matches(regex), 1));
+        gPl.setOnKeyTyped(event -> enabler(gPl.getText().matches(regex), 2));
+        positionXPl.setOnKeyTyped(event -> enabler(positionXPl.getText().matches(regex), 3));
+        positionYPl.setOnKeyTyped(event -> enabler(positionYPl.getText().matches(regex), 4));
+        degreesPl.setOnKeyTyped(event -> enabler(degreesPl.getText().matches(regex), 5));
+        speedPl.setOnKeyTyped(event -> enabler(speedPl.getText().matches(regex), 6));
 
         applyPl.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 

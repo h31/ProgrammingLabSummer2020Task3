@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ControllerOfTheSystem {
 
-    Logger log = LogManager.getLogger(MessageManager.class.getName());
+    Logger log = LogManager.getLogger(ControllerOfTheSystem.class.getName());
 
     @FXML
     private Button apply;
@@ -28,12 +28,13 @@ public class ControllerOfTheSystem {
     public void initialize() {
         final boolean[] weightB = {false};
         final boolean[] radiusB = {false};
+        String regex = "[0-9]+([.,][0-9]+)?";
         weight.setOnKeyTyped(event -> {
-            weightB[0] = !weight.getText().equals("");
+            weightB[0] = weight.getText().matches(regex);
             enabler(radiusB, weightB);
         });
         radius.setOnKeyTyped(event -> {
-            radiusB[0] = !radius.getText().equals("");
+            radiusB[0] = radius.getText().matches(regex);
             enabler(radiusB, weightB);
         });
         apply.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {

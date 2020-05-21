@@ -6,16 +6,9 @@ public class SystemCharacteristic {
     double radiusOfStar;
     short numberOfPlanets;
 
-    MessageManager message = new MessageManager();
-
     public void setWeightOfStar (String weight) {
-        double weightDouble = 0;
-        try {
-            weightDouble = Double.parseDouble(formatter(weight));
-        }
-        catch (NumberFormatException e) {
-            message.error(11);
-        }
+        double weightDouble;
+        weightDouble = Double.parseDouble(formatter(weight));
         weightOfStar = weightDouble * Math.pow(10, 11);
     }
 
@@ -24,13 +17,8 @@ public class SystemCharacteristic {
     }
 
     public void setRadiusOfStar (String rad) {
-        double radius = 0;
-        try {
-            radius = Double.parseDouble(formatter(rad));
-        }
-        catch (NumberFormatException e) {
-            message.error(12);
-        }
+        double radius;
+        radius = Double.parseDouble(formatter(rad));
         radiusOfStar = radius;
     }
 

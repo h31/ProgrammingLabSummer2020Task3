@@ -10,8 +10,6 @@ public class PlanetCharacteristic {
     double positionX;
     double positionY;
 
-    MessageManager message = new MessageManager();
-
     public void setName (String nameU){
         name = nameU;
     }
@@ -21,51 +19,26 @@ public class PlanetCharacteristic {
     }
 
     public void setPositionX (String positionXU) {
-        try {
-            positionX = Double.parseDouble(formatter(positionXU));
-        }
-        catch (NumberFormatException e) {
-            message.error(25);
-        }
+        positionX = Double.parseDouble(formatter(positionXU));
     }
 
     public void setPositionY (String positionYU) {
-        try {
-            positionY = Double.parseDouble(formatter(positionYU));
-        }
-        catch (NumberFormatException e) {
-            message.error(25);
-        }
+        positionY = Double.parseDouble(formatter(positionYU));
     }
 
     public void setRadius (String radiusU) {
-        try {
-            radius = Double.parseDouble(formatter(radiusU));
-        }
-        catch (NumberFormatException e) {
-            message.error(22);
-        }
+        radius = Double.parseDouble(formatter(radiusU));
     }
 
     public void setSpeed (String speedU, String deg) {
-        try {
-            speedX = Double.parseDouble(formatter(speedU)) * Math.cos(Double.parseDouble(formatter(deg)));
-            speedY = Double.parseDouble(formatter(speedU)) * Math.sin(Double.parseDouble(formatter(deg)));
-        }
-        catch (NumberFormatException e) {
-            message.error(24);
-        }
+        speedX = Double.parseDouble(formatter(speedU)) * Math.cos(Double.parseDouble(formatter(deg)));
+        speedY = Double.parseDouble(formatter(speedU)) * Math.sin(Double.parseDouble(formatter(deg)));
 
     }
 
     public void setG (String GU) {
-        try {
-            G = Double.parseDouble(formatter(GU));
-            G = G * Math.pow(10, -11);
-        }
-        catch (NumberFormatException e) {
-            message.error(21);
-        }
+        G = Double.parseDouble(formatter(GU));
+        G = G * Math.pow(10, -11);
     }
 
     public String formatter(String in) {

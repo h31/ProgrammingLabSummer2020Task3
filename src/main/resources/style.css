@@ -1,6 +1,9 @@
 .window {
     -fx-background-image: url("images/system.jpg");
 }
-.input {
+.field {
     -fx-opacity: 0.9;
+}
+.text{
+    -fx-fill: white;
 }
