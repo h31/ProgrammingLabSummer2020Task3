@@ -1,79 +1,81 @@
 package core;
-
-import javafx.geometry.Point2D;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Board extends Parent {
-    private static HBox box = new HBox();
+    private  VBox box = new VBox();
     private boolean myBoard;
+    EventHandler<MouseEvent> handler;
 
-    public Board(boolean myBoard) {
-        this.myBoard = myBoard;
+    public Board(boolean isMyBoard) {
+        this.myBoard = isMyBoard;
         for (int y = 0; y < 10; y++) {
-            VBox row = new VBox();
+            HBox row = new HBox();
             for (int x = 0; x < 10; x++) {
-                Cell cell = new Cell(x, y,this);
+                Cell cell = new Cell(x, y, this);
+                cell.setOnMouseClicked(handler);
                 row.getChildren().add(cell);
             }
             box.getChildren().add(row);
         }
         getChildren().add(box);
     }
+    public void  setAction(EventHandler<MouseEvent> e){
+        this.handler = e;
+        }
 
     public Cell getCell(int x, int y) {
         return (Cell) ((HBox) box.getChildren().get(y)).getChildren().get(x);
     }
 
 
-    public boolean placeShip(Ship ship) {// размещение кораблей игрока
+    public void placeShip(Ship ship) {// размещение кораблей игрока
         if (canPlaceShip(ship)) {
             for (Cell element : ship.cells) {
                 Cell cell = getCell((int) element.getX(), (int) element.getY());
-                if (myBoard) {
-                    cell.setFill(Color.LIGHTGREEN);
-                    cell.setStroke(Color.GREEN);
-                }
+                cell.setFill(Color.LIGHTGREEN);
+                cell.setStroke(Color.GREEN);
             }
-            return true;
         }
-        return false;
     }
 
-    public  boolean canPlaceShip(Ship ship) {// проверяем можно ли разместить корабль, то есть есть не задевает ли соседние корабли
+    public boolean canPlaceShip(Ship ship) {// проверяем можно ли разместить корабль, то есть есть не задевает ли соседние корабли
         for (Cell element : ship.cells) {
-            int x = (int) element.getX();
-            int y = (int) element.getY();
-            Cell[] neighbors = getNeighbors(x,y);
-            for (Cell cell : neighbors) {
-                if (cell.getShip()) return false;
-            }
-
+            if (hasNeighbors(element)) return false;
         }
         return true;
     }
 
-    private  Cell[] getNeighbors(int x, int y) {//список из соседних клеток
-        Point2D[] points = new Point2D[]{
-                new Point2D(x - 1, y),
-                new Point2D(x + 1, y),
-                new Point2D(x, y - 1),
-                new Point2D(x, y + 1)
-        };
-        List<Cell> neighbors = new ArrayList<Cell>();
-        for (Point2D p : points) {
-            double pointX = p.getX();
-            double pointY = p.getY();
-            if (pointX >= 0 && pointX < 10 && pointY >= 0 && pointY < 10) {//проверяем не выходит ли за игровое поле,то есть дейсвтительная ли клетка
-                neighbors.add(this.getCell((int) p.getX(), (int) p.getY()));
-            }
+    private boolean hasNeighbors(Cell cell) {//есть ли в соседних клетках корабли
+        int x = (int) cell.getX();
+        int y = (int) cell.getY();
+        boolean b = checkY(x,y);
+        switch (x) {
+            case 0:
+                return b || getCell(x + 1, y).ship;
+            case 10:
+                return b || getCell(x - 1, y).ship;
+            default:
+                return b || getCell(x - 1, y).ship || getCell(x + 1, y).ship;
         }
-        return neighbors.toArray(new Cell[0]);
     }
 
 
+    private boolean checkY(int x, int y) {
+        switch (y) {
+            case 1:
+                return getCell(x, y + 1).ship;
+            case 10:
+                return getCell(x, y - 1).ship;
+            default:
+                return getCell(x, y + 1).ship && getCell(x, y - 1).ship;
+        }
+    }
 }
+
+
+

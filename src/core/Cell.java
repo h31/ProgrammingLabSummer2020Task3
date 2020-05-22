@@ -27,7 +27,7 @@ public class Cell extends Rectangle {
         return this.ship;
      }
 
-    public boolean checkHit(int x, int y) {
+    public  boolean checkHit(int x, int y) {
         if (this.x == x && this.y == y) {
             setFill(Color.RED);
             return true;
@@ -50,6 +50,16 @@ public class Cell extends Rectangle {
     @Override
     public int hashCode() {
         return Objects.hash(x, y, ship);
+    }
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "x=" + x +
+                ", y=" + y +
+                ", board=" + board +
+                ", ship=" + ship +
+                '}';
     }
 }
 
