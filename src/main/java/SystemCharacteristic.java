@@ -4,7 +4,14 @@ public class SystemCharacteristic {
     ArrayList<PlanetCharacteristic> planet = new ArrayList<>();
     double weightOfStar;
     double radiusOfStar;
-    short numberOfPlanets;
+    int numberOfPlanets;
+
+//    public SystemCharacteristic(ArrayList<PlanetCharacteristic> pl, double w, double r, int n){
+//        this.planet = pl;
+//        this.weightOfStar = w;
+//        this.radiusOfStar = r;
+//        this.numberOfPlanets = n;
+//    }
 
     public void setWeightOfStar (String weight) {
         double weightDouble;

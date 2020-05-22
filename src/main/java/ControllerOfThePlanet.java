@@ -53,9 +53,9 @@ public class ControllerOfThePlanet {
         namePl.setOnKeyTyped(event -> enabler(!namePl.getText().isBlank(), 0));
         radiusPl.setOnKeyTyped(event -> enabler(radiusPl.getText().matches(regex), 1));
         gPl.setOnKeyTyped(event -> enabler(gPl.getText().matches(regex), 2));
-        positionXPl.setOnKeyTyped(event -> enabler(positionXPl.getText().matches(regex), 3));
-        positionYPl.setOnKeyTyped(event -> enabler(positionYPl.getText().matches(regex), 4));
-        degreesPl.setOnKeyTyped(event -> enabler(degreesPl.getText().matches(regex), 5));
+        positionXPl.setOnKeyTyped(event -> enabler(positionXPl.getText().matches("-?" + regex), 3));
+        positionYPl.setOnKeyTyped(event -> enabler(positionYPl.getText().matches("-?" + regex), 4));
+        degreesPl.setOnKeyTyped(event -> enabler(degreesPl.getText().matches("-?" + regex), 5));
         speedPl.setOnKeyTyped(event -> enabler(speedPl.getText().matches(regex), 6));
 
         applyPl.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -68,7 +68,7 @@ public class ControllerOfThePlanet {
             planet.setColor(colorPl.getValue());
             try {
                 planet.setRadius(radiusPl.getText());
-                planet.setG(gPl.getText());
+                planet.setGC(gPl.getText());
                 planet.setPositionX(positionXPl.getText());
                 planet.setPositionY(positionYPl.getText());
                 planet.setSpeed(speedPl.getText(), degreesPl.getText());

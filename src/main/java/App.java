@@ -5,9 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -48,7 +46,7 @@ public class App extends Application{
         stage.show();
     }
 
-    public void space(SystemCharacteristic system) throws FileNotFoundException {
+    public static void space(SystemCharacteristic system) throws FileNotFoundException {
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-image: url(images/background.jpg)");
         Stage stage = new Stage();
@@ -84,17 +82,14 @@ public class App extends Application{
                 pause.setText("Pause");
             }
         });
+        Pagination animationSpeed = new Pagination(10, 0);
 
-        Slider slider = new Slider(-9, 1000.0, 100.0);
-        canvas.getChildren().add(slider);
+        canvas.getChildren().add(animationSpeed);
 
         for (int i = 0; i < system.planet.size(); i++) {
             int finalI = i;
             Circle planet = new Circle();
-
             planet.setRadius(system.planet.get(i).radius / 2);
-
-
             canvas.getChildren().add(planet);
 
             final double[] vx = {system.planet.get(finalI).speedX};
@@ -102,11 +97,14 @@ public class App extends Application{
             final double[] x = {system.planet.get(finalI).positionX + star.getX() + star.getFitWidth() / 2};
             final double[] y = {system.planet.get(finalI).positionY + star.getY() + star.getFitHeight() / 2};
             LogicManager logic = new LogicManager();
+
+
+
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
                 double distance = logic.distance(star.getX() + star.getFitWidth() / 2, x[0], star.getY() + star.getFitHeight() / 2, y[0]);
-                vx[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
-                vy[0] += logic.acceleration(system.planet.get(finalI).G, system.weightOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
+                vx[0] += logic.acceleration(system.planet.get(finalI).GC, system.weightOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
+                vy[0] += logic.acceleration(system.planet.get(finalI).GC, system.weightOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
                 x[0] += vx[0];
                 y[0] += vy[0];
                 planet.setCenterX(x[0]);
@@ -138,10 +136,10 @@ public class App extends Application{
                 public void run() {
                     if (p[0]) timeline.stop();
                     else timeline.play();
-                    timeline.setRate(1 + 0.1 * slider.getValue());
+                    timeline.setRate(10 * (animationSpeed.getCurrentPageIndex() + 1));
                 }
 
-            }, 0, 20);
+            }, 0, 1);
 
         }
         stage.setScene(scene);
