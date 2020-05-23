@@ -21,18 +21,23 @@ import static BG_view.Board.CHIP_SIZE;
 public class Turn  {
     private int turnCount = 0;
     private List<Integer> moveList = new ArrayList<Integer>();
-    private List<Boolean> notEmptyBlot = Arrays.asList(false,false);
+    private List<Boolean> notEmptyBar = Arrays.asList(false,false);
+    private TurnType type = TurnType.NORMAL;
 
-    void setNotEmptyBlot(boolean notEmptyBlot, int i){
-        this.notEmptyBlot.set(i, notEmptyBlot);
+    void setNotEmptyBar(boolean notEmptyBar, int i){
+        this.notEmptyBar.set(i, notEmptyBar);
     }
 
     public void startTurn(Board board){
         turnCount++;
         newTurnAlert();
         List<Integer> moveList = moveList(diceRoll());
-        if (notEmptyBlot.get(playerNumber())){
-            Move.setBlotMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK, this,board);
+        if (notEmptyBar.get(playerNumber())){
+            Move.setBarMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK, this,board);
+        } else Move.setNormalMove(this,board);
+        if (board.getHomes().get(playerNumber()) == 15){
+            type = TurnType.END;
+            Move.setEndspielMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK,this,board);
         }
 
         board.getGrid().add(diceView(),13,0);
@@ -109,9 +114,6 @@ public class Turn  {
         return moveList;
     }
 
-    public int getTurnCount(){
-        return turnCount;
-    }
 
     public int playerNumber(){
         return ((turnCount-1) %2);

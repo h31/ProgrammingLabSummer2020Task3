@@ -51,14 +51,13 @@ public class Board {
     private BG_model.Board board = new BG_model.Board();
     private GridPane grid = new GridPane();
     private Turn t;
+    private List<Integer> homes = Arrays.asList(5,5);
 
     public Board(Turn t) {
         this.t = t;
     }
 
 
-
-    //TODO(оформление кнопки)
     private Button gButton() {
         Button btn = new Button();
         btn.setText("New\nGame");
@@ -185,6 +184,36 @@ public class Board {
 
     public GridPane getGrid() {
         return grid;
+    }
+
+
+
+    public int getWhiteHome() {
+        return homes.get(0);
+    }
+
+    public void increaseWH(){
+        homes.set(0,homes.get(0)+1);
+    }
+
+    public void decreaseWH(){
+        homes.set(0,homes.get(0)-1);
+    }
+
+    public int getBlackHome() {
+        return homes.get(1);
+    }
+
+    public void increaseBH(){
+        homes.set(1,homes.get(1)+1);
+    }
+
+    public void decreaseBH(){
+        homes.set(1,homes.get(1)-1);
+    }
+
+    public List<Integer> getHomes() {
+        return homes;
     }
 }
 

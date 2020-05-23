@@ -6,11 +6,11 @@ import java.util.Stack;
 public class Column {
     private Stack<Chip> column;
 
-    public Column() {
+    Column() {
         this.column = new Stack<Chip>();
     }
 
-    public Column(ChipColor color, int size ) {
+    Column(ChipColor color, int size) {
         if (size < 1) throw new IllegalArgumentException("");
         this.column = new Stack<Chip>();
         for (int i=0;i<size;i++){
@@ -18,8 +18,7 @@ public class Column {
         }
     }
 
-    public void move(Column newColumn){
-
+    void move(Column newColumn){
         newColumn.put(new Chip(this.onTop()));
         this.column.pop();
 
@@ -34,8 +33,12 @@ public class Column {
         else return column.peek().getColor();
     }
 
-    public Chip put(Chip chip){
-        return column.push(chip);
+    public void remove(){
+        column.pop();
+    }
+
+    private void put(Chip chip){
+        column.push(chip);
     }
 
     @Override
