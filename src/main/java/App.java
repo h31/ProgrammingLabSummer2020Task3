@@ -17,14 +17,18 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class App extends Application{
 
     public static void main(String[] args) {
         Application.launch(args);
     }
+
+    static LogicManager logic = new LogicManager();
 
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(new File("src/main/resources/SystemParameters.fxml").toURI().toURL());
@@ -63,7 +67,7 @@ public class App extends Application{
         star.setPreserveRatio(true);
         canvas.getChildren().add(star);
 
-        Tooltip.install(star, new Tooltip("Star \nWeight: " + system.weightOfStar + "\n" +
+        Tooltip.install(star, new Tooltip("Star \nMass: " + system.massOfStar + "\n" +
                 "Radius: " + system.radiusOfStar));
 
         Button pause = new Button("Pause");
@@ -83,8 +87,20 @@ public class App extends Application{
             }
         });
         Pagination animationSpeed = new Pagination(10, 0);
+        TextField timePortation = new TextField();
+        timePortation.setLayoutY(80);
+        Button tPBtn = new Button("Portation");
+        tPBtn.setLayoutY(110);
+        canvas.getChildren().addAll(animationSpeed, timePortation, tPBtn);
 
-        canvas.getChildren().add(animationSpeed);
+        boolean[] timePort = new boolean[system.numberOfPlanets];
+        AtomicReference<Double> a = new AtomicReference<>((double) 0);
+        tPBtn.setOnAction(event -> {
+            if (timePortation.getText().matches("[0-9]+(,.[0-9]+)?")) {
+                Arrays.fill(timePort, true);
+                a.set(Double.parseDouble(timePortation.getText().replace(',', '.')));
+            }
+        });
 
         for (int i = 0; i < system.planet.size(); i++) {
             int finalI = i;
@@ -96,20 +112,28 @@ public class App extends Application{
             final double[] vy = {system.planet.get(finalI).speedY};
             final double[] x = {system.planet.get(finalI).positionX + star.getX() + star.getFitWidth() / 2};
             final double[] y = {system.planet.get(finalI).positionY + star.getY() + star.getFitHeight() / 2};
-            LogicManager logic = new LogicManager();
 
 
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
-                double distance = logic.distance(star.getX() + star.getFitWidth() / 2, x[0], star.getY() + star.getFitHeight() / 2, y[0]);
-                vx[0] += logic.acceleration(system.planet.get(finalI).GC, system.weightOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
-                vy[0] += logic.acceleration(system.planet.get(finalI).GC, system.weightOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
+                double distance = logic.distance(star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, x[0],  y[0]);
+                vx[0] += logic.acceleration(system.planet.get(finalI).GC, system.massOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
+                vy[0] += logic.acceleration(system.planet.get(finalI).GC, system.massOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
                 x[0] += vx[0];
                 y[0] += vy[0];
                 planet.setCenterX(x[0]);
                 planet.setCenterY(y[0]);
                 canvas.requestLayout();
+
+                if (timePort[finalI]) {
+                    double[] tpXY = logic.timePortation(a.get(), x[0], y[0], vx[0], vy[0], star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, system.planet.get(finalI).GC, system.massOfStar);
+                    x[0] = tpXY[0];
+                    y[0] = tpXY[1];
+                    vx[0] = tpXY[2];
+                    vy[0] = tpXY[3];
+                    timePort[finalI] = false;
+                }
 
                 RadialGradient gradient = new RadialGradient(0,
                         .1,

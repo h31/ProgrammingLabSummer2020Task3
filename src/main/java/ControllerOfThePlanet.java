@@ -1,4 +1,5 @@
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
@@ -12,13 +13,15 @@ public class ControllerOfThePlanet {
     Logger log = LogManager.getLogger(ControllerOfThePlanet.class.getName());
 
     @FXML
+    private Button help;
+    @FXML
+    private Button applyPl;
+    @FXML
     private TextField namePl;
     @FXML
     private ColorPicker colorPl;
     @FXML
     private TextField radiusPl;
-    @FXML
-    private Button applyPl;
     @FXML
     private TextField gPl;
     @FXML
@@ -49,6 +52,13 @@ public class ControllerOfThePlanet {
 
     @FXML
     public void initialize(SystemCharacteristic system){
+        help.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Help");
+            alert.setContentText("For example, G = 4, radius = 20, position x= 200, position y = -150, speed = 1, degrees= 1.");
+            alert.showAndWait();
+        });
+
         String regex = "[0-9]+([.,][0-9]+)?";
         namePl.setOnKeyTyped(event -> enabler(!namePl.getText().isBlank(), 0));
         radiusPl.setOnKeyTyped(event -> enabler(radiusPl.getText().matches(regex), 1));
@@ -82,7 +92,7 @@ public class ControllerOfThePlanet {
             App main = new App();
             try {
                 if (system.planet.size() == system.numberOfPlanets) {
-                    main.space(system);
+                    App.space(system);
                 }
                 else {
                     main.planetSetup(system);

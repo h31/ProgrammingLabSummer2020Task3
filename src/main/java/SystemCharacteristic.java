@@ -2,21 +2,14 @@ import java.util.ArrayList;
 
 public class SystemCharacteristic {
     ArrayList<PlanetCharacteristic> planet = new ArrayList<>();
-    double weightOfStar;
+    double massOfStar;
     double radiusOfStar;
     int numberOfPlanets;
 
-//    public SystemCharacteristic(ArrayList<PlanetCharacteristic> pl, double w, double r, int n){
-//        this.planet = pl;
-//        this.weightOfStar = w;
-//        this.radiusOfStar = r;
-//        this.numberOfPlanets = n;
-//    }
-
-    public void setWeightOfStar (String weight) {
-        double weightDouble;
-        weightDouble = Double.parseDouble(formatter(weight));
-        weightOfStar = weightDouble * Math.pow(10, 11);
+    public void setMassOfStar(String mass) {
+        double massDouble;
+        massDouble = Double.parseDouble(formatter(mass));
+        massOfStar = massDouble;
     }
 
     public void setNumberOfPlanets (double num) {
@@ -36,7 +29,7 @@ public class SystemCharacteristic {
     public String toString() {
         return "SystemCharacteristic{" +
                 "planet=" + planet.toString() +
-                ", weightOfStar=" + weightOfStar +
+                ", massOfStar=" + massOfStar +
                 ", radiusOfStar=" + radiusOfStar +
                 ", numberOfPlanets=" + numberOfPlanets +
                 '}';

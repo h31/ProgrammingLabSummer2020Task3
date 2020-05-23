@@ -10,17 +10,6 @@ public class PlanetCharacteristic {
     double positionX;
     double positionY;
 
-//    public PlanetCharacteristic(String n, String c, int r, int g, int sX, int sY, int pX, int pY) {
-//        this.name = n;
-//        this.color = c;
-//        this.radius = r;
-//        this.GC = g;
-//        this.speedX = sX;
-//        this.speedY = sY;
-//        this.positionX = pX;
-//        this.positionY = pY;
-//    }
-
     public void setName (String nameU){
         name = nameU;
     }
@@ -49,7 +38,6 @@ public class PlanetCharacteristic {
 
     public void setGC(String GU) {
         GC = Double.parseDouble(formatter(GU));
-        GC = GC * Math.pow(10, -11);
     }
 
     public String formatter(String in) {

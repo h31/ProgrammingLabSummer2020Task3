@@ -4,4 +4,15 @@
 .field {
     -fx-opacity: 0.9;
 }
-
+.help {
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px;
+}
+.help:hover {
+    -fx-background-color: #2A4480;
+    -fx-border-width: 1px;
+}
+.help:active {
+    -fx-background-color: #000000;
+    -fx-border-width: 1px;
+}
