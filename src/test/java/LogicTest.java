@@ -4,6 +4,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LogicTest {
     static LogicManager logic = new LogicManager();
+
+    @Test
+    public void speedX()  {
+        assertEquals(0,  logic.speedX(0, 0));
+        assertEquals(-3,  Math.round(logic.speedX(3, -3)));
+    }
+
+    @Test
+    public void speedY()  {
+        assertEquals(0,  logic.speedY(0, 0));
+        assertEquals(0,  Math.round(logic.speedY(3, -3)));
+    }
+
     @Test
     public void acceleration()  {
         assertEquals(0,  Math.abs(logic.acceleration(0, 80, 400, 500, 80)));

@@ -55,7 +55,7 @@ public class ControllerOfThePlanet {
         help.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Help");
-            alert.setContentText("For example, G = 4, radius = 20, position x= 200, position y = -150, speed = 1, degrees= 1.");
+            alert.setContentText("For example, G = 7, radius = 20, position x= 200, position y = -300, speed = 3, degrees= -3");
             alert.showAndWait();
         });
 

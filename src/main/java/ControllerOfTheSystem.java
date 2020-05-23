@@ -33,7 +33,7 @@ public class ControllerOfTheSystem {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Help");
             alert.setContentText("In this window, specify the mass and radius of the star in accordance with the specified explanations.\n" +
-                    "For example, mass = 150, radius = 80");
+                    "For example, mass = 900, radius = 80");
             alert.showAndWait();
         });
         final boolean[] weightB = {false};

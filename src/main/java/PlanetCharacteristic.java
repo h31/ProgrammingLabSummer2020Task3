@@ -31,9 +31,9 @@ public class PlanetCharacteristic {
     }
 
     public void setSpeed (String speedU, String deg) {
-        speedX = Double.parseDouble(formatter(speedU)) * Math.cos(Double.parseDouble(formatter(deg)));
-        speedY = Double.parseDouble(formatter(speedU)) * Math.sin(Double.parseDouble(formatter(deg)));
-
+        LogicManager logic = new LogicManager();
+        speedX = logic.speedX(Double.parseDouble(formatter(speedU)), Double.parseDouble(formatter(deg)));
+        speedY = logic.speedY(Double.parseDouble(formatter(speedU)), Double.parseDouble(formatter(deg)));
     }
 
     public void setGC(String GU) {

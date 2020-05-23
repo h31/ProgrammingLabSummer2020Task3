@@ -88,9 +88,12 @@ public class App extends Application{
         });
         Pagination animationSpeed = new Pagination(10, 0);
         TextField timePortation = new TextField();
-        timePortation.setLayoutY(80);
+        timePortation.setMaxWidth(50);
+        timePortation.setLayoutX(75);
+        timePortation.setLayoutY(50);
         Button tPBtn = new Button("Portation");
-        tPBtn.setLayoutY(110);
+        tPBtn.setLayoutY(50);
+        tPBtn.setLayoutX(135);
         canvas.getChildren().addAll(animationSpeed, timePortation, tPBtn);
 
         boolean[] timePort = new boolean[system.numberOfPlanets];
