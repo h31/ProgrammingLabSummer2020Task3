@@ -5,12 +5,10 @@ import javafx.scene.shape.Rectangle;
 import view.Tetris;
 
 public class FigureZ extends Figure {
-    private int delta = 25;
-
-    int cellUpRowX;
-    int cellDownRowX;
-    int cellDownRowY;
-    int cellUpRowY;
+    private int cellUpRowX;
+    private int cellDownRowX;
+    private int cellDownRowY;
+    private int cellUpRowY;
     private boolean changedForm;
 
     private final GameField gameField = new GameField();
@@ -28,54 +26,54 @@ public class FigureZ extends Figure {
 
     @Override
     public void moveDown() {
-        upRow.setY(upRow.getY() + delta);
-        downRow.setY(downRow.getY() + delta);
-
+        if (!endGame()) {
+            upRow.setY(upRow.getY() + getDelta());
+            downRow.setY(downRow.getY() + getDelta());
+        }
     }
 
     @Override
     public void moveLeft() {
         if (cellUpRowY != 20 && cellDownRowY > 0 && cellDownRowX > 0) {
-            upRow.setX(upRow.getX() - delta);
-            downRow.setX(downRow.getX() - delta);
+            upRow.setX(upRow.getX() - getDelta());
+            downRow.setX(downRow.getX() - getDelta());
 
             if (changedForm) {
                 if (cellDownRowX < 0 && cellUpRowX < 0) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellUpRowY][cellUpRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellUpRowY + 1][cellUpRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellDownRowY][cellDownRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellDownRowY + 1][cellDownRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellDownRowY + 2][cellDownRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellUpRowY + 2][cellUpRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 }
-
             } else {
                 if (downRow.getX() < 0) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellUpRowY][cellUpRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellDownRowY][cellDownRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 } else if (getGameField()[cellDownRowY + 1][cellDownRowX - 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() + delta);
-                    downRow.setX(downRow.getX() + delta);
+                    upRow.setX(upRow.getX() + getDelta());
+                    downRow.setX(downRow.getX() + getDelta());
                 }
             }
         }
@@ -84,46 +82,45 @@ public class FigureZ extends Figure {
     @Override
     public void moveRight() {
         if (cellUpRowY != 20 && cellDownRowY > 0 && cellUpRowX + 2 != 16) {
-            upRow.setX(upRow.getX() + delta);
-            downRow.setX(downRow.getX() + delta);
+            upRow.setX(upRow.getX() + getDelta());
+            downRow.setX(downRow.getX() + getDelta());
 
             if (changedForm) {
                 if (downRow.getX() > 375) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellUpRowY][cellUpRowX + 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellUpRowY + 1][cellUpRowX + 2] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellDownRowY][cellDownRowX + 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellDownRowY + 1][cellDownRowX + 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellDownRowY + 2][cellDownRowX + 1] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellUpRowY + 2][cellUpRowX + 2] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 }
-
             } else {
                 if (upRow.getX() > 350) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellUpRowY][cellUpRowX + 2] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellDownRowY][cellDownRowX + 2] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 } else if (getGameField()[cellUpRowY + 1][cellUpRowX + 2] != Elements.EmptyCell) {
-                    upRow.setX(upRow.getX() - delta);
-                    downRow.setX(downRow.getX() - delta);
+                    upRow.setX(upRow.getX() - getDelta());
+                    downRow.setX(downRow.getX() - getDelta());
                 }
             }
         }
@@ -150,7 +147,6 @@ public class FigureZ extends Figure {
 
         downRow.setY(upRow.getY() + 25);
         downRow.setX(upRow.getX() - 25);
-
 
         changedForm = false;
     }
@@ -194,48 +190,48 @@ public class FigureZ extends Figure {
         return intersection;
     }
 
-
     @Override
     public boolean stop() {
         boolean figureSet = false;
-        cellUpRowX = (int) (upRow.getX() / delta);
-        cellDownRowX = (int) (downRow.getX() / delta);
+        cellUpRowX = (int) (upRow.getX() / getDelta());
+        cellDownRowX = (int) (downRow.getX() / getDelta());
+        cellDownRowY = (int) (downRow.getY() / getDelta());
+        cellUpRowY = (int) (upRow.getY() / getDelta());
 
-        cellDownRowY = (int) (downRow.getY() / delta);
-        cellUpRowY = (int) (upRow.getY() / delta);
-        //установить нижние границы
-        if (intersectsDefaultForm() || intersectsVertical()) {
-            delta = 0;
+        if (!endGame()) {
+            if (intersectsDefaultForm() || intersectsVertical()) {
+                setDelta(25);
 
-            if (!changedForm) {
-                for (int i = cellUpRowX; i < cellUpRowX + 2; i++) {
-                    getGameField()[cellUpRowY][i] = Elements.FigureZ;
-                }
-                for (int i = cellDownRowX; i < cellDownRowX + 2; i++) {
-                    getGameField()[cellDownRowY][i] = Elements.FigureZ;
-                }
-            } else {
-                for (int i = cellUpRowY; i < cellUpRowY + 2; i++) {
-                    getGameField()[i][cellUpRowX] = Elements.FigureZ;
-                }
-                for (int i = cellDownRowY; i < cellDownRowY + 2; i++) {
-                    getGameField()[i][cellDownRowX] = Elements.FigureZ;
-                }
-                upRow.setWidth(50);
-                upRow.setHeight(25);
+                if (!changedForm) {
+                    for (int i = cellUpRowX; i < cellUpRowX + 2; i++) {
+                        getGameField()[cellUpRowY][i] = Elements.FigureZ;
+                    }
+                    for (int i = cellDownRowX; i < cellDownRowX + 2; i++) {
+                        getGameField()[cellDownRowY][i] = Elements.FigureZ;
+                    }
+                } else {
+                    for (int i = cellUpRowY; i < cellUpRowY + 2; i++) {
+                        getGameField()[i][cellUpRowX] = Elements.FigureZ;
+                    }
+                    for (int i = cellDownRowY; i < cellDownRowY + 2; i++) {
+                        getGameField()[i][cellDownRowX] = Elements.FigureZ;
+                    }
+                    upRow.setWidth(50);
+                    upRow.setHeight(25);
 
-                downRow.setHeight(25);
-                downRow.setWidth(50);
+                    downRow.setHeight(25);
+                    downRow.setWidth(50);
+                }
+
+                upRow.setY(-50);
+                downRow.setY(-25);
+                upRow.setX(150);
+                downRow.setX(125);
+                setDelta(25);
+
+                figureSet = true;
+                changedForm = false;
             }
-
-            upRow.setY(-50);
-            downRow.setY(-25);
-            delta = 25;
-            upRow.setX(150);
-            downRow.setX(125);
-
-            figureSet = true;
-            changedForm = false;
         }
         return figureSet;
     }

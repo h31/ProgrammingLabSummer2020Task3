@@ -27,6 +27,7 @@ public class GameCycle extends GameField {
     Figure figure;
 
     Button startButton = new Button("START");
+    Button pauseButton = new Button("PAUSE");
 
     public GameCycle() {
         figures.add(figureL);
@@ -34,12 +35,18 @@ public class GameCycle extends GameField {
         figures.add(figureZ);
         figures.add(figureI);
         figures.add(figureO);
+
         Tetris tetris = new Tetris();
 
         startButton.setStyle("-fx-background-color: #00ff00");
         startButton.setFont(new Font(20));
         startButton.setLayoutY(150);
         startButton.setLayoutX(450);
+
+        pauseButton.setStyle("-fx-background-color: #ffa500");
+        pauseButton.setFont(new Font(20));
+        pauseButton.setLayoutY(300);
+        pauseButton.setLayoutX(450);
 
         Lighting lighting = new Lighting();
         DropShadow shadow = new DropShadow();
@@ -53,21 +60,26 @@ public class GameCycle extends GameField {
             startGame();
         });
 
+        pauseButton.setOnAction(event -> {
+        });
+
         getChildren().addAll(figureI, figureL, figureO, figureT, figureZ, tetris.getCanvas(), startButton);
-
-
         keyController();
     }
 
-    private int keyPressedCount = 0;
+    private int keyPressedCount = 0;//отсчет нажатий клавиши
 
     public void startGame() {
-        figure = figures.get(random.nextInt(figures.size()));
+        figure = figures.get(random.nextInt(figures.size()));//выбор случайной фигуры из списка
+
+        if (endGame()) {
+            repaintField();
+            clearRow();
+        }
     }
 
-    //210//150
     public void keyController() {
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(240), t -> {
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(210), t -> {
             if (figure == figureI) {
                 figureI.moveDown();
 
@@ -88,7 +100,6 @@ public class GameCycle extends GameField {
 
                 if (figureO.stop()) {
                     figure = figures.get(random.nextInt(figures.size()));
-
                 }
             } else if (figure == figureT) {
                 figureT.moveDown();
@@ -96,7 +107,6 @@ public class GameCycle extends GameField {
                 if (figureT.stop()) {
                     figure = figures.get(random.nextInt(figures.size()));
                     keyPressedCount = 0;
-
                 }
             } else if (figure == figureZ) {
                 figureZ.moveDown();
@@ -104,10 +114,8 @@ public class GameCycle extends GameField {
                 if (figureZ.stop()) {
                     figure = figures.get(random.nextInt(figures.size()));
                     keyPressedCount = 0;
-
                 }
             }
-
 
             startButton.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.LEFT) {
@@ -180,6 +188,7 @@ public class GameCycle extends GameField {
                 }
             });
 
+            endGame();
             clearRow();
             drawFigure();
 

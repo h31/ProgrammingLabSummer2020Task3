@@ -7,10 +7,10 @@ import view.Tetris;
 public class FigureO extends Figure {
     private final Rectangle square = new Rectangle(150, -50, 50, 50);
 
-    private int delta = 25;
+    private int delta = getDelta();
 
-    int cellX;
-    int cellY;
+    private int cellX;
+    private int cellY;
 
     public FigureO() {
         Tetris tetris = new Tetris();
@@ -18,24 +18,19 @@ public class FigureO extends Figure {
         square.setFill(Color.RED);
     }
 
-    public void fillFigure() {
-        //   getGameField()[0][4] = Elements.FigureO;
-        //getGameField()[0][5] = Elements.FigureO;
-        // getGameField()[1][4] = Elements.FigureO;
-        //  getGameField()[1][5] = Elements.FigureO;
-    }
-
 
     @Override
     public void moveDown() {
-
-
-        square.setY(square.getY() + delta);
+        if (!endGame())
+            square.setY(square.getY() + delta);
     }
 
     @Override
-    public void moveLeft() {//фикс верхней
-        if (cellY > 0 && cellY + 1 > 0 && cellY + 2 != 20) {
+    public void moveLeft() {
+        cellX = (int) (square.getX() / delta);
+        cellY = (int) (square.getY() / delta);
+
+        if (cellY > 0 && cellY + 1 > 0 && cellY + 2 != 20 && cellX != 0) {
             square.setX(square.getX() - delta);
             if (square.getX() < 0) {
                 square.setX(square.getX() + delta);
@@ -47,11 +42,13 @@ public class FigureO extends Figure {
                 square.setX(square.getX() + delta);
             }
         }
-
     }
 
     @Override
     public void moveRight() {
+        cellX = (int) (square.getX() / delta);
+        cellY = (int) (square.getY() / delta);
+
         if (cellY > 0 && cellY + 1 > 0 && cellY + 2 != 20) {
             square.setX(square.getX() + delta);
             if (square.getX() == 375) {
@@ -65,7 +62,6 @@ public class FigureO extends Figure {
             }
         }
     }
-
 
     public boolean intersectsDefaultForm() {
         boolean intersection = false;
@@ -114,7 +110,7 @@ public class FigureO extends Figure {
         cellX = (int) (square.getX() / delta);
         cellY = (int) (square.getY() / delta);
 
-        if (intersectsDefaultForm()) {
+        if (intersectsDefaultForm() && !endGame()) {
             delta = 0;
 
             for (int i = cellX; i < cellX + 2; i++) {

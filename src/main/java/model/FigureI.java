@@ -7,13 +7,12 @@ import view.Tetris;
 public class FigureI extends Figure {
     private final GameField field = new GameField();
     private final Rectangle figureI = new Rectangle(150, -25, field.getWidthCell() * 4, field.getHeightCell());
-    private int delta = 25;
     private int cellX;
     private int cellY;
     private boolean changed;
 
     public FigureI() {
-        //задание падающей фигуры цвета
+        //задание цвета падающей фигуре
         figureI.setFill(Color.GREENYELLOW);
 
         //добавление в граф сцены
@@ -28,27 +27,27 @@ public class FigureI extends Figure {
     @Override
     public void moveLeft() {
         if (cellY > 0 && cellY != 20) {
-            figureI.setX(figureI.getX() - delta);
+            figureI.setX(figureI.getX() - getDelta());
 
             if (!changed) {
                 if (figureI.getX() < 0) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 } else if (getGameField()[cellY][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 }
             } else {
                 if (figureI.getX() < 0) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 } else if (getGameField()[cellY][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 } else if (getGameField()[cellY + 1][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 } else if (getGameField()[cellY + 2][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 } else if (getGameField()[cellY + 3][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 } else if (getGameField()[cellY + 4][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + delta);
+                    figureI.setX(figureI.getX() + getDelta());
                 }
             }
         }
@@ -60,28 +59,31 @@ public class FigureI extends Figure {
      */
     @Override
     public void moveRight() {
+        cellX = (int) (figureI.getX() / getDelta());
+        cellY = (int) (figureI.getY() / getDelta());
+
         if (cellY > 0 && cellY + 4 != 20) {
-            figureI.setX(figureI.getX() + delta);
+            figureI.setX(figureI.getX() + getDelta());
 
             if (!changed) {
                 if (figureI.getX() == 325) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 } else if (getGameField()[cellY][cellX + 4] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 }
             } else {
                 if (figureI.getX() == 400) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 } else if (getGameField()[cellY][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 } else if (getGameField()[cellY + 1][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 } else if (getGameField()[cellY + 2][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 } else if (getGameField()[cellY + 3][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 } else if (getGameField()[cellY + 4][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - delta);
+                    figureI.setX(figureI.getX() - getDelta());
                 }
             }
         }
@@ -92,30 +94,39 @@ public class FigureI extends Figure {
      */
     @Override
     public void moveDown() {
-        figureI.setY(figureI.getY() + delta);
-    }
-
-    /**
-     * Ускорение падения фигуры (доделать)
-     */
-    public void acceleration() {
+        if (!endGame()) {
+            figureI.setY(figureI.getY() + getDelta());
+        }
     }
 
     public void changeForm() {
-        figureI.setWidth(25);
-        figureI.setHeight(100);
+        if (cellY + 3 != 20 && cellY + 2 != 20 && cellY + 1 != 20
+                && getGameField()[cellY][cellX] == Elements.EmptyCell
+                && getGameField()[cellY + 1][cellX] == Elements.EmptyCell
+                && getGameField()[cellY + 2][cellX] == Elements.EmptyCell
+                && getGameField()[cellY + 3][cellX] == Elements.EmptyCell
+        ) {
+            figureI.setWidth(25);
+            figureI.setHeight(100);
 
-        changed = true;
+            changed = true;
+        }
     }
 
     /**
      * изменение формы на начальную
      */
     public void returnForm() {
-        figureI.setHeight(25);
-        figureI.setWidth(100);
-        delta = 25;
-        changed = false;
+        if (cellX != 0 && cellX + 1 != 16 && cellX + 2 != 16 && cellX + 3 != 16
+                && getGameField()[cellY][cellX] == Elements.EmptyCell
+                && getGameField()[cellY][cellX + 1] == Elements.EmptyCell
+                && getGameField()[cellY][cellX + 2] == Elements.EmptyCell
+                && getGameField()[cellY][cellX + 3] == Elements.EmptyCell) {
+            figureI.setHeight(25);
+            figureI.setWidth(100);
+
+            changed = false;
+        }
     }
 
     /**
@@ -125,7 +136,7 @@ public class FigureI extends Figure {
      */
     public boolean intersectsVertical() {
         boolean intersection = false;
-        cellY = (int) (figureI.getY() / delta);
+        cellY = (int) (figureI.getY() / getDelta());
 
         if (changed) {
             if (cellY == 17) {
@@ -145,7 +156,7 @@ public class FigureI extends Figure {
      */
     public boolean intersectsDefaultForm() {
         boolean intersection = false;
-        cellX = (int) (figureI.getX() / delta);//получение ячейки Х из координаты фигуры
+        cellX = (int) (figureI.getX() / getDelta());//получение ячейки Х из координаты фигуры
 
         if (!changed) {
             //столкновение с границей
@@ -174,29 +185,35 @@ public class FigureI extends Figure {
      */
     @Override
     public boolean stop() {
+        cellX = (int) (figureI.getX() / getDelta());
+        cellY = (int) (figureI.getY() / getDelta());
         boolean figureSet = false;
 
         //проверка упала фигура на нижнюю грань или столкнулась с другой фигурой
-        if (intersectsVertical() || intersectsDefaultForm()) {
-            delta = 0;
+        if (!endGame()) {
+            if (intersectsVertical() || intersectsDefaultForm()) {
+                setDelta(0);
 
-            //заполнение игрового поля элементами
-            if (changed) {
-                for (int i = cellY - 1; i < cellY + 3; i++) {
-                    getGameField()[i][cellX] = Elements.FigureI;
+                //заполнение игрового поля элементами
+                if (changed) {
+                    for (int i = cellY - 1; i < cellY + 3; i++) {
+                        getGameField()[i][cellX] = Elements.FigureI;
+                    }
+                } else {
+                    for (int i = cellX; i < cellX + 4; i++) {
+                        getGameField()[cellY - 1][i] = Elements.FigureI;
+                    }
                 }
-            } else {
-                for (int i = cellX; i < cellX + 4; i++) {
-                    getGameField()[cellY - 1][i] = Elements.FigureI;
-                }
+                figureSet = true;
+
+                //возвращение значений
+                figureI.setY(-25);
+                figureI.setX(150);
+                figureI.setHeight(25);
+                figureI.setWidth(100);
+                changed = false;
+                setDelta(25);
             }
-            figureSet = true;
-
-            figureI.setY(-25);
-            figureI.setX(150);
-            //возвращение значений
-            returnForm();
-
         }
         return figureSet;
     }

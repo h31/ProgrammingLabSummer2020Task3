@@ -5,7 +5,6 @@ import javafx.scene.shape.Rectangle;
 import view.Tetris;
 
 public class FigureL extends Figure {
-    private int delta = 25;
     private int cellRowX;
     private int cellColumnX;
     private int cellRowY;
@@ -14,16 +13,13 @@ public class FigureL extends Figure {
     private boolean changedToSecondForm;
     private boolean changedToThirdForm;
 
-    private final Rectangle column = new Rectangle(150, -75, 25, 75);//*поставить переменные
+    private final Rectangle column = new Rectangle(200, -50, 25, 50);
 
-    private final Rectangle row = new Rectangle(150, -25, 50, 25);
-
+    private final Rectangle row = new Rectangle(150, -25, 75, 25);
 
     public FigureL() {
-
         Tetris tetris = new Tetris();
         getChildren().addAll(column, row, tetris.getCanvas());//добавление в граф сцены
-
 
         row.setFill(Color.YELLOW);//установка цвета
         column.setFill(Color.YELLOW);
@@ -34,8 +30,10 @@ public class FigureL extends Figure {
      */
     @Override
     public void moveDown() {
-        row.setY(row.getY() + delta);
-        column.setY(column.getY() + delta);
+        if (!endGame()) {
+            row.setY(row.getY() + getDelta());
+            column.setY(column.getY() + getDelta());
+        }
     }
 
     /**
@@ -43,76 +41,86 @@ public class FigureL extends Figure {
      */
     @Override
     public void moveLeft() {
+        cellRowY = (int) (row.getY() / getDelta());
+        cellRowX = (int) (row.getX() / getDelta());
+        cellColumnX = (int) (column.getX() / getDelta());
+        cellColumnY = (int) (column.getY() / getDelta());
+
         if (cellColumnY > 0 && cellColumnX > 0) {
-            row.setX(row.getX() - delta);
-            column.setX(column.getX() - delta);
+            row.setX(row.getX() - getDelta());
+            column.setX(column.getX() - getDelta());
 
             if (changedToFirstForm) {
                 if (row.getX() < 0) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 } else if (getGameField()[cellRowY][cellRowX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY - 1][cellRowX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellColumnY][cellColumnX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellColumnY + 1][cellColumnX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellColumnY + 2][cellColumnX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellColumnY + 3][cellColumnX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 }
             } else if (changedToSecondForm) {
                 if (row.getX() < 0) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellRowY][cellRowX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 } else if (getGameField()[cellRowY + 1][cellRowX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 } else if (getGameField()[cellRowY + 2][cellRowX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY + 2][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY + 3][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY + 4][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 }
-
 
             } else if (changedToThirdForm) {
                 if (row.getX() < 0) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellRowY][cellRowX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 } else if (getGameField()[cellRowY + 1][cellRowX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellRowY + 2][cellRowX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellColumnY + 2][cellColumnX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellColumnY + 3][cellColumnX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellColumnY + 4][cellColumnX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 }
             } else {
                 if (row.getX() < 0) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 } else if (getGameField()[cellRowY][cellRowX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 } else if (getGameField()[cellColumnY][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY + 1][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY + 2][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
-                } else if (getGameField()[cellColumnY + 3][cellColumnX - 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() + delta);
-                    column.setX(column.getX() + delta);
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellRowY + 1][cellRowX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
+                } else if (getGameField()[cellRowY + 2][cellRowX - 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() + getDelta());
+                    column.setX(column.getX() + getDelta());
                 }
             }
         }
@@ -123,90 +131,93 @@ public class FigureL extends Figure {
      */
     @Override
     public void moveRight() {
-        if (cellRowX + 2 != 16 && cellColumnY > -1) {
-            row.setX(row.getX() + delta);
-            column.setX(column.getX() + delta);
+        cellRowY = (int) (row.getY() / getDelta());
+        cellRowX = (int) (row.getX() / getDelta());
+        cellColumnX = (int) (column.getX() / getDelta());
+        cellColumnY = (int) (column.getY() / getDelta());
+
+        if (cellRowX + 2 != 16 && cellColumnY > -1 && cellColumnY + 4 != 20) {
+            row.setX(row.getX() + getDelta());
+            column.setX(column.getX() + getDelta());
 
             if (changedToFirstForm) {
-                if (row.getX() > 325) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellRowY][cellRowX + 3] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellRowY + 1][cellRowX + 3] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellColumnY][cellColumnX + 2] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                }
-
-
-            } else if (changedToSecondForm) {
                 if (row.getX() > 350) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellRowY + 1][cellRowX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellRowY + 2][cellRowX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellRowY][cellRowX + 2] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellColumnY][cellColumnX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellColumnY + 1][cellColumnX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
                 } else if (getGameField()[cellColumnY + 2][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellColumnY + 3][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellColumnY + 4][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellRowY + 1][cellRowX + 2] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                }
+            } else if (changedToSecondForm) {
+                if (row.getX() > 325) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellRowY][cellRowX + 3] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellRowY + 1][cellRowX + 3] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellColumnY][cellColumnX + 2] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
                 }
 
             } else if (changedToThirdForm) {
                 if (row.getX() > 350) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellRowY][cellRowX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellColumnY][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellColumnY + 1][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                }
-
-            } else {
-                if (row.getX() > 350) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellRowY][cellRowX + 2] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellColumnY][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellColumnY + 1][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellRowY + 1][cellRowX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellRowY + 2][cellRowX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
                 } else if (getGameField()[cellColumnY + 2][cellColumnX + 1] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
-                } else if (getGameField()[cellRowY + 1][cellRowX + 2] != Elements.EmptyCell) {
-                    row.setX(row.getX() - delta);
-                    column.setX(column.getX() - delta);
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellColumnY + 3][cellColumnX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellColumnY + 4][cellColumnX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                }
+            } else {
+                if (row.getX() > 325) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellRowY][cellRowX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellColumnY][cellColumnX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
+                } else if (getGameField()[cellColumnY + 1][cellColumnX + 1] != Elements.EmptyCell) {
+                    row.setX(row.getX() - getDelta());
+                    column.setX(column.getX() - getDelta());
                 }
             }
         }
     }
 
     public void changeFirstForm() {
-        row.setWidth(75);
-        column.setHeight(25);
-        column.setY(row.getY() + 25);
+        column.setHeight(75);
+        row.setWidth(50);
+        column.setX(row.getX());
+        row.setY(column.getY() + 50);
 
         changedToFirstForm = true;
         changedToSecondForm = false;
@@ -214,50 +225,39 @@ public class FigureL extends Figure {
     }
 
     public void changeSecondForm() {
-        row.setWidth(50);
-        column.setHeight(75);
-        row.setY(column.getY());
-        row.setX(column.getX() - 25);
+        if (changedToFirstForm && row.getX() != 350) {
+            column.setHeight(50);
+            row.setWidth(75);
+            column.setX(row.getX());
+            row.setY(column.getY());
 
-        changedToSecondForm = true;
-        changedToFirstForm = false;
-        changedToThirdForm = false;
+            changedToSecondForm = true;
+            changedToFirstForm = false;
+            changedToThirdForm = false;
+        }
     }
 
     public void changeThirdForm() {
-        row.setWidth(75);
-        column.setHeight(50);
-        column.setX(column.getX() + 25);
-        column.setY(column.getY() - 25);
+        if (changedToSecondForm && column.getX() != 0) {
+            column.setHeight(75);
+            row.setWidth(50);
+            row.setY(column.getY());
+            row.setX(column.getX() - 25);
 
-        changedToFirstForm = false;
-        changedToSecondForm = false;
-        changedToThirdForm = true;
+            changedToFirstForm = false;
+            changedToSecondForm = false;
+            changedToThirdForm = true;
+        }
     }
-
-    public void returnToBegin() {
-        column.setY(-75);
-        row.setY(-25);
-        column.setWidth(25);
-        column.setHeight(75);
-        row.setWidth(50);
-        row.setHeight(25);
-        row.setX(150);
-        column.setX(150);
-
-        delta = 25;
-    }
-
     public void returnForm() {
-        row.setWidth(50);
+        row.setWidth(75);
         column.setWidth(25);
 
         row.setHeight(25);
-        column.setHeight(75);
+        column.setHeight(50);
 
-        row.setX(row.getX() + 50);
-        row.setY(row.getY() - 25);
-        column.setY(column.getY() - 50);
+        column.setX(row.getX() + 50);
+        column.setY(row.getY() - 25);
 
         changedToFirstForm = false;
         changedToSecondForm = false;
@@ -268,34 +268,33 @@ public class FigureL extends Figure {
         boolean intersection = false;
 
         if (changedToThirdForm) {
-            //столкновение 3 формы L c границей
-            if (cellColumnY + 2 == getGameField().length) {
-                intersection = true;
-            }
-            //столкновение 3 формы L c L
-            else if (getGameField()[cellColumnY + 2][cellRowX] != Elements.EmptyCell) {
-                intersection = true;
-            } else if (getGameField()[cellColumnY + 2][cellRowX + 1] != Elements.EmptyCell) {
-                intersection = true;
-            } else if (getGameField()[cellColumnY + 2][cellRowX + 2] != Elements.EmptyCell) {
-                intersection = true;
-            }
-        }
-
-
-        return intersection;
-    }
-
-    public boolean intersectsSecondForm() {
-        boolean intersection = false;
-
-        if (changedToSecondForm) {
             //столкновение 2 формы L c границуй
             if (cellColumnY + 3 == getGameField().length) {
                 intersection = true;
             } else if (getGameField()[cellColumnY + 1][cellRowX] != Elements.EmptyCell) {
                 intersection = true;
             } else if (getGameField()[cellColumnY + 3][cellRowX + 1] != Elements.EmptyCell) {
+                intersection = true;
+            }
+        }
+        return intersection;
+    }
+
+    public boolean intersectsSecondForm() {
+        boolean intersection = false;
+        cellRowY = (int) (row.getY() / getDelta());
+        cellRowX = (int) (row.getX() / getDelta());
+        cellColumnX = (int) (column.getX() / getDelta());
+        cellColumnY = (int) (column.getY() / getDelta());
+
+        if (changedToSecondForm) {
+            if (cellColumnY + 2 == getGameField().length) {
+                intersection = true;
+            } else if (getGameField()[cellColumnY + 2][cellRowX] != Elements.EmptyCell) {
+                intersection = true;
+            } else if (getGameField()[cellColumnY + 1][cellRowX + 1] != Elements.EmptyCell) {
+                intersection = true;
+            } else if (getGameField()[cellColumnY + 1][cellRowX + 2] != Elements.EmptyCell) {
                 intersection = true;
             }
         }
@@ -306,86 +305,96 @@ public class FigureL extends Figure {
     public boolean intersectsFirstForm() {
         boolean intersection = false;
         if (changedToFirstForm) {
-            if (cellColumnY == 19) {
-                intersection = true;
-            } else if (getGameField()[cellColumnY + 1][cellRowX] != Elements.EmptyCell) {
-                intersection = true;
-            } else if (getGameField()[cellColumnY][cellRowX + 1] != Elements.EmptyCell) {
-                intersection = true;
-            } else if (getGameField()[cellColumnY][cellRowX + 2] != Elements.EmptyCell) {
-                intersection = true;
-            }
-        }
-        return intersection;
-    }
 
-
-    public boolean intersectsDefaultForm() {
-        boolean intersection = false;
-        if (!changedToFirstForm && !changedToSecondForm && !changedToThirdForm) {
-            //столкновение L c границей
-            if (cellRowY + 1 == 20) {
+            if (cellRowY + 1 == getGameField().length) {
                 intersection = true;
             } else if (getGameField()[cellRowY + 1][cellRowX] != Elements.EmptyCell) {
                 intersection = true;
             } else if (getGameField()[cellRowY + 1][cellRowX + 1] != Elements.EmptyCell) {
                 intersection = true;
             }
-
         }
         return intersection;
     }
 
+    public boolean intersectsDefaultForm() {
+        boolean intersection = false;
+        if (!changedToFirstForm && !changedToSecondForm && !changedToThirdForm) {
+
+            if (cellColumnY + 2 == getGameField().length) {
+                intersection = true;
+            }
+            else if (getGameField()[cellColumnY + 2][cellRowX] != Elements.EmptyCell) {
+                intersection = true;
+            } else if (getGameField()[cellColumnY + 2][cellRowX + 1] != Elements.EmptyCell) {
+                intersection = true;
+            } else if (getGameField()[cellColumnY + 2][cellRowX + 2] != Elements.EmptyCell) {
+                intersection = true;
+            }
+        }
+        return intersection;
+    }
 
     @Override
     public boolean stop() {
-        cellRowY = (int) (row.getY() / delta);
-        cellRowX = (int) (row.getX() / delta);
-        cellColumnX = (int) (column.getX() / delta);
-        cellColumnY = (int) (column.getY() / delta);
+        cellRowY = (int) (row.getY() / getDelta());
+        cellRowX = (int) (row.getX() / getDelta());
+        cellColumnX = (int) (column.getX() / getDelta());
+        cellColumnY = (int) (column.getY() / getDelta());
 
         boolean figureSet = false;
 
-        if (intersectsFirstForm() || intersectsSecondForm() || intersectsThirdForm() || intersectsDefaultForm()) {
-            delta = 0;
+        if (!endGame()) {
+            if (intersectsFirstForm() || intersectsSecondForm() || intersectsThirdForm() || intersectsDefaultForm()) {
+                setDelta(0);
 
-            if (changedToFirstForm) {
-                for (int i = cellRowX; i < cellRowX + 3; i++) {
-                    getGameField()[cellRowY][i] = Elements.FigureL;
-                }
-                getGameField()[cellRowY + 1][cellRowX] = Elements.FigureL;
-                changedToFirstForm = false;
-            } else if (changedToSecondForm) {
-                for (int i = cellColumnY; i < cellColumnY + 3; i++) {
-                    getGameField()[i][cellRowX + 1] = GameField.Elements.FigureL;
-                }
-                getGameField()[cellColumnY][cellRowX] = Elements.FigureL;
-                changedToSecondForm = false;
-            } else if (changedToThirdForm) {
-                for (int i = cellRowX; i < cellRowX + 3; i++) {
-                    getGameField()[cellRowY][i] = Elements.FigureL;
-                }
-                getGameField()[cellRowY - 1][cellRowX + 2] = Elements.FigureL;
+                if (changedToFirstForm) {
+                    for (int i = cellColumnY; i < cellColumnY + 3; i++) {
+                        getGameField()[i][cellRowX] = GameField.Elements.FigureL;
+                    }
+                    for (int i = cellRowX; i < cellRowX + 2; i++) {
+                        getGameField()[cellRowY][i] = GameField.Elements.FigureL;
+                    }
+                    changedToFirstForm = false;
+                } else if (changedToSecondForm) {
+                    for (int i = cellRowX; i < cellRowX + 3; i++) {
+                        getGameField()[cellRowY][i] = Elements.FigureL;
+                    }
+                    getGameField()[cellRowY + 1][cellRowX] = Elements.FigureL;
+                    changedToSecondForm = false;
+                } else if (changedToThirdForm) {
+                    for (int i = cellColumnY; i < cellColumnY + 3; i++) {
+                        getGameField()[i][cellRowX + 1] = GameField.Elements.FigureL;
+                    }
+                    getGameField()[cellColumnY][cellRowX] = Elements.FigureL;
 
-                changedToThirdForm = false;
-            } else {
-                for (int i = cellColumnY; i < cellColumnY + 3; i++) {
-                    getGameField()[i][cellRowX] = GameField.Elements.FigureL;
+                    changedToThirdForm = false;
+                } else {
+                    for (int i = cellRowX; i < cellRowX + 3; i++) {
+                        getGameField()[cellRowY][i] = Elements.FigureL;
+                    }
+                    getGameField()[cellRowY - 1][cellRowX + 2] = Elements.FigureL;
+
+                    changedToThirdForm = false;
+                    changedToFirstForm = false;
+                    changedToSecondForm = false;
                 }
-                for (int i = cellRowX; i < cellRowX + 2; i++) {
-                    getGameField()[cellRowY][i] = GameField.Elements.FigureL;
-                }
-                changedToFirstForm = false;
-                changedToSecondForm = false;
-                changedToThirdForm = false;
+
+                column.setY(-50);
+                row.setY(-25);
+
+                column.setWidth(25);
+                column.setHeight(50);
+                row.setWidth(75);
+                row.setHeight(25);
+
+                row.setX(150);
+                column.setX(200);
+
+                setDelta(25);
+                figureSet = true;
             }
-
-            figureSet = true;
-
-            returnToBegin();
-
         }
-
         return figureSet;
     }
 

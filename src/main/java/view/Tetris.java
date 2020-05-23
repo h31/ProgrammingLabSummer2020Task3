@@ -7,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -33,13 +31,10 @@ public class Tetris extends Application {
         graphicsContext = canvas.getGraphicsContext2D();
     }
 
-
     @Override
     public void start(final Stage primaryStage) {
         gameField = new GameField();
         gameCycle = new GameCycle();
-
-      //  graphicsContext = canvas.getGraphicsContext2D();
 
         scoreLabel.setText("Score");
         scoreLabel.setTextFill(Color.BLUE);
@@ -52,11 +47,10 @@ public class Tetris extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        gameRoot.getChildren().addAll(scoreLabel, gameCycle, gameField,canvas);
+        gameRoot.getChildren().addAll(scoreLabel, gameCycle, gameField);
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }
