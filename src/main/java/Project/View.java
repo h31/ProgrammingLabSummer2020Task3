@@ -29,6 +29,9 @@ public class View {
         Group snakeBody = new Group();
         Model.snake = snakeBody.getChildren();
 
+        Group barriersBody = new Group();
+        Model.barriers = barriersBody.getChildren();
+
         Circle meal = new Circle(bodySize / 2);
         meal.setFill(Color.RED);
         meal.setTranslateX((int) (Math.random() * (width - bodySize)) / bodySize * bodySize + bodySize / 2);
@@ -45,14 +48,17 @@ public class View {
 
         KeyFrame frame = new KeyFrame(Duration.seconds(0.15), event -> {
             Model.part = createSnakePart();
-            Model.moveSnake();
+
+            if (Model.alternativeGame) Model.alternativeGame();
+            else Model.classicGame();
             scoreShower.setText("Score: " + Model.score);
             if (Model.gameOver) gameOver.setVisible(true);
             else gameOver.setVisible(false);
         });
         timeline.getKeyFrames().add(frame);
         timeline.setCycleCount(Timeline.INDEFINITE);
-        root.getChildren().addAll(gameOver, scoreShower, meal, snakeBody);
+        if (Model.alternativeGame) root.getChildren().addAll(scoreShower, barriersBody, snakeBody, gameOver);
+            else root.getChildren().addAll(gameOver, scoreShower, meal, snakeBody);
         return root;
     }
 
@@ -60,5 +66,13 @@ public class View {
         Rectangle head = new Rectangle(bodySize, bodySize);
         head.setFill(Color.GREEN);
         return head;
+    }
+
+    public static Node createBarrier() {
+        int bodySize = Model.bodySize;
+        Rectangle rect = new Rectangle(bodySize, bodySize);
+        rect.setFill(Color.PURPLE);
+
+        return rect;
     }
 }

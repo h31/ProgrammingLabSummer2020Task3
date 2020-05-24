@@ -39,13 +39,13 @@ class SnakeTest {
         b.startGame();
         View.timeline.stop();
         Model.part = a.createSnakePart();
-        Model.moveSnake();
+        Model.classicGame();
         assertEquals(Model.bodySize, Model.snake.get(0).getTranslateX());
         assertEquals(0, Model.snake.get(0).getTranslateY());
 
         Model.meal.setTranslateX(Model.bodySize * 2.5);
         Model.meal.setTranslateY(Model.bodySize / 2);
-        Model.moveSnake();
+        Model.classicGame();
         assertEquals(2, Model.snake.size());
         assertTrue(Model.meal.getTranslateX() != Model.bodySize * 2 || Model.meal.getTranslateX() != 0);
     }
@@ -77,32 +77,32 @@ class SnakeTest {
         part5.setTranslateX(0);
         part5.setTranslateY(0);
         Model.direction = Model.Direction.UP;
-        Model.moveSnake();
+        Model.classicGame();
         assertEquals(0, Model.snake.size());
 
         b.startGame();
         View.timeline.stop();
         Model.direction = Model.Direction.UP;
-        Model.moveSnake();
+        Model.classicGame();
         assertEquals(0, Model.snake.size());
 
         b.startGame();
         View.timeline.stop();
         Model.direction = Model.Direction.LEFT;
-        Model.moveSnake();
+        Model.classicGame();
         assertEquals(0, Model.snake.size());
 
         b.startGame();
         View.timeline.stop();
         Model.snake.get(0).setTranslateX(Model.width - Model.bodySize);
-        Model.moveSnake();
+        Model.classicGame();
         assertEquals(0, Model.snake.size());
 
         b.startGame();
         View.timeline.stop();
         Model.snake.get(0).setTranslateY(Model.height - Model.bodySize);
         Model.direction = Model.Direction.DOWN;
-        Model.moveSnake();
+        Model.classicGame();
         assertEquals(0, Model.snake.size());
     }
 }

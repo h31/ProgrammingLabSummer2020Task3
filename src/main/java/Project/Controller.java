@@ -51,7 +51,13 @@ public class Controller {
         Model.gameOver = false;
         Model.direction = Model.Direction.RIGHT;
         Model.snake.clear();
+        Model.barriers.clear();
+        Model.score = 0;
         Model.snake.add(b.createSnakePart());
+        if (Model.alternativeGame) {
+            for (int i = 0; i < 5; i++)
+                Model.snake.add(b.createSnakePart());
+        }
         View.timeline.play();
     }
 

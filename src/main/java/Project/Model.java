@@ -17,17 +17,74 @@ public class Model {
     static int score;
     static Direction direction = Direction.RIGHT;
     static ObservableList<Node> snake;
+    static ObservableList<Node> barriers;
     static Node meal;
     static Node part;
     static boolean gameOver;
+    static boolean alternativeGame;
 
-    public static void moveSnake() {
+    public static void classicGame() {
+        alternativeGame = false;
         int radius = bodySize / 2;
         score = (snake.size() - 1);
+
+        double bodyX = snake.get(snake.size() - 1).getTranslateX();
+        double bodyY = snake.get(snake.size() - 1).getTranslateY();
+        snakeMove();
+        Node body = snake.get(0);
+        if (body.getTranslateX() == (meal.getTranslateX() - radius)
+                && body.getTranslateY() == (meal.getTranslateY() - radius)) {
+            boolean flag = true;
+            while (flag) {
+                flag = false;
+                meal.setTranslateX((int) (Math.random() * (width - bodySize)) / bodySize * bodySize + radius);
+                meal.setTranslateY((int) (Math.random() * (height - bodySize)) / bodySize * bodySize + radius);
+                for (Node rect : snake) {
+                    if (rect.getTranslateX() == (meal.getTranslateX() - radius)
+                            && rect.getTranslateY() == (meal.getTranslateY() - radius))
+                        flag = true;
+                }
+            }
+            part.setTranslateX(bodyX);
+            part.setTranslateY(bodyY);
+            snake.add(part);
+        }
+        gameOverCheck();
+    }
+
+    public static void alternativeGame() {
+        Node barrier = View.createBarrier();
+        score++;
+        alternativeGame = true;
+        snakeMove();
+        if (score % 10 == 0) {
+            boolean flag = true;
+            while (flag) {
+                flag = false;
+                barrier.setTranslateX((int) (Math.random() * (width - bodySize)) / bodySize * bodySize);
+                barrier.setTranslateY((int) (Math.random() * (height - bodySize)) / bodySize * bodySize);
+                for (Node rect : snake) {
+                    if (rect.getTranslateX() == (barrier.getTranslateX())
+                            && rect.getTranslateY() == (barrier.getTranslateY()))
+                        flag = true;
+                }
+            }
+            barriers.add(barrier);
+        }
+
+        Node body = snake.get(0);
+        for (Node push : barriers) {
+            if (body.getTranslateX() == push.getTranslateX()
+                    && body.getTranslateY() == push.getTranslateY()) {
+                snake.remove(snake.size() - 1);
+            }
+        }
+        gameOverCheck();
+    }
+
+    public static void snakeMove() {
         boolean remove = snake.size() > 1;
         Node body = remove ? snake.remove(snake.size() - 1) : snake.get(0);
-        double bodyX = body.getTranslateX();
-        double bodyY = body.getTranslateY();
         switch (direction) {
             case RIGHT:
                 body.setTranslateX(snake.get(0).getTranslateX() + bodySize);
@@ -47,24 +104,15 @@ public class Model {
                 break;
         }
         if (remove) snake.add(0, body);
-        if (body.getTranslateX() == (meal.getTranslateX() - radius)
-                && body.getTranslateY() == (meal.getTranslateY() - radius)) {
-            boolean flag = true;
-            while (flag) {
-                flag = false;
-                meal.setTranslateX((int) (Math.random() * (width - bodySize)) / bodySize * bodySize + radius);
-                meal.setTranslateY((int) (Math.random() * (height - bodySize)) / bodySize * bodySize + radius);
-                for (Node rect : snake) {
-                    if (rect.getTranslateX() == (meal.getTranslateX() - radius)
-                            && rect.getTranslateY() == (meal.getTranslateY() - radius))
-                        flag = true;
-                }
-            }
-            part.setTranslateX(bodyX);
-            part.setTranslateY(bodyY);
-            snake.add(part);
+    }
+
+    public static void gameOverCheck() {
+        if (snake.size() == 0) {
+            Controller.gameOver();
+            return;
         }
 
+        Node body = snake.get(0);
         for (Node rect : snake) {
             if (rect != body && body.getTranslateX() == rect.getTranslateX() && body.getTranslateY() == rect.getTranslateY()) {
                 Controller.gameOver();
