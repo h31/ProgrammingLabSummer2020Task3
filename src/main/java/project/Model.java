@@ -7,28 +7,37 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Model {
+    //i - вертикальная ось (строки), j - горизонтальная (столбцы)
+
     //Массив для поля
     final private static char[][] field = new char[5][5];
 
     //Счёт игроков
-    private static short firstPlayerScore;
-    private static short secondPlayerScore;
+    private static int firstPlayerScore;
+    private static int secondPlayerScore;
 
     //Чей ход? T - первого, F - второго
     private static boolean firstToMove;
 
     //Множество клеток, в которые можно поставить букву
-    private static Set<Pair<Short, Short>> possibleMoves = new HashSet<>();
+    private static Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
 
     public void fillField() throws IOException {
         final String word = getFirstWord();
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (i == 0)
-                    field[i][j] = word.charAt(i);
+                if (i == 2)
+                    field[i][j] = word.charAt(j);
                 else field[i][j] = ' ';
             }
+        }
+
+        for (int j = 0; j < 5; j++) {
+            possibleMoves.add(new Pair<>(1, j));
+        }
+        for (int j = 0; j < 5; j++) {
+            possibleMoves.add(new Pair<>(3, j));
         }
 
         firstToMove = true;
@@ -37,10 +46,13 @@ public class Model {
         secondPlayerScore = 0;
     }
 
+    private void refreshPossibleMoves(int i, int j) {
 
+    }
 
 
     //Методы для поиска, добавления слов
+
     private int getNumberOfLines(String filePath) {
         int res = 0;
         try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -91,5 +103,11 @@ public class Model {
             writer.write("\n" + word);
         }
         return isWord(word);
+    }
+
+    //Геттеры, сеттеры
+
+    public char getCharFromField(int i, int j) {
+        return field[i][j];
     }
 }
