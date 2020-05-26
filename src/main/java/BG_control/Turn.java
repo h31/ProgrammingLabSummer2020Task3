@@ -2,27 +2,31 @@ package BG_control;
 
 import BG_model.ChipColor;
 import BG_view.Board;
+import BG_view.Start;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static BG_view.Board.CHIP_SIZE;
 
 public class Turn  {
     private int turnCount = 0;
-    private List<Integer> moveList = new ArrayList<Integer>();
+    private List<Integer> moveList = new ArrayList<>();
     private List<Boolean> notEmptyBar = Arrays.asList(false,false);
-    private TurnType type = TurnType.NORMAL;
+
 
     void setNotEmptyBar(boolean notEmptyBar, int i){
         this.notEmptyBar.set(i, notEmptyBar);
@@ -34,35 +38,50 @@ public class Turn  {
         List<Integer> moveList = moveList(diceRoll());
         if (notEmptyBar.get(playerNumber())){
             Move.setBarMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK, this,board);
-        } else Move.setNormalMove(this,board);
-        if (board.getHomes().get(playerNumber()) == 15){
-            type = TurnType.END;
+        } else if (board.getHomes().get(playerNumber()) == 15){
             Move.setEndspielMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK,this,board);
-        }
+        }else Move.setNormalMove(this,board);
+
 
         board.getGrid().add(diceView(),13,0);
-
-
     }
+
     private void newTurnAlert() {
         Alert alert = new Alert(AlertType.INFORMATION);
-
         alert.setTitle("Turn:"+(turnCount+1)/2);
         alert.setHeaderText("Player "+ (playerNumber()+1) +" turn");
         alert.setContentText(null);
         alert.showAndWait();
     }
 
+    void winnerAlert(Board board){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Congratulations");
+        alert.setHeaderText("Player "+ (playerNumber()+1) +" wins");
+        alert.setContentText("Start new game ?");
+
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.get() == ButtonType.OK) {
+            Stage stage = (Stage) board.getGrid().getScene().getWindow();
+            stage.close();
+            Start s = new Start();
+            s.start(new Stage());
+        } else {
+            Stage stage = (Stage) board.getGrid().getScene().getWindow();
+            stage.close();
+        }
+    }
+
     private int[] diceRoll(){
-        int d1 = (int) (Math.random()*6) + 1;
-        //int d2 = (int) (Math.random()*6) + 1;
-        //if (d1 == d1)
-        //else return new int[]{d1, d2};
-            return new int[]{1,1,1,1};
+        int d1=(int) (Math.random()*6) + 1;
+        int d2=(int) (Math.random()*6) + 1;
+        if (d1 == d2) return new int[]{d1,d1,d1,d1};
+        else return new int[]{d1, d2};
+
     }
 
     private List<Integer> moveList (int[] dices){
-        moveList = new ArrayList<Integer>();
+        moveList = new ArrayList<>();
         if (dices.length == 2){
             moveList.add(dices[0]);
             moveList.add(dices[1]);
@@ -110,12 +129,12 @@ public class Turn  {
         this.moveList = moveList;
     }
 
-    public List<Integer> getMoveList(){
+    List<Integer> getMoveList(){
         return moveList;
     }
 
 
-    public int playerNumber(){
+    int playerNumber(){
         return ((turnCount-1) %2);
     }
 

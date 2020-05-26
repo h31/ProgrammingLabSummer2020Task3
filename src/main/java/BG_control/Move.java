@@ -5,18 +5,17 @@ import BG_view.Board;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static BG_model.ChipColor.BLACK;
 import static BG_model.ChipColor.WHITE;
 
 public class Move {
+    private static final int[] prevI = {-1};
+    private static final boolean[] firstClick = {true};
 
     public static void setNormalMove(Turn t, Board board) {
-        final int[] prevI = {-1};
         final ChipColor[] color = new ChipColor[1];
-        final boolean[] firstClick = {true};
         board.getGrid().getChildren().get(25).setStyle("-fx-background-color: none");
         board.getGrid().getChildren().get(24).setStyle("-fx-background-color: none");
 
@@ -25,8 +24,8 @@ public class Move {
             int finalI = i;
             board.getGrid().getChildren().get(i).setOnMouseClicked(mouseEvent -> {
                 if (firstClick[0]) {
-                    if (board.getBoard().getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().getBoard().get(finalI).onTop().ordinal()) {
-                        color[0] = board.getBoard().getBoard().get(finalI).onTop();
+                    if (board.getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().get(finalI).onTop().ordinal()) {
+                        color[0] = board.getBoard().get(finalI).onTop();
                         board.getGrid().getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
                         firstClick[0] = false;
                         prevI[0] = finalI;
@@ -34,10 +33,10 @@ public class Move {
                 } else {
                     int moveLength = color[0] == WHITE ? prevI[0] - finalI : finalI - prevI[0];
                     if (t.getMoveList().contains(moveLength)) {
-                        if (board.getBoard().getBoard().get(finalI).size() == 0 || color[0] == board.getBoard().getBoard().get(finalI).onTop()) {
+                        if (board.getBoard().get(finalI).size() == 0 || color[0] == board.getBoard().get(finalI).onTop()) {
                             move(prevI[0], finalI, board, t);
                             normalMoveListChange(moveLength, t, board);
-                        } else if (board.getBoard().getBoard().get(finalI).size() == 1) {
+                        } else if (board.getBoard().get(finalI).size() == 1) {
                             toBarMove(finalI, board, t);
                             move(prevI[0], finalI, board, t);
                             normalMoveListChange(moveLength, t, board);
@@ -57,11 +56,11 @@ public class Move {
     static void setBarMove(ChipColor color, Turn t, Board board) {
         board.getGrid().getChildren().get(24 + color.ordinal()).setStyle("-fx-background-color: #00ffff");
         int prevI = color == WHITE ? 24 : -1;
-        List<Integer> canMove = new ArrayList<Integer>();
+        List<Integer> canMove = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             int finalI = i;
-            if ((board.getBoard().getBoard().get(finalI).size() < 2
-                    || board.getBoard().getBoard().get(finalI).onTop() == color
+            if ((board.getBoard().get(finalI).size() < 2
+                    || board.getBoard().get(finalI).onTop() == color
             ) && t.getMoveList().contains(color == WHITE ? prevI - finalI : finalI - prevI)) {
                 canMove.add(i);
 
@@ -69,14 +68,13 @@ public class Move {
             board.getGrid().getChildren().get(finalI).setOnMouseClicked(mouseEvent -> {
                 int moveLength = color == WHITE ? prevI - finalI : finalI - prevI;
                 if (t.getMoveList().contains(moveLength) && canMove.contains(finalI)) {
-                    if (board.getBoard().getBoard().get(finalI).size() == 1 && board.getBoard().getBoard().get(finalI).onTop() != color) {
+                    if (board.getBoard().get(finalI).size() == 1 && board.getBoard().get(finalI).onTop() != color) {
                         toBarMove(finalI, board, t);
-                        t.setNotEmptyBar(true, color == WHITE ? 1 : 0);
                     }
                     move(prevI == -1 ? 25 : prevI, finalI, board, t);
                     normalMoveListChange(moveLength, t, board);
 
-                    if (board.getBoard().getBoard().get(24 + color.ordinal()).size() == 0) {
+                    if (board.getBoard().get(24 + color.ordinal()).size() == 0) {
                         t.setNotEmptyBar(false, color.ordinal());
                         setNormalMove(t, board);
                     }
@@ -85,250 +83,337 @@ public class Move {
         }
         if (canMove.isEmpty()) {
             t.startTurn(board);
-
         }
 
     }
 
     static void setEndspielMove(ChipColor color, Turn t, Board board) {
-        final int[] prevI = {-1};
-        final boolean[] firstClick = {true};
-
-        List<Integer> moveList = Arrays.asList(t.getMoveList().get(0), t.getMoveList().get(1));
-        if (moveList.get(0).equals(moveList.get(1))) {
-            moveList.add(moveList.get(0));
-            moveList.add(moveList.get(0));
-        }
-        final int[] minMove = {moveList.get(1) > moveList.get(0) ? moveList.get(0) : moveList.get(1)};
+        final int[] maxMove = {t.getMoveList().get(1) > t.getMoveList().get(0) ? t.getMoveList().get(1) : t.getMoveList().get(0)};
         if (color == WHITE) {
             for (int i = 0; i < 6; i++) {
-                int finalI = i;
-                board.getGrid().getChildren().get(i).setOnMouseClicked(mouseEvent -> {
-                    if (moveList.contains(finalI+1)) {
-                        if (board.getBoard().getBoard().get(finalI).size() != 0 && color == board.getBoard().getBoard().get(finalI).onTop()) {
-                            board.getBoard().getBoard().get(finalI).remove();
-                            Pane prevNode = (Pane) board.getGrid().getChildren().get(finalI);
-                            prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(finalI), true));
-                            moveList.remove((Integer) finalI);
-                            if (moveList.size() == 0) {
-                                t.startTurn(board);
-                            } else {
-                                minMove[0] = moveList.get(0);
-                            }
-                        } else {
-                            if (firstClick[0]) {
-                                if (board.getBoard().getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().getBoard().get(finalI).onTop().ordinal()) {
-                                    board.getGrid().getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                    firstClick[0] = false;
-                                    prevI[0] = finalI;
-                                }
-                            } else {
-                                int moveLength = prevI[0] - finalI;
-                                if (t.getMoveList().contains(moveLength)) {
-                                    if (board.getBoard().getBoard().get(finalI).size() == 0 || color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-                                    } else if (board.getBoard().getBoard().get(finalI).size() == 1) {
-                                        toBarMove(finalI, board, t);
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-
-                                    }
-                                }
-                                firstClick[0] = true;
-                                board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
-                                prevI[0] = -1;
-                            }
-                        }
-                    } else if (finalI > minMove[0]) {
-                        if (firstClick[0]) {
-                            if (board.getBoard().getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().getBoard().get(finalI).onTop().ordinal()) {
-                                board.getGrid().getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                firstClick[0] = false;
-                                prevI[0] = finalI;
-                            }
-                        } else {
-                            int moveLength = prevI[0] - finalI;
-                            if (t.getMoveList().contains(moveLength)) {
-                                if (board.getBoard().getBoard().get(finalI).size() == 0 || color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                    move(prevI[0], finalI, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                } else if (board.getBoard().getBoard().get(finalI).size() == 1) {
-                                    toBarMove(finalI, board, t);
-                                    move(prevI[0], finalI, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                }
-                            }
-                            firstClick[0] = true;
-                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
-                            prevI[0] = -1;
-                        }
-                    } else {
-                        boolean first = true;
-                        for (int j = 5; j >= finalI; j--) {
-                            if (board.getBoard().getBoard().get(finalI).size() != 0) {
-                                first = false;
-                                break;
-                            }
-
-                        }
-                        if (first) {
-                            if (board.getBoard().getBoard().get(finalI).size() != 0 && color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                board.getBoard().getBoard().get(finalI).remove();
-                                moveList.remove((Integer) minMove[0]);
-                                Pane prevNode = (Pane) board.getGrid().getChildren().get(finalI);
-                                prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(finalI), true));
-                                if (moveList.size() == 0) {
-                                    t.startTurn(board);
-                                } else {
-                                    minMove[0] = moveList.get(0);
-                                }
-                            }
-                        } else {
-                            if (firstClick[0]) {
-                                if (board.getBoard().getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().getBoard().get(finalI).onTop().ordinal()) {
-                                    board.getGrid().getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                    firstClick[0] = false;
-                                    prevI[0] = finalI;
-                                }
-                            } else {
-                                int moveLength = prevI[0] - finalI;
-                                if (t.getMoveList().contains(moveLength)) {
-                                    if (board.getBoard().getBoard().get(finalI).size() == 0 || color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-                                    } else if (board.getBoard().getBoard().get(finalI).size() == 1) {
-                                        toBarMove(finalI, board, t);
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-                                    }
-                                }
-                                firstClick[0] = true;
-                                board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
-                                prevI[0] = -1;
-                            }
-                        }
-                    }
-                });
+                endSpielMoveW(maxMove, i, t, board);
             }
-        }else{
-            for (int i = 18; i < 24; i++) {
-                int finalI = i;
-                board.getGrid().getChildren().get(i).setOnMouseClicked(mouseEvent -> {
-                    if (moveList.contains(finalI-17)) {
-                        if (board.getBoard().getBoard().get(finalI).size() != 0 && color == board.getBoard().getBoard().get(finalI).onTop()) {
-                            board.getBoard().getBoard().get(finalI).remove();
-                            Pane prevNode = (Pane) board.getGrid().getChildren().get(finalI);
-                            prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(finalI), false));
-                            moveList.remove(moveList.indexOf(finalI -17));
-                            if (moveList.size() == 0) {
-                                t.startTurn(board);
-                            } else {
-                                minMove[0] = moveList.get(0);
-                            }
-                        } else {
-                            if (firstClick[0]) {
-                                if (board.getBoard().getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().getBoard().get(finalI).onTop().ordinal()) {
-                                    board.getGrid().getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                    firstClick[0] = false;
-                                    prevI[0] = finalI;
-                                }
-                            } else {
-                                int moveLength = prevI[0] - finalI;
-                                if (t.getMoveList().contains(moveLength)) {
-                                    if (board.getBoard().getBoard().get(finalI).size() == 0 || color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-                                    } else if (board.getBoard().getBoard().get(finalI).size() == 1) {
-                                        toBarMove(finalI, board, t);
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-
-                                    }
-                                }
-                                firstClick[0] = true;
-                                board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
-                                prevI[0] = -1;
-                            }
-                        }
-                    } else if (finalI-17 > minMove[0]) {
-                        if (firstClick[0]) {
-                            if (board.getBoard().getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().getBoard().get(finalI).onTop().ordinal()) {
-                                board.getGrid().getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                firstClick[0] = false;
-                                prevI[0] = finalI;
-                            }
-                        } else {
-                            int moveLength = prevI[0] - finalI;
-                            if (t.getMoveList().contains(moveLength)) {
-                                if (board.getBoard().getBoard().get(finalI).size() == 0 || color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                    move(prevI[0], finalI, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                } else if (board.getBoard().getBoard().get(finalI).size() == 1) {
-                                    toBarMove(finalI, board, t);
-                                    move(prevI[0], finalI, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                }
-                            }
-                            firstClick[0] = true;
-                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
-                            prevI[0] = -1;
-                        }
-                    } else {
-                        boolean first = true;
-                        for (int j = 5; j >= finalI - 17; j--) {
-                            if (board.getBoard().getBoard().get(finalI).size() != 0) {
-                                first = false;
-                                break;
-                            }
-
-                        }
-                        if (first) {
-                            if (board.getBoard().getBoard().get(finalI).size() != 0 && color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                board.getBoard().getBoard().get(finalI).remove();
-                                Pane prevNode = (Pane) board.getGrid().getChildren().get(finalI);
-                                prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(finalI), false));
-                                moveList.remove((Integer) minMove[0]);
-                                if (moveList.size() == 0) {
-                                    t.startTurn(board);
-                                } else {
-                                    minMove[0] = moveList.get(0);
-                                }
-                            }
-                        } else {
-                            if (firstClick[0]) {
-                                if (board.getBoard().getBoard().get(finalI).size() != 0 && t.playerNumber() == board.getBoard().getBoard().get(finalI).onTop().ordinal()) {
-                                    board.getGrid().getChildren().get(finalI).setStyle("-fx-background-color: #00ffff");
-                                    firstClick[0] = false;
-                                    prevI[0] = finalI;
-                                }
-                            } else {
-                                int moveLength = prevI[0] - finalI;
-                                if (t.getMoveList().contains(moveLength)) {
-                                    if (board.getBoard().getBoard().get(finalI).size() == 0 || color == board.getBoard().getBoard().get(finalI).onTop()) {
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-                                    } else if (board.getBoard().getBoard().get(finalI).size() == 1) {
-                                        toBarMove(finalI, board, t);
-                                        move(prevI[0], finalI, board, t);
-                                        normalMoveListChange(moveLength, t, board);
-                                    }
-                                }
-                                firstClick[0] = true;
-                                board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
-                                prevI[0] = -1;
-                            }
-                        }
-                    }
-                });
+        } else {
+            for (int i = 23; i > 17; i--) {
+                endSpielMoveB(maxMove, i, t, board);
             }
+
         }
 
 
     }
 
+    private static void endSpielMoveW(int[] maxMove, int to, Turn t, Board board) {
+        if (board.getBoard().get(to).onTop() == WHITE) {
+            if (t.getMoveList().indexOf(to + 1) < 2 && t.getMoveList().contains(to + 1)) {
+                board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                    if (firstClick[0]) {
+                        if (board.getBoard().get(to).size() != 0 && WHITE == board.getBoard().get(to).onTop()) {
+                            board.getBoard().get(to).remove();
+                            if (board.getBoard().get(to).size() == 0 && isWin(WHITE,board)) t.winnerAlert(board);
+                            Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
+                            prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), true));
+                            normalMoveListChange(to + 1, t, board);
+
+                            if (t.getMoveList().size() != 0)
+                                maxMove[0] = t.getMoveList().get(0);
+                            endSpielMoveW(maxMove, to, t, board);
+                            if (board.getBoard().get(to).size() == 0) {
+
+                                for (int i = to - 1; i >= 0; i--) {
+                                    if (board.getBoard().get(i).size() != 0) {
+                                        endSpielMoveW(maxMove, i, t, board);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        int moveLength = prevI[0] - to;
+                        if (t.getMoveList().contains(moveLength)) {
+                            if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+                                endSpielMoveW(maxMove, to, t, board);
+                            } else if (board.getBoard().get(to).size() == 1) {
+                                toBarMove(to, board, t);
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+                                endSpielMoveW(maxMove, to, t, board);
+                            }
+                        }
+                        firstClick[0] = true;
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        prevI[0] = -1;
+                    }
+                });
+            } else if (to < maxMove[0]) {
+                boolean first = true;
+                for (int j = maxMove[0] - 1; j > to; j--) {
+                    if (board.getBoard().get(j).size() != 0) {
+                        first = false;
+                        break;
+                    }
+                }
+                if (first) {
+                    board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                        if (firstClick[0]) {
+                            if (board.getBoard().get(to).size() != 0 && WHITE == board.getBoard().get(to).onTop()) {
+                                board.getBoard().get(to).remove();
+                                if (board.getBoard().get(to).size() == 0 && isWin(WHITE,board)) t.winnerAlert(board);
+                                Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
+                                prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), true));
+                                normalMoveListChange(maxMove[0], t, board);
+
+                                if (t.getMoveList().size() != 0)
+                                    maxMove[0] = t.getMoveList().get(0);
+                                endSpielMoveW(maxMove, to, t, board);
+                                if (board.getBoard().get(to).size() == 0) {
+                                    for (int i = to - 1; i >= 0; i--) {
+                                        if (board.getBoard().get(i).size() != 0) {
+                                            endSpielMoveW(maxMove, i, t, board);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            int moveLength = prevI[0] - to;
+                            if (t.getMoveList().contains(moveLength)) {
+                                if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+
+                                    endSpielMoveW(maxMove, to, t, board);
+                                } else if (board.getBoard().get(to).size() == 1) {
+                                    toBarMove(to, board, t);
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+
+                                    endSpielMoveW(maxMove, to, t, board);
+                                }
+                            }
+                            firstClick[0] = true;
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            prevI[0] = -1;
+                        }
+                    });
+                } else {
+                    board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                        if (!firstClick[0]) {
+                            int moveLength = prevI[0] - to;
+                            if (t.getMoveList().contains(moveLength)) {
+                                if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+                                    endSpielMoveW(maxMove, to, t, board);
+                                } else if (board.getBoard().get(to).size() == 1) {
+                                    toBarMove(to, board, t);
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+
+                                    endSpielMoveW(maxMove, to, t, board);
+                                }
+                            }
+                            firstClick[0] = true;
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            prevI[0] = -1;
+                        }
+                    });
+                }
+
+            } else {
+                board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                    if (firstClick[0]) {
+                        if (board.getBoard().get(to).size() != 0 && t.playerNumber() == board.getBoard().get(to).onTop().ordinal()) {
+                            board.getGrid().getChildren().get(to).setStyle("-fx-background-color: #00ffff");
+                            firstClick[0] = false;
+                            prevI[0] = to;
+                        }
+                    } else {
+                        int moveLength = prevI[0] - to;
+                        if (t.getMoveList().contains(moveLength)) {
+                            if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+
+                                endSpielMoveW(maxMove, to, t, board);
+                            } else if (board.getBoard().get(to).size() == 1) {
+                                toBarMove(to, board, t);
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+
+                                endSpielMoveW(maxMove, to, t, board);
+
+                            }
+                        }
+                        firstClick[0] = true;
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        prevI[0] = -1;
+
+                    }
+                });
+            }
+        }
+
+    }
+
+    private static void endSpielMoveB(int[] maxMove, int to, Turn t, Board board) {
+        if (board.getBoard().get(to).onTop() == BLACK) {
+            if (t.getMoveList().indexOf(24 - to) < 2 && t.getMoveList().contains(24 - to)) {
+                board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                    if (firstClick[0]) {
+                        if (board.getBoard().get(to).size() != 0 && BLACK == board.getBoard().get(to).onTop()) {
+                            board.getBoard().get(to).remove();
+                            if (board.getBoard().get(to).size() == 0 && isWin(BLACK,board)) t.winnerAlert(board);
+                            Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
+                            prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), false));
+                            normalMoveListChange(24 - to, t, board);
+                            if (t.getMoveList().size() != 0)
+                                maxMove[0] = t.getMoveList().get(0);
+                            endSpielMoveB(maxMove, to, t, board);
+                            if (board.getBoard().get(to).size() == 0) {
+                                for (int i = to + 1; i < 24; i++) {
+                                    if (board.getBoard().get(i).size() != 0) {
+                                        endSpielMoveB(maxMove, i, t, board);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        int moveLength = to - prevI[0];
+                        if (t.getMoveList().contains(moveLength)) {
+                            if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+                                endSpielMoveB(maxMove, to, t, board);
+                            } else if (board.getBoard().get(to).size() == 1) {
+                                toBarMove(to, board, t);
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+                                endSpielMoveB(maxMove, to, t, board);
+                            }
+                        }
+                        firstClick[0] = true;
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        prevI[0] = -1;
+                    }
+                });
+            } else if (24 - to < maxMove[0]) {
+                boolean first = true;
+                for (int j = maxMove[0] - 1; j > 24 - to; j--) {
+                    if (board.getBoard().get(24 - j).size() != 0) {
+                        first = false;
+                        break;
+                    }
+                }
+                if (first) {
+                    board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                        if (firstClick[0]) {
+                            if (board.getBoard().get(to).size() != 0 && BLACK == board.getBoard().get(to).onTop()) {
+                                board.getBoard().get(to).remove();
+                                if (board.getBoard().get(to).size() == 0 && isWin(BLACK,board)) t.winnerAlert(board);
+                                Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
+                                prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), false));
+                                normalMoveListChange(maxMove[0], t, board);
+                                if (t.getMoveList().size() != 0)
+                                    maxMove[0] = t.getMoveList().get(0);
+                                endSpielMoveB(maxMove, to, t, board);
+                                if (board.getBoard().get(to).size() == 0) {
+
+                                    for (int i = to + 1; i < 24; i++) {
+                                        if (board.getBoard().get(i).size() != 0) {
+                                            endSpielMoveB(maxMove, i, t, board);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            int moveLength = to - prevI[0];
+                            if (t.getMoveList().contains(moveLength)) {
+                                if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+                                    endSpielMoveB(maxMove, to, t, board);
+                                } else if (board.getBoard().get(to).size() == 1) {
+                                    toBarMove(to, board, t);
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+                                    endSpielMoveB(maxMove, to, t, board);
+                                }
+                            }
+                            firstClick[0] = true;
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            prevI[0] = -1;
+                        }
+                    });
+                } else {
+                    board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                        if (!firstClick[0]) {
+                            int moveLength = to - prevI[0];
+                            if (t.getMoveList().contains(moveLength)) {
+                                if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+                                    endSpielMoveB(maxMove, to, t, board);
+                                } else if (board.getBoard().get(to).size() == 1) {
+                                    toBarMove(to, board, t);
+                                    move(prevI[0], to, board, t);
+                                    normalMoveListChange(moveLength, t, board);
+                                    endSpielMoveB(maxMove, to, t, board);
+                                }
+                            }
+                            firstClick[0] = true;
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            prevI[0] = -1;
+                        }
+                    });
+                }
+            } else {
+                board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
+                    if (firstClick[0]) {
+                        if (board.getBoard().get(to).size() != 0 && t.playerNumber() == board.getBoard().get(to).onTop().ordinal()) {
+                            board.getGrid().getChildren().get(to).setStyle("-fx-background-color: #00ffff");
+                            firstClick[0] = false;
+                            prevI[0] = to;
+                        }
+                    } else {
+                        int moveLength = to - prevI[0];
+                        if (t.getMoveList().contains(moveLength)) {
+                            if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+                                endSpielMoveB(maxMove, to, t, board);
+                            } else if (board.getBoard().get(to).size() == 1) {
+                                toBarMove(to, board, t);
+                                move(prevI[0], to, board, t);
+                                normalMoveListChange(moveLength, t, board);
+                                endSpielMoveB(maxMove, to, t, board);
+                            }
+                        }
+                        firstClick[0] = true;
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        prevI[0] = -1;
+
+                    }
+                });
+            }
+        }
+
+    }
+
+    private static boolean isWin (ChipColor color, Board board){
+            for (int i = 5;i>=0;i--){
+                if (board.getBoard().get(color ==WHITE? i:23-i).size() != 0) return false;
+            }
+            return true;
+
+    }
+
     private static void move(int from, int to, Board board, Turn t) {
-        ChipColor color = board.getBoard().getBoard().get(from).onTop();
+        ChipColor color = board.getBoard().get(from).onTop();
         if (color == WHITE) {
             if (from > 5) {
                 if (to < 6) {
@@ -346,13 +431,13 @@ public class Move {
         }
         board.getBoard().move(from, to);
         Pane prevNode = (Pane) board.getGrid().getChildren().get(from);
-        prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(from), from == 25 || from < 12));
+        prevNode.getChildren().set(0, board.column(board.getBoard().get(from), from == 25 || from < 12));
         Pane node = (Pane) board.getGrid().getChildren().get(to);
-        node.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), to < 12));
+        node.getChildren().set(0, board.column(board.getBoard().get(to), to < 12));
     }
 
     private static void toBarMove(int from, Board board, Turn t) {
-        ChipColor color = board.getBoard().getBoard().get(from).onTop();
+        ChipColor color = board.getBoard().get(from).onTop();
         if (color == WHITE) {
             if (from < 6) board.decreaseWH();
         } else {
@@ -361,9 +446,9 @@ public class Move {
         t.setNotEmptyBar(true, color.ordinal());
         board.getBoard().move(from, color.ordinal() + 24);
         Pane prevNode = (Pane) board.getGrid().getChildren().get(from);
-        prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(from), from < 12));
+        prevNode.getChildren().set(0, board.column(board.getBoard().get(from), from < 12));
         Pane node = (Pane) board.getGrid().getChildren().get(color.ordinal() + 24);
-        node.getChildren().set(0, board.column(board.getBoard().getBoard().get(color.ordinal() + 24), color.ordinal() == 1));
+        node.getChildren().set(0, board.column(board.getBoard().get(color.ordinal() + 24), color.ordinal() == 1));
     }
 
     private static void normalMoveListChange(int moveLength, Turn t, Board board) {

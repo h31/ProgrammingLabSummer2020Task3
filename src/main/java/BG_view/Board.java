@@ -51,9 +51,9 @@ public class Board {
     private BG_model.Board board = new BG_model.Board();
     private GridPane grid = new GridPane();
     private Turn t;
-    private List<Integer> homes = Arrays.asList(5,5);
+    private List<Integer> homes = Arrays.asList(15,15);
 
-    public Board(Turn t) {
+    Board(Turn t) {
         this.t = t;
     }
 
@@ -77,20 +77,20 @@ public class Board {
         for (int i = 0; i < 12; i++) {
             Pair<Integer, Integer> colID = columnList.get(i);
             Pane node = new Pane();
-            node.getChildren().add(column(board.getBoard().get(i), true));
+            node.getChildren().add(column(board.get(i), true));
             grid.add(node, colID.getKey(), colID.getValue());
         }
         for (int i = 12; i < 24; i++) {
             Pair<Integer, Integer> colID = columnList.get(i);
             Pane node = new Pane();
-            node.getChildren().add(column(board.getBoard().get(i), false));
+            node.getChildren().add(column(board.get(i), false));
             grid.add(node, colID.getKey(), colID.getValue());
         }
         Pane wb = new Pane();
-        wb.getChildren().add(column(board.getBoard().get(24), false));
+        wb.getChildren().add(column(board.get(24), false));
         grid.add(wb, columnList.get(24).getKey(), columnList.get(24).getValue());
         Pane bb = new Pane();
-        bb.getChildren().add(column(board.getBoard().get(24), true));
+        bb.getChildren().add(column(board.get(24), true));
         grid.add(bb, columnList.get(25).getKey(), columnList.get(25).getValue());
         grid.add(gButton(), 13, 1);
 

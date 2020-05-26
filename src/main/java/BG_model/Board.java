@@ -2,7 +2,6 @@ package BG_model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static BG_model.ChipColor.*;
 
 public class Board{
@@ -10,8 +9,7 @@ public class Board{
 
     public Board(){
 
-        this.board = new ArrayList<Column>();
-
+        this.board = new ArrayList<>();
 
         board.add(new Column(BLACK,2));
         for (int i = 0; i < 4; i++){
@@ -43,7 +41,9 @@ public class Board{
         board.get(from).move(board.get(to));
     }
 
-
+    public Column get(int i){
+        return board.get(i);
+    }
 
     public List<Column> getBoard(){
         return this.board;
