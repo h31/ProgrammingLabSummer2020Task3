@@ -18,6 +18,7 @@ public class Main extends Application {
    private static Parent winTexture;
    private static int record;
    private Field field = new Field();
+   static Group root = new Group();
     static {
         try {
             record = Field.reader();
@@ -42,7 +43,6 @@ public class Main extends Application {
         InputStream iconStream = getClass().getResourceAsStream("/texture/icon.png");
         Image image = new Image(iconStream);
         primaryStage.getIcons().add(image);
-        Group root = new Group();
         root.getChildren().add(fieldTexture);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
