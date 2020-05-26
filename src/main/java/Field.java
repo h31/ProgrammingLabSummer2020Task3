@@ -5,10 +5,10 @@ class Field {
     private final static int size = 3;
     static int[][] field = new int[size + 1][size + 1];
     private static int[][] fieldOld = {{0, 0, 0, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
-    static Integer score = 0;
+    Integer score = 0;
 
 
-    private static void blockRandom() {
+    private void blockRandom() {
         int a = 0;
         int b = 4;
         int i = a + (int) (Math.random() * b);
@@ -21,7 +21,7 @@ class Field {
     }
 
 
-    static void left() {
+    void left() {
         for (int j = 0; j <= size; j++) {
             for (int k = 0; k < size - 1; k++) {
                 for (int i = 0; i < size; i++) {
@@ -46,10 +46,9 @@ class Field {
                 }
             }
         }
-        conditionBlock();
     }
 
-    static void right() {
+    void right() {
         for (int j = 0; j <= size; j++) {
             for (int k = 0; k < size - 1; k++) {
                 for (int i = size; i > 0; i--) {
@@ -74,10 +73,9 @@ class Field {
                 }
             }
         }
-        conditionBlock();
     }
 
-    static void up() {
+    void up() {
         for (int i = 0; i <= size; i++) {
             for (int k = 0; k < size - 1; k++) {
                 for (int j = 0; j < size; j++) {
@@ -102,10 +100,9 @@ class Field {
                 }
             }
         }
-        conditionBlock();
     }
 
-    static void down() {
+    void down() {
         for (int i = 0; i <= size; i++) {
             for (int k = 0; k < size - 1; k++) {
                 for (int j = size; j > 0; j--) {
@@ -130,10 +127,9 @@ class Field {
                 }
             }
         }
-        conditionBlock();
     }
 
-    private static void conditionBlock() {
+   void conditionBlock() {
         if (!Arrays.deepEquals(fieldOld, field)) {
             blockRandom();
             for (int i = 0; i <= size; i++)
@@ -141,7 +137,7 @@ class Field {
         }
     }
 
-    static boolean winCheck(int[][] field) {
+    boolean winCheck(int[][] field) {
         for (int i = 0; i <= size; i++)
             for (int j = 0; j <= size; j++)
                 if (field[i][j] == 2048) {
@@ -158,7 +154,7 @@ class Field {
         return record;
     }
 
-    static void writer(int record) throws IOException {
+    void writer(int record) throws IOException {
         File file = new File("input/record.txt");
         file.delete();
         BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));

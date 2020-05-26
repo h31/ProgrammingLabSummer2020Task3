@@ -17,7 +17,7 @@ public class Main extends Application {
    static Parent fieldTexture;
    private static Parent winTexture;
    private static int record;
-
+   private Field field = new Field();
     static {
         try {
             record = Field.reader();
@@ -51,33 +51,37 @@ public class Main extends Application {
             @Override
             public void handle(KeyEvent event) {
                    {
-                    if (Field.winCheck(Field.field)) {
+                    if (field.winCheck(Field.field)) {
                         root.getChildren().add(winTexture);
                     } else {
                         if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.S) {
-                            Field.down();
+                            field.down();
+                            field.conditionBlock();
                             Group group = Painter.draw(Field.field);
                             root.getChildren().add(group);
                         }
                         if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.W) {
-                            Field.up();
+                            field.up();
+                            field.conditionBlock();
                             Group group = Painter.draw(Field.field);
                             root.getChildren().add(group);
                         }
                         if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.D) {
-                            Field.right();
+                            field.right();
+                            field.conditionBlock();
                             Group group = Painter.draw(Field.field);
                             root.getChildren().add(group);
                         }
                         if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.A) {
-                            Field.left();
+                            field.left();
+                            field.conditionBlock();
                             Group group = Painter.draw(Field.field);
                             root.getChildren().add(group);
                         }
-                        if (Field.score > record){
-                            record = Field.score;
+                        if (field.score > record){
+                            record = field.score;
                             try {
-                                Field.writer(record);
+                                field.writer(record);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -87,7 +91,7 @@ public class Main extends Application {
                         rec.minHeight(20);
                         rec.setLayoutX(173);
                         rec.setLayoutY(3);
-                        Label score = new Label(String.valueOf(Field.score));
+                        Label score = new Label(String.valueOf(field.score));
                         score.minWidth(50);
                         score.minHeight(20);
                         score.setLayoutX(50);
