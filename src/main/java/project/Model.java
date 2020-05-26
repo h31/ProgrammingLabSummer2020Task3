@@ -22,7 +22,10 @@ public class Model {
     //Множество клеток, в которые можно поставить букву
     private static Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
 
-    public void fillField() throws IOException {
+    // ??? Множество занятых клеток
+    //private static Set<Pair<Integer, Integer>> filledCells = new HashSet<>();
+
+    public void fillField() {
         final String word = getFirstWord();
 
         for (int i = 0; i < 5; i++) {
@@ -34,9 +37,11 @@ public class Model {
         }
 
         for (int j = 0; j < 5; j++) {
+            field[1][j] = '+';
             possibleMoves.add(new Pair<>(1, j));
         }
         for (int j = 0; j < 5; j++) {
+            field[3][j] = '+';
             possibleMoves.add(new Pair<>(3, j));
         }
 
@@ -46,8 +51,26 @@ public class Model {
         secondPlayerScore = 0;
     }
 
-    private void refreshPossibleMoves(int i, int j) {
+    public void setPossibleMovesAround(int i, int j) {
+        Pair<Integer, Integer> oldCoordinates = new Pair<>(i, j);
+        possibleMoves.remove(oldCoordinates);
 
+        if (i < 4 && field[i + 1][j] != ' ') {
+            field[i + 1][j] = '+';
+            possibleMoves.add(new Pair<>(i + 1, j));
+        }
+        if (i > 0 && field[i - 1][j] != ' ') {
+            field[i - 1][j] = '+';
+            possibleMoves.add(new Pair<>(i - 1, j));
+        }
+        if (j < 4 && field[i][j + 1] != ' ') {
+            field[i][j + 1] = '+';
+            possibleMoves.add(new Pair<>(i, j + 1));
+        }
+        if (j > 0 && field[i][j - 1] != ' ') {
+            field[i][j - 1] = '+';
+            possibleMoves.add(new Pair<>(i, j - 1));
+        }
     }
 
 
@@ -67,9 +90,14 @@ public class Model {
         }
     }
 
-    private String getFirstWord() throws IOException {
+    private String getFirstWord()  {
         String filePath = "src/resources/five_let_words.txt";
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        final BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(filePath));
+        } catch (FileNotFoundException e) {
+            return "балда";
+        }
         int numOfLines = getNumberOfLines(filePath);
         int random = (int)(( Math.random() * numOfLines + 1));
         int i = 1;
@@ -81,6 +109,8 @@ public class Model {
                 i++;
             }
             res = string;
+        } catch (IOException e) {
+            return "балда";
         }
         return res;
     }
@@ -109,5 +139,9 @@ public class Model {
 
     public char getCharFromField(int i, int j) {
         return field[i][j];
+    }
+
+    public static Set<Pair<Integer, Integer>> getPossibleMoves() {
+        return possibleMoves;
     }
 }

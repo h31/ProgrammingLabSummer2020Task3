@@ -40,14 +40,23 @@ public class View extends Application {
         controller.skip.setLayoutX(900);
         controller.skip.setLayoutY(200);
 
+        controller.gridField.setLayoutX(20);
+        controller.gridField.setLayoutY(50);
+        controller.gridField.setGridLinesVisible(true);
+
         final Group root = new Group(controller.firstScoreText,
                 controller.secondScoreText, controller.firstPlayerText,
                 controller.secondPlayerText, controller.restart,
-                controller.skip);
+                controller.skip, controller.gridField);
 
         final Scene scene = new Scene(root, Color.CORNFLOWERBLUE);
         stage.setScene(scene);
 
+        controller.fillCanvas();
+        controller.start();
+
         stage.show();
+
+        controller.restart.setOnMouseClicked((e) -> controller.start());
     }
 }

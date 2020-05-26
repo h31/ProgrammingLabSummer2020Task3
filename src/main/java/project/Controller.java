@@ -22,7 +22,7 @@ public class Controller {
     final Button restart = new Button("Restart");
     final Button skip = new Button("Skip");
 
-    final GridPane gridPane = new GridPane();
+    final GridPane gridField = new GridPane();
 
     final Text whoseMove = new Text(0, 0, "");
 
@@ -30,15 +30,15 @@ public class Controller {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 canvases[i][j] = new Canvas(90, 90);
-                gridPane.add(canvases[i][j], j, i);
+                gridField.add(canvases[i][j], j, i);
             }
         }
     }
 
-    public void start() throws IOException {
+    public void start() {
         model.fillField();
-        for (int i = 0; i < 8; i++){
-            for (int j = 0; j < 8; j++)
+        for (int i = 0; i < 5; i++){
+            for (int j = 0; j < 5; j++)
                 redrawCell(i, j, model.getCharFromField(i, j));
         }
 
@@ -57,10 +57,12 @@ public class Controller {
         gc.setLineWidth(1.0);
         gc.strokeRect(0, 0, 90, 90);
 
-        gc.setFill(Color.BLACK);
-        gc.fillText(String.valueOf(newLetter).toUpperCase(), 30, 45);
+        gc.clearRect(0, 0, 90, 90);
+        gc.setGlobalAlpha(1.0);
 
-        //обновление возможных для хода клеток
+        gc.setFill(Color.BLACK);
+        gc.fillText(String.valueOf(newLetter).toUpperCase(), 40, 50);
+
     }
 
 }
