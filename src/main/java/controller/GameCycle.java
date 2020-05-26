@@ -48,6 +48,7 @@ public class GameCycle extends GameField {
         pauseButton.setLayoutY(300);
         pauseButton.setLayoutX(450);
 
+        //эффекты для кнопок
         Lighting lighting = new Lighting();
         DropShadow shadow = new DropShadow();
 
@@ -69,9 +70,13 @@ public class GameCycle extends GameField {
 
     private int keyPressedCount = 0;//отсчет нажатий клавиши
 
+    /**
+     * начало игры
+     */
     public void startGame() {
         figure = figures.get(random.nextInt(figures.size()));//выбор случайной фигуры из списка
 
+        //перерисвка поля и очищение клеток для новой игры
         if (endGame()) {
             repaintField();
             clearRow();
@@ -80,6 +85,7 @@ public class GameCycle extends GameField {
 
     public void keyController() {
         Timeline loop = new Timeline(new KeyFrame(Duration.millis(210), t -> {
+            //движение фигуры вниз и проверка остановки
             if (figure == figureI) {
                 figureI.moveDown();
 
@@ -116,7 +122,7 @@ public class GameCycle extends GameField {
                     keyPressedCount = 0;
                 }
             }
-
+            //обработка нажатий с клаввиатуры
             startButton.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.LEFT) {
                     if (figure == figureI) {
@@ -130,7 +136,6 @@ public class GameCycle extends GameField {
                     } else if (figure == figureZ) {
                         figureZ.moveLeft();
                     }
-
                 } else if (event.getCode() == KeyCode.RIGHT) {
                     if (figure == figureL) {
                         figureL.moveRight();

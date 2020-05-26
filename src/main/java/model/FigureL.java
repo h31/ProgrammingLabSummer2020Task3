@@ -25,6 +25,12 @@ public class FigureL extends Figure {
         column.setFill(Color.YELLOW);
     }
 
+    public double getColumnX() {
+        return column.getX();
+    }
+    public double getRowX(){
+        return row.getX();
+    }
     /**
      * Движение фигуры вниз
      */
@@ -35,6 +41,7 @@ public class FigureL extends Figure {
             column.setY(column.getY() + getDelta());
         }
     }
+
 
     /**
      * Передвижение влево и проверка столкновений
@@ -214,14 +221,16 @@ public class FigureL extends Figure {
     }
 
     public void changeFirstForm() {
-        column.setHeight(75);
-        row.setWidth(50);
-        column.setX(row.getX());
-        row.setY(column.getY() + 50);
+        if (cellRowY + 2 != 20 && getGameField()[cellRowY + 2][cellRowX] == Elements.EmptyCell) {
+            column.setHeight(75);
+            row.setWidth(50);
+            column.setX(row.getX());
+            row.setY(column.getY() + 50);
 
-        changedToFirstForm = true;
-        changedToSecondForm = false;
-        changedToThirdForm = false;
+            changedToFirstForm = true;
+            changedToSecondForm = false;
+            changedToThirdForm = false;
+        }
     }
 
     public void changeSecondForm() {
@@ -249,6 +258,7 @@ public class FigureL extends Figure {
             changedToThirdForm = true;
         }
     }
+
     public void returnForm() {
         row.setWidth(75);
         column.setWidth(25);
@@ -318,13 +328,17 @@ public class FigureL extends Figure {
     }
 
     public boolean intersectsDefaultForm() {
+        cellRowY = (int) (row.getY() / getDelta());
+        cellRowX = (int) (row.getX() / getDelta());
+        cellColumnX = (int) (column.getX() / getDelta());
+        cellColumnY = (int) (column.getY() / getDelta());
+
         boolean intersection = false;
         if (!changedToFirstForm && !changedToSecondForm && !changedToThirdForm) {
 
             if (cellColumnY + 2 == getGameField().length) {
                 intersection = true;
-            }
-            else if (getGameField()[cellColumnY + 2][cellRowX] != Elements.EmptyCell) {
+            } else if (getGameField()[cellColumnY + 2][cellRowX] != Elements.EmptyCell) {
                 intersection = true;
             } else if (getGameField()[cellColumnY + 2][cellRowX + 1] != Elements.EmptyCell) {
                 intersection = true;

@@ -32,8 +32,20 @@ public class FigureZ extends Figure {
         }
     }
 
+    public double getUpRowX() {
+        return upRow.getX();
+    }
+
+    public double getDownRowX() {
+        return downRow.getX();
+    }
+
     @Override
     public void moveLeft() {
+        cellUpRowX = (int) (upRow.getX() / getDelta());
+        cellDownRowX = (int) (downRow.getX() / getDelta());
+        cellDownRowY = (int) (downRow.getY() / getDelta());
+        cellUpRowY = (int) (upRow.getY() / getDelta());
         if (cellUpRowY != 20 && cellDownRowY > 0 && cellDownRowX > 0) {
             upRow.setX(upRow.getX() - getDelta());
             downRow.setX(downRow.getX() - getDelta());
@@ -81,6 +93,10 @@ public class FigureZ extends Figure {
 
     @Override
     public void moveRight() {
+        cellUpRowX = (int) (upRow.getX() / getDelta());
+        cellDownRowX = (int) (downRow.getX() / getDelta());
+        cellDownRowY = (int) (downRow.getY() / getDelta());
+        cellUpRowY = (int) (upRow.getY() / getDelta());
         if (cellUpRowY != 20 && cellDownRowY > 0 && cellUpRowX + 2 != 16) {
             upRow.setX(upRow.getX() + getDelta());
             downRow.setX(downRow.getX() + getDelta());
@@ -127,15 +143,17 @@ public class FigureZ extends Figure {
     }
 
     public void changeForm() {
-        upRow.setWidth(25);
-        upRow.setHeight(50);
+        if (cellDownRowY + 2 != 20) {
+            upRow.setWidth(25);
+            upRow.setHeight(50);
 
-        downRow.setHeight(50);
-        downRow.setWidth(25);
+            downRow.setHeight(50);
+            downRow.setWidth(25);
 
-        downRow.setX(upRow.getX() + 25);
+            downRow.setX(upRow.getX() + 25);
 
-        changedForm = true;
+            changedForm = true;
+        }
     }
 
     public void returnForm() {
@@ -170,13 +188,17 @@ public class FigureZ extends Figure {
     }
 
     public boolean intersectsDefaultForm() {
+        cellUpRowX = (int) (upRow.getX() / getDelta());
+        cellDownRowX = (int) (downRow.getX() / getDelta());
+        cellDownRowY = (int) (downRow.getY() / getDelta());
+        cellUpRowY = (int) (upRow.getY() / getDelta());
         boolean intersection = false;
         if (!changedForm) {
             //столкновение Z c границей
             if (cellDownRowY + 1 == getGameField().length) {
                 intersection = true;
             }
-            //столкновение Z c Z
+
             else if (cellUpRowY > 0 && getGameField()[cellUpRowY + 1][cellUpRowX + 1] != Elements.EmptyCell) {
                 intersection = true;
             } else if (cellDownRowY > 0 && getGameField()[cellDownRowY + 1][cellDownRowX] != Elements.EmptyCell) {

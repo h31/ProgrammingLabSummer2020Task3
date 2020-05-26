@@ -6,48 +6,65 @@ import view.Tetris;
 
 public class FigureI extends Figure {
     private final GameField field = new GameField();
-    private final Rectangle figureI = new Rectangle(150, -25, field.getWidthCell() * 4, field.getHeightCell());
+    private final Rectangle row = new Rectangle(150, -25, field.getWidthCell() * 4, field.getHeightCell());
     private int cellX;
     private int cellY;
     private boolean changed;
 
     public FigureI() {
         //задание цвета падающей фигуре
-        figureI.setFill(Color.GREENYELLOW);
+        row.setFill(Color.GREENYELLOW);
 
         //добавление в граф сцены
         Tetris tetris = new Tetris();
-        getChildren().addAll(tetris.getCanvas(), figureI);
+        getChildren().addAll(tetris.getCanvas(), row);
     }
 
+    public double getRowX(){
+        return row.getX();
+    }
+    public double getRowY(){
+        return row.getY();
+    }
+    /**
+     * Движение фигуры вниз
+     */
+    @Override
+    public void moveDown() {
+        if (!endGame()) {
+            row.setY(row.getY() + getDelta());
+        }
+    }
     /**
      * Проверка возможности движения влево
      * и само движение
      */
     @Override
     public void moveLeft() {
+        cellY = (int) (row.getY() / getDelta());
+        cellX = (int) (row.getX() / getDelta());//получение ячейки Х из координаты фигуры
         if (cellY > 0 && cellY != 20) {
-            figureI.setX(figureI.getX() - getDelta());
+            row.setX(row.getX() - getDelta());
 
             if (!changed) {
-                if (figureI.getX() < 0) {
-                    figureI.setX(figureI.getX() + getDelta());
+                if (row.getX() < 0) {
+                    row.setX(row.getX() + getDelta());
                 } else if (getGameField()[cellY][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + getDelta());
+                    row.setX(row.getX() + getDelta());
                 }
             } else {
-                if (figureI.getX() < 0) {
-                    figureI.setX(figureI.getX() + getDelta());
+                if (row.getX() < 0) {
+                    row.setX(row.getX() + getDelta());
                 } else if (getGameField()[cellY][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + getDelta());
+                    row.setX(row.getX() + getDelta());
                 } else if (getGameField()[cellY + 1][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + getDelta());
+                    row.setX(row.getX() + getDelta());
                 } else if (getGameField()[cellY + 2][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + getDelta());
+                    row.setX(row.getX() + getDelta());
                 } else if (getGameField()[cellY + 3][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + getDelta());
+                    row.setX(row.getX() + getDelta());
                 } else if (getGameField()[cellY + 4][cellX - 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() + getDelta());
+                    row.setX(row.getX() + getDelta());
                 }
             }
         }
@@ -59,45 +76,36 @@ public class FigureI extends Figure {
      */
     @Override
     public void moveRight() {
-        cellX = (int) (figureI.getX() / getDelta());
-        cellY = (int) (figureI.getY() / getDelta());
+        cellX = (int) (row.getX() / getDelta());
+        cellY = (int) (row.getY() / getDelta());
 
         if (cellY > 0 && cellY + 4 != 20) {
-            figureI.setX(figureI.getX() + getDelta());
+            row.setX(row.getX() + getDelta());
 
             if (!changed) {
-                if (figureI.getX() == 325) {
-                    figureI.setX(figureI.getX() - getDelta());
+                if (row.getX() == 325) {
+                    row.setX(row.getX() - getDelta());
                 } else if (getGameField()[cellY][cellX + 4] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - getDelta());
+                    row.setX(row.getX() - getDelta());
                 }
             } else {
-                if (figureI.getX() == 400) {
-                    figureI.setX(figureI.getX() - getDelta());
+                if (row.getX() == 400) {
+                    row.setX(row.getX() - getDelta());
                 } else if (getGameField()[cellY][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - getDelta());
+                    row.setX(row.getX() - getDelta());
                 } else if (getGameField()[cellY + 1][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - getDelta());
+                    row.setX(row.getX() - getDelta());
                 } else if (getGameField()[cellY + 2][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - getDelta());
+                    row.setX(row.getX() - getDelta());
                 } else if (getGameField()[cellY + 3][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - getDelta());
+                    row.setX(row.getX() - getDelta());
                 } else if (getGameField()[cellY + 4][cellX + 1] != Elements.EmptyCell) {
-                    figureI.setX(figureI.getX() - getDelta());
+                    row.setX(row.getX() - getDelta());
                 }
             }
         }
     }
 
-    /**
-     * Движение фигуры вниз
-     */
-    @Override
-    public void moveDown() {
-        if (!endGame()) {
-            figureI.setY(figureI.getY() + getDelta());
-        }
-    }
 
     public void changeForm() {
         if (cellY + 3 != 20 && cellY + 2 != 20 && cellY + 1 != 20
@@ -106,8 +114,8 @@ public class FigureI extends Figure {
                 && getGameField()[cellY + 2][cellX] == Elements.EmptyCell
                 && getGameField()[cellY + 3][cellX] == Elements.EmptyCell
         ) {
-            figureI.setWidth(25);
-            figureI.setHeight(100);
+            row.setWidth(25);
+            row.setHeight(100);
 
             changed = true;
         }
@@ -122,8 +130,8 @@ public class FigureI extends Figure {
                 && getGameField()[cellY][cellX + 1] == Elements.EmptyCell
                 && getGameField()[cellY][cellX + 2] == Elements.EmptyCell
                 && getGameField()[cellY][cellX + 3] == Elements.EmptyCell) {
-            figureI.setHeight(25);
-            figureI.setWidth(100);
+            row.setHeight(25);
+            row.setWidth(100);
 
             changed = false;
         }
@@ -136,13 +144,13 @@ public class FigureI extends Figure {
      */
     public boolean intersectsVertical() {
         boolean intersection = false;
-        cellY = (int) (figureI.getY() / getDelta());
+        cellY = (int) (row.getY() / getDelta());
+        cellY = (int) (row.getY() / getDelta());
 
         if (changed) {
             if (cellY == 17) {
                 intersection = true;
             }
-            //столкновение вертикальной I c I
             else if (getGameField()[cellY + 3][cellX] != Elements.EmptyCell) {
                 intersection = true;
             }
@@ -156,7 +164,8 @@ public class FigureI extends Figure {
      */
     public boolean intersectsDefaultForm() {
         boolean intersection = false;
-        cellX = (int) (figureI.getX() / getDelta());//получение ячейки Х из координаты фигуры
+        cellX = (int) (row.getX() / getDelta());//получение ячейки Х из координаты фигуры
+        cellY = (int) (row.getY() / getDelta());
 
         if (!changed) {
             //столкновение с границей
@@ -185,8 +194,8 @@ public class FigureI extends Figure {
      */
     @Override
     public boolean stop() {
-        cellX = (int) (figureI.getX() / getDelta());
-        cellY = (int) (figureI.getY() / getDelta());
+        cellX = (int) (row.getX() / getDelta());
+        cellY = (int) (row.getY() / getDelta());
         boolean figureSet = false;
 
         //проверка упала фигура на нижнюю грань или столкнулась с другой фигурой
@@ -207,10 +216,10 @@ public class FigureI extends Figure {
                 figureSet = true;
 
                 //возвращение значений
-                figureI.setY(-25);
-                figureI.setX(150);
-                figureI.setHeight(25);
-                figureI.setWidth(100);
+                row.setY(-25);
+                row.setX(150);
+                row.setHeight(25);
+                row.setWidth(100);
                 changed = false;
                 setDelta(25);
             }

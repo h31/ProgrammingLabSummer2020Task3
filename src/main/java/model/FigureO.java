@@ -18,6 +18,9 @@ public class FigureO extends Figure {
         square.setFill(Color.RED);
     }
 
+    public double getSquareX() {
+        return square.getX();
+    }
 
     @Override
     public void moveDown() {
@@ -64,6 +67,8 @@ public class FigureO extends Figure {
     }
 
     public boolean intersectsDefaultForm() {
+        cellX = (int) (square.getX() / delta);
+        cellY = (int) (square.getY() / delta);
         boolean intersection = false;
 
         //столкновение O c нижней границей
@@ -71,33 +76,9 @@ public class FigureO extends Figure {
             intersection = true;
         }
         //столкновение O c O
-        else if (getGameField()[cellY + 2][cellX] == Elements.FigureO) {
+        else if (getGameField()[cellY + 2][cellX] != Elements.EmptyCell) {
             intersection = true;
-        } else if (getGameField()[cellY + 2][cellX + 1] == Elements.FigureO) {
-            intersection = true;
-        }
-        //столкновение O c I
-        else if (getGameField()[cellY + 2][cellX] == Elements.FigureI) {
-            intersection = true;
-        } else if (getGameField()[cellY + 2][cellX + 1] == Elements.FigureI) {
-            intersection = true;
-        }
-        //столкновение O с T
-        else if (getGameField()[cellY + 2][cellX] == Elements.FigureT) {
-            intersection = true;
-        } else if (getGameField()[cellY + 2][cellX + 1] == Elements.FigureT) {
-            intersection = true;
-        }
-        //столкновение O c L
-        else if (getGameField()[cellY + 2][cellX] == Elements.FigureL) {
-            intersection = true;
-        } else if (getGameField()[cellY + 2][cellX + 1] == Elements.FigureL) {
-            intersection = true;
-        }
-        //столкновение O c Z
-        else if (getGameField()[cellY + 2][cellX] == Elements.FigureZ) {
-            intersection = true;
-        } else if (getGameField()[cellY + 2][cellX + 1] == Elements.FigureZ) {
+        } else if (getGameField()[cellY + 2][cellX + 1] != Elements.EmptyCell) {
             intersection = true;
         }
         return intersection;

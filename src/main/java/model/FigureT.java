@@ -24,6 +24,14 @@ public class FigureT extends Figure {
         column.setFill(Color.PURPLE);
     }
 
+    public double getRowX() {
+        return row.getX();
+    }
+
+    public double getColumnX() {
+        return column.getX();
+    }
+
     @Override
     public void moveDown() {
         if (!endGame()) {
@@ -231,6 +239,12 @@ public class FigureT extends Figure {
     }
 
     public boolean intersectsDefaultForm() {
+        cellRowX = (int) (row.getX() / getDelta());
+        cellColumnX = (int) (column.getX() / getDelta());
+
+        cellRowY = (int) (row.getY() / getDelta());
+        cellColumnY = (int) (column.getY() / getDelta());
+
         boolean intersection = false;
         if (!changedToThirdForm && !changedToSecondForm && !changedToFirstForm) {
 
