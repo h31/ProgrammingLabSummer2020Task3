@@ -23,9 +23,7 @@ public class FigureI extends Figure {
     public double getRowX(){
         return row.getX();
     }
-    public double getRowY(){
-        return row.getY();
-    }
+
     /**
      * Движение фигуры вниз
      */

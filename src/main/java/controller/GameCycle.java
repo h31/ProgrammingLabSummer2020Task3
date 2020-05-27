@@ -75,16 +75,20 @@ public class GameCycle extends GameField {
      */
     public void startGame() {
         figure = figures.get(random.nextInt(figures.size()));//выбор случайной фигуры из списка
-
         //перерисвка поля и очищение клеток для новой игры
-        if (endGame()) {
-            repaintField();
-            clearRow();
-        }
+
+
+        repaintField();
+        drawFigure();
+
+        // if (endGame()) {
+        //   repaintField();
+        //  drawFigure();
+        //  }
     }
 
     public void keyController() {
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(210), t -> {
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(150), t -> {
             //движение фигуры вниз и проверка остановки
             if (figure == figureI) {
                 figureI.moveDown();
@@ -193,9 +197,12 @@ public class GameCycle extends GameField {
                 }
             });
 
+
+          //  repaintField();
             endGame();
             clearRow();
             drawFigure();
+
 
         }));
         loop.setCycleCount(Timeline.INDEFINITE);

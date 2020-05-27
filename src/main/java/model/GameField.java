@@ -57,7 +57,7 @@ public class GameField extends Pane {
     public void repaintField() {
         for (int i = 0; i < columnSize; i++) {
             for (int j = 0; j < rowSize; j++) {
-                gameField[i][j] = Elements.EmptyCell;
+                getGameField()[i][j] = Elements.EmptyCell;
             }
         }
     }
@@ -76,7 +76,7 @@ public class GameField extends Pane {
 
         tetris.getCanvas().setStyle("-fx-background-color: #0a0a0a");
 
-        score.setTextFill(Color.GREEN);
+        score.setTextFill(Color.YELLOW);
         score.setFont(new Font(21));
         score.setLayoutX(500);
         score.setLayoutY(20);
@@ -96,13 +96,18 @@ public class GameField extends Pane {
     /**
      * @return закончилась ли игра
      */
+
+
     public boolean endGame() {
         boolean ended = false;
         for (int i = 0; i < rowSize; i++) {
-            if (gameField[1][i] != Elements.EmptyCell) {
+            if (getGameField()[1][i] != Elements.EmptyCell) {
                 delta = 0;
-                endGame.setVisible(true);
                 ended = true;
+                break;
+            }
+            else {
+                ended = false;
             }
         }
         endGame.setVisible(ended);
@@ -124,7 +129,6 @@ public class GameField extends Pane {
                     break;
                 }
             }
-
             //Очищение и перемещение фигур
             if (count == 16) {
                 for (int k = i; k > 0; k--) {
@@ -160,7 +164,7 @@ public class GameField extends Pane {
                 } else if (getGameField()[i][j] == Elements.FigureT) {
                     tetris.getCanvas().getGraphicsContext2D().setFill(Color.PURPLE);
                     tetris.getCanvas().getGraphicsContext2D().fillRect(j * 25, i * 25, 25, 25);
-                } else if (gameField[i][j]==Elements.EmptyCell) {
+                } else{
                     tetris.getCanvas().getGraphicsContext2D().clearRect(j * 25, i * 25, 25, 25);
                 }
             }

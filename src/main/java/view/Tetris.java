@@ -6,11 +6,17 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.GameField;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 
 public class Tetris extends Application {
     private final Canvas canvas = new Canvas(400, 500);
@@ -22,18 +28,33 @@ public class Tetris extends Application {
         return canvas;
     }
 
-    public Tetris() {
+    public Tetris()  {
         canvas.getGraphicsContext2D();
     }
 
+
+
+
     @Override
-    public void start(final Stage primaryStage) {
+    public void start(final Stage primaryStage) throws FileNotFoundException {
         GameField gameField = new GameField();
         GameCycle gameCycle = new GameCycle();
 
+        //установка картинки на задний фон
+        Image image = new Image(new FileInputStream("C:\\Users\\timco\\IdeaProjects\\ProgrammingLabSummer2020Task3\\src\\main\\resources\\image.jpg"),
+                600,500,false,true);
+
+        BackgroundSize backgroundSize = new BackgroundSize(500, 600,false,false,true,false);
+
+        Background imageBack = new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,backgroundSize));
+
+
         scoreLabel.setText("Score");
-        scoreLabel.setTextFill(Color.BLUE);
-        scoreLabel.setFont(new Font(21));
+        scoreLabel.setTextFill(Color.YELLOW);
+
+        scoreLabel.setFont(new Font(23));
+
         scoreLabel.setLayoutX(420);
         scoreLabel.setLayoutY(20);
 
@@ -42,6 +63,7 @@ public class Tetris extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        gameRoot.setBackground(imageBack);
         gameRoot.getChildren().addAll(scoreLabel, gameCycle, gameField);
     }
 

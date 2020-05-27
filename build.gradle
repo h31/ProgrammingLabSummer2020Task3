@@ -25,4 +25,4 @@ javafx {
     modules('javafx.controls','javafx.fxml')
     version = '11.0.2'
 }
-mainClassName = 'org.example.Tetris'
+mainClassName = 'view.Tetris'
