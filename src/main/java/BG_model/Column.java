@@ -7,20 +7,25 @@ public class Column {
     private Stack<Chip> column;
 
     Column() {
-        this.column = new Stack<Chip>();
+        this.column = new Stack<>();
     }
 
     Column(ChipColor color, int size) {
         if (size < 1) throw new IllegalArgumentException("");
-        this.column = new Stack<Chip>();
+        this.column = new Stack<>();
         for (int i=0;i<size;i++){
             this.column.push(new Chip(color));
         }
     }
 
-    void move(Column newColumn){
-        newColumn.put(new Chip(this.onTop()));
-        this.column.pop();
+    boolean move(Column newColumn){
+        if (this.size() != 0) {
+            newColumn.put(new Chip(this.onTop()));
+            this.column.pop();
+            return true;
+        } else {
+            return false;
+        }
 
     }
 

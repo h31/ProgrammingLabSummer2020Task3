@@ -7,8 +7,9 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.List;
 
-import static BG_model.ChipColor.BLACK;
-import static BG_model.ChipColor.WHITE;
+
+import static BG_model.ChipColor.*;
+
 
 public class Move {
     private static final int[] prevI = {-1};
@@ -16,8 +17,8 @@ public class Move {
 
     public static void setNormalMove(Turn t, Board board) {
         final ChipColor[] color = new ChipColor[1];
-        board.getGrid().getChildren().get(25).setStyle("-fx-background-color: none");
-        board.getGrid().getChildren().get(24).setStyle("-fx-background-color: none");
+        board.getGrid().getChildren().get(25).setStyle("-fx-background-color: #808080");
+        board.getGrid().getChildren().get(24).setStyle("-fx-background-color: #808080");
 
         for (int i = 0; i < 24; i++) {
 
@@ -44,7 +45,7 @@ public class Move {
                         }
                     }
                     firstClick[0] = true;
-                    board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                    board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                     prevI[0] = -1;
                     color[0] = null;
                 }
@@ -88,7 +89,8 @@ public class Move {
     }
 
     static void setEndspielMove(ChipColor color, Turn t, Board board) {
-        final int[] maxMove = {t.getMoveList().get(1) > t.getMoveList().get(0) ? t.getMoveList().get(1) : t.getMoveList().get(0)};
+        final int[] maxMove = {0};
+        if (t.getMoveList().size() > 1 && t.getMoveList().get(1) > maxMove[0]) maxMove[0] = t.getMoveList().get(1);
         if (color == WHITE) {
             for (int i = 0; i < 6; i++) {
                 endSpielMoveW(maxMove, i, t, board);
@@ -104,15 +106,15 @@ public class Move {
     }
 
     private static void endSpielMoveW(int[] maxMove, int to, Turn t, Board board) {
-        if (board.getBoard().get(to).onTop() == WHITE) {
+        if (board.getBoard().get(to).onTop() != BLACK) {
             if (t.getMoveList().indexOf(to + 1) < 2 && t.getMoveList().contains(to + 1)) {
                 board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
                     if (firstClick[0]) {
                         if (board.getBoard().get(to).size() != 0 && WHITE == board.getBoard().get(to).onTop()) {
                             board.getBoard().get(to).remove();
-                            if (board.getBoard().get(to).size() == 0 && isWin(WHITE,board)) t.winnerAlert(board);
+                            if (board.getBoard().get(to).size() == 0 && isWin(WHITE, board)) t.winnerAlert(board);
                             Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
-                            prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), true));
+                            prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), true));
                             normalMoveListChange(to + 1, t, board);
 
                             if (t.getMoveList().size() != 0)
@@ -143,7 +145,7 @@ public class Move {
                             }
                         }
                         firstClick[0] = true;
-                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                         prevI[0] = -1;
                     }
                 });
@@ -160,9 +162,9 @@ public class Move {
                         if (firstClick[0]) {
                             if (board.getBoard().get(to).size() != 0 && WHITE == board.getBoard().get(to).onTop()) {
                                 board.getBoard().get(to).remove();
-                                if (board.getBoard().get(to).size() == 0 && isWin(WHITE,board)) t.winnerAlert(board);
+                                if (board.getBoard().get(to).size() == 0 && isWin(WHITE, board)) t.winnerAlert(board);
                                 Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
-                                prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), true));
+                                prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), true));
                                 normalMoveListChange(maxMove[0], t, board);
 
                                 if (t.getMoveList().size() != 0)
@@ -194,7 +196,7 @@ public class Move {
                                 }
                             }
                             firstClick[0] = true;
-                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                             prevI[0] = -1;
                         }
                     });
@@ -216,7 +218,7 @@ public class Move {
                                 }
                             }
                             firstClick[0] = true;
-                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                             prevI[0] = -1;
                         }
                     });
@@ -248,7 +250,7 @@ public class Move {
                             }
                         }
                         firstClick[0] = true;
-                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                         prevI[0] = -1;
 
                     }
@@ -259,15 +261,15 @@ public class Move {
     }
 
     private static void endSpielMoveB(int[] maxMove, int to, Turn t, Board board) {
-        if (board.getBoard().get(to).onTop() == BLACK) {
+        if (board.getBoard().get(to).onTop() != WHITE) {
             if (t.getMoveList().indexOf(24 - to) < 2 && t.getMoveList().contains(24 - to)) {
                 board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
                     if (firstClick[0]) {
                         if (board.getBoard().get(to).size() != 0 && BLACK == board.getBoard().get(to).onTop()) {
                             board.getBoard().get(to).remove();
-                            if (board.getBoard().get(to).size() == 0 && isWin(BLACK,board)) t.winnerAlert(board);
+                            if (board.getBoard().get(to).size() == 0 && isWin(BLACK, board)) t.winnerAlert(board);
                             Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
-                            prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), false));
+                            prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), false));
                             normalMoveListChange(24 - to, t, board);
                             if (t.getMoveList().size() != 0)
                                 maxMove[0] = t.getMoveList().get(0);
@@ -296,7 +298,7 @@ public class Move {
                             }
                         }
                         firstClick[0] = true;
-                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                         prevI[0] = -1;
                     }
                 });
@@ -313,9 +315,9 @@ public class Move {
                         if (firstClick[0]) {
                             if (board.getBoard().get(to).size() != 0 && BLACK == board.getBoard().get(to).onTop()) {
                                 board.getBoard().get(to).remove();
-                                if (board.getBoard().get(to).size() == 0 && isWin(BLACK,board)) t.winnerAlert(board);
+                                if (board.getBoard().get(to).size() == 0 && isWin(BLACK, board)) t.winnerAlert(board);
                                 Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
-                                prevNode.getChildren().set(0, board.column(board.getBoard().getBoard().get(to), false));
+                                prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), false));
                                 normalMoveListChange(maxMove[0], t, board);
                                 if (t.getMoveList().size() != 0)
                                     maxMove[0] = t.getMoveList().get(0);
@@ -345,7 +347,7 @@ public class Move {
                                 }
                             }
                             firstClick[0] = true;
-                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                             prevI[0] = -1;
                         }
                     });
@@ -366,7 +368,7 @@ public class Move {
                                 }
                             }
                             firstClick[0] = true;
-                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                            board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                             prevI[0] = -1;
                         }
                     });
@@ -394,7 +396,7 @@ public class Move {
                             }
                         }
                         firstClick[0] = true;
-                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: none");
+                        board.getGrid().getChildren().get(prevI[0]).setStyle("-fx-background-color: #cd853f");
                         prevI[0] = -1;
 
                     }
@@ -404,11 +406,11 @@ public class Move {
 
     }
 
-    private static boolean isWin (ChipColor color, Board board){
-            for (int i = 5;i>=0;i--){
-                if (board.getBoard().get(color ==WHITE? i:23-i).size() != 0) return false;
-            }
-            return true;
+    private static boolean isWin(ChipColor color, Board board) {
+        for (int i = 5; i >= 0; i--) {
+            if (board.getBoard().get(color == WHITE ? i : 23 - i).size() != 0) return false;
+        }
+        return true;
 
     }
 
@@ -431,9 +433,9 @@ public class Move {
         }
         board.getBoard().move(from, to);
         Pane prevNode = (Pane) board.getGrid().getChildren().get(from);
-        prevNode.getChildren().set(0, board.column(board.getBoard().get(from), from == 25 || from < 12));
+        prevNode.getChildren().set(0, Board.column(board.getBoard().get(from), from == 25 || from < 12));
         Pane node = (Pane) board.getGrid().getChildren().get(to);
-        node.getChildren().set(0, board.column(board.getBoard().get(to), to < 12));
+        node.getChildren().set(0, Board.column(board.getBoard().get(to), to < 12));
     }
 
     private static void toBarMove(int from, Board board, Turn t) {
@@ -446,9 +448,9 @@ public class Move {
         t.setNotEmptyBar(true, color.ordinal());
         board.getBoard().move(from, color.ordinal() + 24);
         Pane prevNode = (Pane) board.getGrid().getChildren().get(from);
-        prevNode.getChildren().set(0, board.column(board.getBoard().get(from), from < 12));
+        prevNode.getChildren().set(0, Board.column(board.getBoard().get(from), from < 12));
         Pane node = (Pane) board.getGrid().getChildren().get(color.ordinal() + 24);
-        node.getChildren().set(0, board.column(board.getBoard().get(color.ordinal() + 24), color.ordinal() == 1));
+        node.getChildren().set(0, Board.column(board.getBoard().get(color.ordinal() + 24), color.ordinal() == 1));
     }
 
     private static void normalMoveListChange(int moveLength, Turn t, Board board) {

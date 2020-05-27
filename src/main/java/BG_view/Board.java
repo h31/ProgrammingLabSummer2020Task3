@@ -49,50 +49,51 @@ public class Board {
             new Pair<>(12, 1)
     );
     private BG_model.Board board = new BG_model.Board();
-    private GridPane grid = new GridPane();
+    private GridPane grid;
     private Turn t;
-    private List<Integer> homes = Arrays.asList(15,15);
+    private List<Integer> homes = Arrays.asList(5,5);
 
     Board(Turn t) {
         this.t = t;
+        grid = board();
     }
 
 
-    private Button gButton() {
+    private Button turnButton() {
         Button btn = new Button();
-        btn.setText("New\nGame");
+        btn.setText("Next\nTurn");
+
         btn.setMaxWidth(Double.MAX_VALUE);
         btn.setMaxHeight(Double.MAX_VALUE);
-        btn.setStyle("-fx-background-color: #00FF00");
-        btn.setOnAction(event -> {
-            btn.setStyle("-fx-background-color: grey");
-            btn.setText("Next\nTurn");
-            t.startTurn(this);
-        });
+        btn.setOnAction(event -> t.startTurn(this));
         return btn;
     }
 
-    GridPane board() {
+    private GridPane board() {
         grid = grid();
         for (int i = 0; i < 12; i++) {
             Pair<Integer, Integer> colID = columnList.get(i);
             Pane node = new Pane();
             node.getChildren().add(column(board.get(i), true));
             grid.add(node, colID.getKey(), colID.getValue());
+            grid.getChildren().get(i).setStyle("-fx-background-color: #cd853f");
         }
         for (int i = 12; i < 24; i++) {
             Pair<Integer, Integer> colID = columnList.get(i);
             Pane node = new Pane();
             node.getChildren().add(column(board.get(i), false));
             grid.add(node, colID.getKey(), colID.getValue());
+            grid.getChildren().get(i).setStyle("-fx-background-color: #cd853f");
         }
         Pane wb = new Pane();
         wb.getChildren().add(column(board.get(24), false));
         grid.add(wb, columnList.get(24).getKey(), columnList.get(24).getValue());
+        grid.getChildren().get(24).setStyle("-fx-background-color: #808080");
         Pane bb = new Pane();
         bb.getChildren().add(column(board.get(24), true));
         grid.add(bb, columnList.get(25).getKey(), columnList.get(25).getValue());
-        grid.add(gButton(), 13, 1);
+        grid.getChildren().get(25).setStyle("-fx-background-color: #808080");
+        grid.add(turnButton(), 13, 1);
 
 
         Move.setNormalMove(t, this);
@@ -118,7 +119,7 @@ public class Board {
         return grid;
     }
 
-    public VBox column(Column mColumn, boolean bottomLine) {
+     public static VBox column(Column mColumn, boolean bottomLine) {
         VBox vColumn = new VBox();
         vColumn.setSpacing(0);
         boolean over = false;
@@ -146,7 +147,7 @@ public class Board {
 
     }
 
-    private Canvas chipCanvas(ChipColor color) {
+    public static Canvas chipCanvas(ChipColor color) {
         Canvas canvas = new Canvas(CHIP_SIZE, CHIP_SIZE);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Image chip;
@@ -164,7 +165,7 @@ public class Board {
         return canvas;
     }
 
-    private Canvas columnOverFlow(int i) {
+    private static Canvas columnOverFlow(int i) {
         Canvas canvas = new Canvas(CHIP_SIZE, CHIP_SIZE);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 

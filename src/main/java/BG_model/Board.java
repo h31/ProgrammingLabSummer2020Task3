@@ -37,8 +37,9 @@ public class Board{
         board.add(new Column());
     }
 
-    public void move (int from, int to){
-        board.get(from).move(board.get(to));
+    public boolean move (int from, int to){
+
+        return board.get(from).move(board.get(to));
     }
 
     public Column get(int i){

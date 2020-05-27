@@ -22,42 +22,44 @@ import java.util.Optional;
 
 import static BG_view.Board.CHIP_SIZE;
 
-public class Turn  {
+public class Turn {
     private int turnCount = 0;
     private List<Integer> moveList = new ArrayList<>();
-    private List<Boolean> notEmptyBar = Arrays.asList(false,false);
+    private List<Boolean> notEmptyBar = Arrays.asList(false, false);
 
 
-    void setNotEmptyBar(boolean notEmptyBar, int i){
+    void setNotEmptyBar(boolean notEmptyBar, int i) {
         this.notEmptyBar.set(i, notEmptyBar);
     }
 
-    public void startTurn(Board board){
+    public void startTurn(Board board) {
         turnCount++;
+        moveList(diceRoll());
+        if (notEmptyBar.get(playerNumber())) {
+            Move.setBarMove(playerNumber() == 0 ? ChipColor.WHITE : ChipColor.BLACK, this, board);
+        } else if (board.getHomes().get(playerNumber()) == 15) {
+            Move.setEndspielMove(playerNumber() == 0 ? ChipColor.WHITE : ChipColor.BLACK, this, board);
+        } else Move.setNormalMove(this, board);
+
         newTurnAlert();
-        List<Integer> moveList = moveList(diceRoll());
-        if (notEmptyBar.get(playerNumber())){
-            Move.setBarMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK, this,board);
-        } else if (board.getHomes().get(playerNumber()) == 15){
-            Move.setEndspielMove(playerNumber() == 0?ChipColor.WHITE : ChipColor.BLACK,this,board);
-        }else Move.setNormalMove(this,board);
-
-
-        board.getGrid().add(diceView(),13,0);
+        board.getGrid().add(diceView(), 13, 0);
     }
 
     private void newTurnAlert() {
+
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Turn:"+(turnCount+1)/2);
-        alert.setHeaderText("Player "+ (playerNumber()+1) +" turn");
+        alert.setTitle("Turn:" + (turnCount + 1) / 2);
+        alert.setHeaderText("Player " + (playerNumber() + 1) + " turn");
         alert.setContentText(null);
         alert.showAndWait();
+
+
     }
 
-    void winnerAlert(Board board){
+    void winnerAlert(Board board) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Congratulations");
-        alert.setHeaderText("Player "+ (playerNumber()+1) +" wins");
+        alert.setHeaderText("Player " + (playerNumber() + 1) + " wins");
         alert.setContentText("Start new game ?");
 
         Optional<ButtonType> option = alert.showAndWait();
@@ -72,70 +74,70 @@ public class Turn  {
         }
     }
 
-    private int[] diceRoll(){
-        int d1=(int) (Math.random()*6) + 1;
-        int d2=(int) (Math.random()*6) + 1;
-        if (d1 == d2) return new int[]{d1,d1,d1,d1};
+    private int[] diceRoll() {
+        int d1 = (int) (Math.random() * 6) + 1;
+        int d2 = (int) (Math.random() * 6) + 1;
+        if (d1 == d2) return new int[]{d1, d1, d1, d1};
         else return new int[]{d1, d2};
 
     }
 
-    private List<Integer> moveList (int[] dices){
+    private void moveList(int[] dices) {
         moveList = new ArrayList<>();
-        if (dices.length == 2){
+        if (dices.length == 2) {
             moveList.add(dices[0]);
             moveList.add(dices[1]);
-            moveList.add(dices[0]+dices[1]);
+            moveList.add(dices[0] + dices[1]);
 
         } else {
             moveList.add(dices[0]);
             moveList.add(dices[0]);
-            moveList.add(dices[0]*2);
+            moveList.add(dices[0] * 2);
             moveList.add(dices[0]);
             moveList.add(dices[0]);
-            moveList.add(dices[0]*2);
-            moveList.add(dices[0]*3);
-            moveList.add(dices[0]*4);
-        }  return moveList;
+            moveList.add(dices[0] * 2);
+            moveList.add(dices[0] * 3);
+            moveList.add(dices[0] * 4);
+        }
     }
 
-    private Canvas dicePrint(int i){
-        Canvas canvas = new Canvas(CHIP_SIZE,CHIP_SIZE);
+    private Canvas dicePrint(int i) {
+        Canvas canvas = new Canvas(CHIP_SIZE, CHIP_SIZE);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        gc.setFill( Color.WHITE );
-        gc.setStroke( Color.BLACK );
+        gc.setFill(Color.WHITE);
+        gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
-        Font theFont = Font.font( "Arial", FontWeight.BOLD, CHIP_SIZE*0.9 );
-        gc.setFont( theFont );
+        Font theFont = Font.font("Arial", FontWeight.BOLD, CHIP_SIZE * 0.9);
+        gc.setFont(theFont);
 
-        gc.fillRect(2,2,CHIP_SIZE*0.9,CHIP_SIZE*0.9);
-        gc.strokeRect(0,0,CHIP_SIZE,CHIP_SIZE);
+        gc.fillRect(2, 2, CHIP_SIZE * 0.9, CHIP_SIZE * 0.9);
+        gc.strokeRect(0, 0, CHIP_SIZE, CHIP_SIZE);
 
-        gc.strokeText(String.valueOf(i), 10, 45 );
+        gc.strokeText(String.valueOf(i), 10, 45);
 
         return canvas;
     }
 
-    private VBox diceView(){
+    private VBox diceView() {
         VBox v = new VBox();
         v.setSpacing(0);
-        v.setPadding(new Insets(CHIP_SIZE*4,0, 0,0));
-        v.getChildren().addAll(dicePrint(moveList.get(0)),dicePrint(moveList.get(1)));
+        v.setPadding(new Insets(CHIP_SIZE * 3, 0, 0, 0));
+        v.getChildren().addAll(Board.chipCanvas(ChipColor.values()[playerNumber()]), dicePrint(moveList.get(0)), dicePrint(moveList.get(1)));
         return v;
     }
 
-    public void setMoveList(List<Integer> moveList){
-        this.moveList = moveList;
-    }
 
-    List<Integer> getMoveList(){
+    List<Integer> getMoveList() {
         return moveList;
     }
 
+    public int playerNumber() {
+        return ((turnCount - 1) % 2);
+    }
 
-    int playerNumber(){
-        return ((turnCount-1) %2);
+    public void setTurnCount(int i) {
+        turnCount = i;
     }
 
 }

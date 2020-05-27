@@ -22,18 +22,15 @@ public class Start extends Application {
         Group root = new Group();
         Scene theScene = new Scene(root, CHIP_SIZE*14,CHIP_SIZE*12);
         theStage.setScene(theScene);
-
+        theStage.setResizable(false);
         Turn t = new Turn();
         BG_view.Board board = new BG_view.Board(t);
-        GridPane grid = board.board();
-
-
-        //
+        GridPane grid = board.getGrid();
         grid.setGridLinesVisible(true);
-        //
 
         root.getChildren().add(grid);
         theStage.show();
+        t.startTurn(board);
 
 
     }
