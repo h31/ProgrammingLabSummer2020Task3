@@ -68,6 +68,11 @@ public class Model {
                             && rect.getTranslateY() == (barrier.getTranslateY()))
                         flag = true;
                 }
+                for (Node rect : barriers) {
+                    if (rect.getTranslateX() == (barrier.getTranslateX())
+                            && rect.getTranslateY() == (barrier.getTranslateY()))
+                        flag = true;
+                }
             }
             barriers.add(barrier);
         }

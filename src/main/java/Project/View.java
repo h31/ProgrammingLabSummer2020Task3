@@ -57,8 +57,8 @@ public class View {
         });
         timeline.getKeyFrames().add(frame);
         timeline.setCycleCount(Timeline.INDEFINITE);
-        if (Model.alternativeGame) root.getChildren().addAll(scoreShower, barriersBody, snakeBody, gameOver);
-            else root.getChildren().addAll(gameOver, scoreShower, meal, snakeBody);
+        if (Model.alternativeGame) root.getChildren().addAll(barriersBody, snakeBody, scoreShower, gameOver);
+            else root.getChildren().addAll(meal, snakeBody, scoreShower, gameOver);
         return root;
     }
 

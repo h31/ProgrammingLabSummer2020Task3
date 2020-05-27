@@ -13,7 +13,7 @@ public class Menu {
     public static Scene playNewGame() {
         BorderPane menu = new BorderPane();
         Label topLabel = new Label("          Welcome to Snake!\nTutorial:\nUse W, A, S, D to move\n" +
-                "Press ESC to pause and unpause\nPress Enter to restart!");
+                "Press SPACE to pause and unpause\nPress Enter to restart!\nPress ESC to return to Menu!");
         topLabel.setFont(Font.font(20));
         Button startClassicGame = new Button();
         startClassicGame.setTranslateX(12);

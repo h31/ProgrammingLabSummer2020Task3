@@ -26,6 +26,9 @@ public class Controller {
                     startGame();
                     break;
                 case ESCAPE:
+                    returnToMainMenu();
+                    break;
+                case SPACE:
                     if (!gameStopped) {
                         gameStopped = true;
                         View.timeline.stop();
@@ -45,6 +48,13 @@ public class Controller {
         this.b = new View();
         Main.primaryStage.setScene(control());
         startGame();
+    }
+
+    public void returnToMainMenu() {
+        View.timeline.stop();
+        View.timeline.getKeyFrames().remove(0);
+        Model.snake.clear();
+        Main.primaryStage.setScene(Menu.playNewGame());
     }
 
     public void startGame() {
