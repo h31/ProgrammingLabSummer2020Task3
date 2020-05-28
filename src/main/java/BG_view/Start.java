@@ -23,13 +23,14 @@ public class Start extends Application {
         Scene theScene = new Scene(root, CHIP_SIZE*14,CHIP_SIZE*12);
         theStage.setScene(theScene);
         theStage.setResizable(false);
+        theStage.show();
         Turn t = new Turn();
         BG_view.Board board = new BG_view.Board(t);
         GridPane grid = board.getGrid();
         grid.setGridLinesVisible(true);
 
         root.getChildren().add(grid);
-        theStage.show();
+
         t.startTurn(board);
 
 

@@ -101,7 +101,7 @@ public class Board {
     }
 
     private GridPane grid() {
-
+        grid = new GridPane();
         ColumnConstraints column = new ColumnConstraints(CHIP_SIZE);
         column.setPercentWidth(9.355);
 
