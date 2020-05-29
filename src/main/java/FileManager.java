@@ -20,13 +20,16 @@ public class FileManager {
         try (var writer = new FileWriter(file)) {
             writer.write(system.toStringFile());
             log.info("Save to " + file.getAbsolutePath());
-        }
-        catch (IOException | NullPointerException e){
-            log.error("Save to " + file.getAbsolutePath() + " was crashed with exception " + e);
+        } catch (IOException e) {
+            error(false);
+            log.error(e);
+        } catch (NullPointerException e) {
+            log.info("The user closed the opening window");
         }
     }
 
     public static void open() {
+        try {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Open config file");
         var filter = new FileChooser.ExtensionFilter("Configuration file .pss", "*.pss");
@@ -34,7 +37,6 @@ public class FileManager {
         var file = fileChooser.showOpenDialog(App.stageFile).getAbsoluteFile();
         var system = new SystemCharacteristic();
         var size = 0;
-        try {
             var fr = new FileReader(file);
             var reader = new BufferedReader(fr);
             var line = reader.readLine();
@@ -53,7 +55,7 @@ public class FileManager {
                     planet.color = list[1];
                     if (list[2].contains("-")) {
                         log.error("The file " + file.getAbsolutePath() + "has '-'");
-                        error();
+                        error(true);
                     }
                     planet.setRadius(list[2]);
                     planet.setPositionX(list[3]);
@@ -65,27 +67,42 @@ public class FileManager {
                 }
                 else {
                     log.error("The file " + file.getAbsolutePath() + " is invalid");
-                    error();
+                    error(true);
                 }
                 line = reader.readLine();
             }
             if (size != system.numberOfPlanets) {
                 log.error("In this file " + file.getAbsolutePath() + " the number of available planets does not match the specified number.");
-                error();
+                error(true);
             }
             App.stageFile.close();
             var app = new App();
             app.space(system);
         } catch (IOException e) {
-            error();
+            error(true);
+            log.error(e);
+        } catch (NullPointerException e) {
+            log.info("The user closed the opening window");
         }
     }
 
-    public static void error() {
+    public static void error(boolean type) {
+        String headerText;
+        String contentText;
+
+        if (type) {
+            headerText = "File invalid";
+            contentText = "This file cannot be used by the program.";
+        }
+        else {
+            headerText = "Saving failed";
+            contentText = "Try again. Try specifying a different directory.";
+        }
+
         var alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText("File invalid");
-        alert.setContentText("This file cannot be used by the program.");
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
         alert.showAndWait();
         System.exit(1);
     }
