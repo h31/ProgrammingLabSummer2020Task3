@@ -1,7 +1,6 @@
 package model;
 
 public abstract class Figure extends GameField {
-
     public abstract void moveDown();
 
     public abstract void moveLeft();

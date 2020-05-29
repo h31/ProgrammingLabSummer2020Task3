@@ -13,27 +13,22 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.GameField;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 
 public class Tetris extends Application {
-    private final Canvas canvas = new Canvas(400, 500);
+    private  final Canvas canvas = new Canvas(400, 500);
     private final Pane gameRoot = new Pane();
     private final Label scoreLabel = new Label("Score");
     Scene scene = new Scene(gameRoot, 600, 500);
 
-    public Canvas getCanvas() {
+    public  Canvas getCanvas() {
         return canvas;
     }
 
     public Tetris()  {
         canvas.getGraphicsContext2D();
     }
-
-
-
 
     @Override
     public void start(final Stage primaryStage) throws FileNotFoundException {
@@ -49,12 +44,10 @@ public class Tetris extends Application {
         Background imageBack = new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,backgroundSize));
 
-
+        //эффекты для надписи
         scoreLabel.setText("Score");
         scoreLabel.setTextFill(Color.YELLOW);
-
         scoreLabel.setFont(new Font(23));
-
         scoreLabel.setLayoutX(420);
         scoreLabel.setLayoutY(20);
 

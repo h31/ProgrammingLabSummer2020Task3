@@ -21,6 +21,7 @@ public class GameCycle extends GameField {
     FigureT figureT = new FigureT();
     FigureO figureO = new FigureO();
     FigureI figureI = new FigureI();
+    private int keyPressedCount = 0;//отсчет нажатий клавиши
 
     ArrayList<Figure> figures = new ArrayList<>();
     Random random = new Random();
@@ -30,11 +31,11 @@ public class GameCycle extends GameField {
     Button pauseButton = new Button("PAUSE");
 
     public GameCycle() {
-        figures.add(figureL);
-        figures.add(figureT);
+      //  figures.add(figureL);
+        //figures.add(figureT);
         figures.add(figureZ);
-        figures.add(figureI);
-        figures.add(figureO);
+       // figures.add(figureI);
+        //figures.add(figureO);
 
         Tetris tetris = new Tetris();
 
@@ -49,46 +50,29 @@ public class GameCycle extends GameField {
         pauseButton.setLayoutX(450);
 
         //эффекты для кнопок
-        Lighting lighting = new Lighting();
         DropShadow shadow = new DropShadow();
 
         startButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> startButton.setEffect(shadow));
 
         startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
 
-        startButton.setOnAction(actionEvent -> {
-            startButton.setEffect(lighting);
-            startGame();
-        });
-
         pauseButton.setOnAction(event -> {
+
         });
 
         getChildren().addAll(figureI, figureL, figureO, figureT, figureZ, tetris.getCanvas(), startButton);
         keyController();
     }
 
-    private int keyPressedCount = 0;//отсчет нажатий клавиши
-
-    /**
-     * начало игры
-     */
-    public void startGame() {
-        figure = figures.get(random.nextInt(figures.size()));//выбор случайной фигуры из списка
-        //перерисвка поля и очищение клеток для новой игры
-
-
-        repaintField();
-        drawFigure();
-
-        // if (endGame()) {
-        //   repaintField();
-        //  drawFigure();
-        //  }
-    }
-
     public void keyController() {
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(150), t -> {
+        Lighting lighting = new Lighting();
+
+        startButton.setOnAction(actionEvent -> {
+            startButton.setEffect(lighting);
+            figure = figures.get(random.nextInt(figures.size()));
+        });
+
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(210), t -> {
             //движение фигуры вниз и проверка остановки
             if (figure == figureI) {
                 figureI.moveDown();
@@ -196,17 +180,21 @@ public class GameCycle extends GameField {
                     }
                 }
             });
-
-
-          //  repaintField();
-            endGame();
-            clearRow();
-            drawFigure();
-
+            //проверка на окончание игры
+            if (!endGame()) {
+                clearRow();
+                drawFigure();
+            } else {
+                getEndGame().setVisible(true);
+                if (startButton.isPressed()) {
+                    repaintField();
+                    getEndGame().setVisible(false);
+                    getScore().setText("0");
+                }
+            }
 
         }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
     }
-
 }

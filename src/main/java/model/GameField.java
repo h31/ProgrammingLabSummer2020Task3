@@ -6,7 +6,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import view.Tetris;
 
+import java.util.Objects;
+
+/**
+ * Класс "игровое поле"
+ * Отвечает за заполнение клеток, отрисовку фигур, очистку заполненных клеток
+ */
 public class GameField extends Pane {
+
     private final int widthCell = 25;
     private final int heightCell = 25;
 
@@ -39,17 +46,25 @@ public class GameField extends Pane {
         return rowSize;
     }
 
-    private static final Elements[][] gameField = new Elements[columnSize][rowSize];//игровое поле
+    private static final Elements[][] gameField = new Elements[columnSize][rowSize];//игровое поле в виде двумерного массива
 
     public Elements[][] getGameField() {
         return gameField;
     }
 
     private final Tetris tetris = new Tetris();
-
     private int countScore = 0;
     private final Label score = new Label();
     private final Label endGame = new Label("GAME OVER");
+
+
+    public Label getEndGame() {
+        return endGame;
+    }
+
+    public Label getScore() {
+        return score;
+    }
 
     /**
      * Перерисовка поля
@@ -74,12 +89,12 @@ public class GameField extends Pane {
             tetris.getCanvas().getGraphicsContext2D().strokeLine(0, j, heightCell * gameField.length, j);
         }
 
-        tetris.getCanvas().setStyle("-fx-background-color: #0a0a0a");
 
-        score.setTextFill(Color.YELLOW);
-        score.setFont(new Font(21));
-        score.setLayoutX(500);
-        score.setLayoutY(20);
+        tetris.getCanvas().setStyle("-fx-background-color: #0a0a0a");
+        score.setTextFill(Color.RED);
+        score.setFont(new Font(21.5));
+        score.setLayoutX(510);
+        score.setLayoutY(21.5);
 
         endGame.setStyle("-fx-background-color: #0a0a0a");
         endGame.setTextFill(Color.WHITE);
@@ -93,24 +108,23 @@ public class GameField extends Pane {
         getChildren().addAll(tetris.getCanvas(), score, endGame);
 
     }
+
     /**
+     * Метод, отвечающий на окончание игры
+     *
      * @return закончилась ли игра
      */
-
-
     public boolean endGame() {
         boolean ended = false;
-        for (int i = 0; i < rowSize; i++) {
+        for (int i = 0; i < 16; i++) {
             if (getGameField()[1][i] != Elements.EmptyCell) {
                 delta = 0;
                 ended = true;
                 break;
-            }
-            else {
-                ended = false;
+            } else {
+                delta = 25;
             }
         }
-        endGame.setVisible(ended);
         return ended;
     }
 
@@ -164,11 +178,26 @@ public class GameField extends Pane {
                 } else if (getGameField()[i][j] == Elements.FigureT) {
                     tetris.getCanvas().getGraphicsContext2D().setFill(Color.PURPLE);
                     tetris.getCanvas().getGraphicsContext2D().fillRect(j * 25, i * 25, 25, 25);
-                } else{
+                } else {
                     tetris.getCanvas().getGraphicsContext2D().clearRect(j * 25, i * 25, 25, 25);
                 }
             }
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameField gameField = (GameField) o;
+        return delta == gameField.delta &&
+                countScore == gameField.countScore &&
+                Objects.equals(tetris, gameField.tetris) &&
+                Objects.equals(score, gameField.score) && Objects.equals(endGame, gameField.endGame);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(widthCell, heightCell, delta, tetris, countScore, score, endGame);
+    }
 }

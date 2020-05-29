@@ -42,7 +42,6 @@ public class FigureL extends Figure {
         }
     }
 
-
     /**
      * Передвижение влево и проверка столкновений
      */
@@ -278,7 +277,6 @@ public class FigureL extends Figure {
         boolean intersection = false;
 
         if (changedToThirdForm) {
-            //столкновение 2 формы L c границуй
             if (cellColumnY + 3 == getGameField().length) {
                 intersection = true;
             } else if (getGameField()[cellColumnY + 1][cellRowX] != Elements.EmptyCell) {
@@ -313,6 +311,10 @@ public class FigureL extends Figure {
     }
 
     public boolean intersectsFirstForm() {
+        cellRowY = (int) (row.getY() / getDelta());
+        cellRowX = (int) (row.getX() / getDelta());
+        cellColumnX = (int) (column.getX() / getDelta());
+        cellColumnY = (int) (column.getY() / getDelta());
         boolean intersection = false;
         if (changedToFirstForm) {
 
@@ -411,5 +413,6 @@ public class FigureL extends Figure {
         }
         return figureSet;
     }
+
 
 }

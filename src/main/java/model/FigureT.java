@@ -252,7 +252,7 @@ public class FigureT extends Figure {
             if (cellColumnY == getGameField().length) {
                 intersection = true;
             }
-            //столкновение дефолтной формы T c T
+            //столкновение дефолтной формы T c фигурой
             else if (cellColumnY > 0 && getGameField()[cellColumnY - 1][cellRowX] != Elements.EmptyCell) {
                 intersection = true;
             } else if (cellColumnY > 0 && getGameField()[cellColumnY - 1][cellRowX + 2] != Elements.EmptyCell) {

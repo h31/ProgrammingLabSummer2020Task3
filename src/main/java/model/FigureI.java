@@ -104,7 +104,6 @@ public class FigureI extends Figure {
         }
     }
 
-
     public void changeForm() {
         if (cellY + 3 != 20 && cellY + 2 != 20 && cellY + 1 != 20
                 && getGameField()[cellY][cellX] == Elements.EmptyCell
@@ -136,7 +135,7 @@ public class FigureI extends Figure {
     }
 
     /**
-     * Проверка на столкновение вертикальной I снизу
+     * Проверка на столкновение вертикальной I
      *
      * @return столкнулись ли фигуры
      */
@@ -158,7 +157,7 @@ public class FigureI extends Figure {
     }
 
     /**
-     * Столкновение фигур в горизонтальной форме снизу
+     * Столкновение фигуры в горизонтальной форме I
      */
     public boolean intersectsDefaultForm() {
         boolean intersection = false;
@@ -167,10 +166,10 @@ public class FigureI extends Figure {
 
         if (!changed) {
             //столкновение с границей
-            if (cellY == 20) {
+            if (cellY == getGameField().length) {
                 intersection = true;
             }
-            //столкновение I c I
+            //столкновение I c фигурой
             else if (getGameField()[cellY][cellX] != Elements.EmptyCell) {
                 intersection = true;
             } else if (getGameField()[cellY][cellX + 1] != Elements.EmptyCell) {
@@ -196,8 +195,8 @@ public class FigureI extends Figure {
         cellY = (int) (row.getY() / getDelta());
         boolean figureSet = false;
 
-        //проверка упала фигура на нижнюю грань или столкнулась с другой фигурой
         if (!endGame()) {
+            //остановка фигуры при столкновении и заполнение игрового поля
             if (intersectsVertical() || intersectsDefaultForm()) {
                 setDelta(0);
 

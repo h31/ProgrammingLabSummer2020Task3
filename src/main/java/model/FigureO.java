@@ -6,9 +6,7 @@ import view.Tetris;
 
 public class FigureO extends Figure {
     private final Rectangle square = new Rectangle(150, -50, 50, 50);
-
     private int delta = getDelta();
-
     private int cellX;
     private int cellY;
 
@@ -75,7 +73,7 @@ public class FigureO extends Figure {
         if (cellY + 2 == 20) {
             intersection = true;
         }
-        //столкновение O c O
+        //столкновение O c с фигурой
         else if (getGameField()[cellY + 2][cellX] != Elements.EmptyCell) {
             intersection = true;
         } else if (getGameField()[cellY + 2][cellX + 1] != Elements.EmptyCell) {
@@ -106,8 +104,6 @@ public class FigureO extends Figure {
             square.setX(150);
             delta = 25;
         }
-
         return figureSet;
     }
-
 }
