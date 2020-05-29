@@ -24,6 +24,8 @@ public class ControllerOfTheSystem {
     public TextField G;
     @FXML
     private Slider number;
+    @FXML
+    public Button load;
 
     boolean[] filled = new boolean[3];
 
@@ -38,6 +40,7 @@ public class ControllerOfTheSystem {
             } else check = true;
         apply.setDisable(!check);
     }
+
     @FXML
     public void initialize() {
         help.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -47,6 +50,8 @@ public class ControllerOfTheSystem {
                     "For example, mass = 900, radius = 80, Gravitational constant = 7");
             alert.showAndWait();
         });
+
+        load.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> FileManager.open());
 
         var regex = "[0-9]+([.,][0-9]+)?";
         mass.setOnKeyTyped(event -> enabler(mass.getText().matches(regex), 0));

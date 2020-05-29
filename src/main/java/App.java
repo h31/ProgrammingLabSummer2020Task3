@@ -29,6 +29,7 @@ public class App extends Application{
         Application.launch(args);
     }
 
+    public static Stage stageFile;
     static LogicManager logic = new LogicManager();
 
     public void start(Stage stage) throws Exception {
@@ -37,6 +38,7 @@ public class App extends Application{
         var scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        stageFile = stage;
     }
 
     public void planetSetup(SystemCharacteristic system) throws Exception {
@@ -95,7 +97,6 @@ public class App extends Application{
         var tPBtn = new Button("Portation");
         tPBtn.setLayoutY(50);
         tPBtn.setLayoutX(135);
-        canvas.getChildren().addAll(animationSpeed, timePortation, tPBtn);
 
         var timePort = new boolean[system.numberOfPlanets];
         var a = new AtomicReference<>((double) 0);
@@ -105,6 +106,13 @@ public class App extends Application{
                 a.set(Double.parseDouble(timePortation.getText().replace(',', '.')));
             }
         });
+
+        var saveBtn = new Button("Save config");
+        saveBtn.setLayoutY(580);
+        saveBtn.setLayoutX(10);
+        saveBtn.setOnAction(event -> FileManager.save(system));
+
+        canvas.getChildren().addAll(animationSpeed, timePortation, tPBtn, saveBtn);
 
         IntStream.range(0, system.planet.size()).forEach(i -> {
             var planet = new Circle();
@@ -121,6 +129,10 @@ public class App extends Application{
                 vy[0] += logic.acceleration(system.GC, system.massOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
                 x[0] += vx[0];
                 y[0] += vy[0];
+                system.planet.get(i).positionX = x[0];
+                system.planet.get(i).positionY = y[0];
+                system.planet.get(i).speedX = vx[0];
+                system.planet.get(i).speedY = vy[0];
                 planet.setCenterX(x[0]);
                 planet.setCenterY(y[0]);
                 canvas.requestLayout();
@@ -159,7 +171,6 @@ public class App extends Application{
                     else timeline.play();
                     timeline.setRate(10 * (animationSpeed.getCurrentPageIndex() + 1));
                 }
-
             }, 0, 1);
         });
         stage.setScene(scene);

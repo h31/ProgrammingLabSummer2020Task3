@@ -55,7 +55,7 @@ public class ControllerOfThePlanet {
         });
 
         var regex = "[0-9]+([.,][0-9]+)?";
-        namePl.setOnKeyTyped(event -> enabler(!namePl.getText().isBlank(), 0));
+        namePl.setOnKeyTyped(event -> enabler(!namePl.getText().contains(" "), 0));
         radiusPl.setOnKeyTyped(event -> enabler(radiusPl.getText().matches(regex), 1));
         positionXPl.setOnKeyTyped(event -> enabler(positionXPl.getText().matches("-?" + regex), 2));
         positionYPl.setOnKeyTyped(event -> enabler(positionYPl.getText().matches("-?" + regex), 3));

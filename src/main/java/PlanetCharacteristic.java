@@ -4,10 +4,11 @@ public class PlanetCharacteristic {
     String name;
     String color;
     double radius;
-    double speedX;
-    double speedY;
     double positionX;
     double positionY;
+    double speedX;
+    double speedY;
+
 
     public void setName (String nameU){
         name = nameU;
