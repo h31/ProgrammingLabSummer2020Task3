@@ -21,39 +21,46 @@ public class ControllerOfTheSystem {
     @FXML
     private TextField radius;
     @FXML
-    private Slider number;
+    public TextField G;
     @FXML
-    private void enabler(boolean[] w, boolean[] r) {
-        apply.setDisable(!w[0] || !r[0]);
-    }
+    private Slider number;
 
+    boolean[] filled = new boolean[3];
+
+    private boolean check = false;
+
+    private void enabler(boolean test, int num) {
+        filled[num] = test;
+        for (var b : filled)
+            if (!b) {
+                check = false;
+                break;
+            } else check = true;
+        apply.setDisable(!check);
+    }
     @FXML
     public void initialize() {
         help.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            var alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Help");
             alert.setContentText("In this window, specify the mass and radius of the star in accordance with the specified explanations.\n" +
-                    "For example, mass = 900, radius = 80");
+                    "For example, mass = 900, radius = 80, Gravitational constant = 7");
             alert.showAndWait();
         });
-        final boolean[] weightB = {false};
-        final boolean[] radiusB = {false};
-        String regex = "[0-9]+([.,][0-9]+)?";
-        mass.setOnKeyTyped(event -> {
-            weightB[0] = mass.getText().matches(regex);
-            enabler(radiusB, weightB);
-        });
-        radius.setOnKeyTyped(event -> {
-            radiusB[0] = radius.getText().matches(regex);
-            enabler(radiusB, weightB);
-        });
+
+        var regex = "[0-9]+([.,][0-9]+)?";
+        mass.setOnKeyTyped(event -> enabler(mass.getText().matches(regex), 0));
+        radius.setOnKeyTyped(event -> enabler(radius.getText().matches(regex), 1));
+        G.setOnKeyTyped(event -> enabler(G.getText().matches(regex), 2));
+
         apply.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            Stage stage = (Stage) apply.getScene().getWindow();
+            var stage = (Stage) apply.getScene().getWindow();
             stage.close();
-            SystemCharacteristic system = new SystemCharacteristic();
+            var system = new SystemCharacteristic();
             try {
                 system.setMassOfStar(mass.getText());
                 system.setRadiusOfStar(radius.getText());
+                system.setGC(G.getText());
             } catch (Exception e) {
                 log.error("Exception " + e);
                 e.printStackTrace();
@@ -61,7 +68,7 @@ public class ControllerOfTheSystem {
             system.setNumberOfPlanets(number.getValue());
 
             log.info(system.toString());
-                App planet = new App();
+                var planet = new App();
                 try {
                     planet.planetSetup(system);
                 } catch (Exception e) {

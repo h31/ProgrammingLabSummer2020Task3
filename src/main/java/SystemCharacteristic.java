@@ -5,6 +5,7 @@ public class SystemCharacteristic {
     double massOfStar;
     double radiusOfStar;
     int numberOfPlanets;
+    double GC;
 
     public void setMassOfStar(String mass) {
         double massDouble;
@@ -22,6 +23,10 @@ public class SystemCharacteristic {
         radiusOfStar = radius;
     }
 
+    public void setGC(String GU) {
+        GC = Double.parseDouble(formatter(GU));
+    }
+
     public String formatter(String in) {
         return in.replace(',', '.').trim();
     }
@@ -31,6 +36,7 @@ public class SystemCharacteristic {
                 "planet=" + planet.toString() +
                 ", massOfStar=" + massOfStar +
                 ", radiusOfStar=" + radiusOfStar +
+                ", gravitation constant=" + GC +
                 ", numberOfPlanets=" + numberOfPlanets +
                 '}';
     }

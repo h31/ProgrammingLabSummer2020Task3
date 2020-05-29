@@ -31,7 +31,7 @@ public class LogicTest {
     @Test
     public void timePortation() {
         double x = 200;
-        double[] tpXY = logic.timePortation(1, x, 451.2, 1.25, 2.64, 0.27, 1.33, 6.67, 255);
+        var tpXY = logic.timePortation(1, x, 451.2, 1.25, 2.64, 0.27, 1.33, 6.67, 255);
         assertEquals(214, Math.round(tpXY[0]));
         assertEquals(480, Math.round(tpXY[1]));
         assertEquals(1, Math.round(tpXY[2]));

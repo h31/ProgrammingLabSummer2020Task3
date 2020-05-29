@@ -4,7 +4,6 @@ public class PlanetCharacteristic {
     String name;
     String color;
     double radius;
-    double GC;
     double speedX;
     double speedY;
     double positionX;
@@ -31,13 +30,9 @@ public class PlanetCharacteristic {
     }
 
     public void setSpeed (String speedU, String deg) {
-        LogicManager logic = new LogicManager();
+        var logic = new LogicManager();
         speedX = logic.speedX(Double.parseDouble(formatter(speedU)), Double.parseDouble(formatter(deg)));
         speedY = logic.speedY(Double.parseDouble(formatter(speedU)), Double.parseDouble(formatter(deg)));
-    }
-
-    public void setGC(String GU) {
-        GC = Double.parseDouble(formatter(GU));
     }
 
     public String formatter(String in) {
@@ -47,7 +42,6 @@ public class PlanetCharacteristic {
     public String toShortString() {
         return  "Planet " + name +
                 "\nColor " + color +
-                "\nGravitation constant " + GC +
                 "\nRadius " + radius;
     }
 
@@ -55,7 +49,6 @@ public class PlanetCharacteristic {
         return "PlanetCharacteristic{" +
                 "name=" + name +
                 ", color=" + color +
-                ", gravitation constant=" + GC +
                 ", radius=" + radius +
                 ", speedX=" + speedX +
                 ", speedY=" + speedY +

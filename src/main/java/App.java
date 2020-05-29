@@ -31,35 +31,35 @@ public class App extends Application{
     static LogicManager logic = new LogicManager();
 
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(new File("src/main/resources/SystemParameters.fxml").toURI().toURL());
+        var loader = new FXMLLoader(new File("src/main/resources/SystemParameters.fxml").toURI().toURL());
         Parent root = loader.load();
-        Scene scene = new Scene(root);
+        var scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
     public void planetSetup(SystemCharacteristic system) throws Exception {
-        FXMLLoader loader = new FXMLLoader(new File("src/main/resources/PlanetParameters.fxml").toURI().toURL());
+        var loader = new FXMLLoader(new File("src/main/resources/PlanetParameters.fxml").toURI().toURL());
         Parent root1 = loader.load();
         ControllerOfThePlanet controller = loader.getController();
         controller.initialize(system);
-        Stage stage = new Stage();
+        var stage = new Stage();
         stage.setScene(new Scene(root1));
-        int rand = (1 + (int) (Math.random() * 6));
+        var rand = (1 + (int) (Math.random() * 6));
         root1.setStyle("-fx-background-image: url("+"images/" + rand +".jpg "+")");
         stage.show();
     }
 
-    public static void space(SystemCharacteristic system) throws FileNotFoundException {
-        Pane canvas = new Pane();
+    public void space(SystemCharacteristic system) throws FileNotFoundException {
+        var canvas = new Pane();
         canvas.setStyle("-fx-background-image: url(images/background.jpg)");
-        Stage stage = new Stage();
+        var stage = new Stage();
         stage.setTitle("Planet System");
-        double radius = system.radiusOfStar / 2;
-        Scene scene = new Scene(canvas, 1200, 600, Color.BLACK);
+        var radius = system.radiusOfStar / 2;
+        var scene = new Scene(canvas, 1200, 600, Color.BLACK);
 
-        Image image = new Image(new FileInputStream("src/main/resources/images/star.png"));
-        ImageView star = new ImageView(image);
+        var image = new Image(new FileInputStream("src/main/resources/images/star.png"));
+        var star = new ImageView(image);
         star.setX(scene.getWidth() / 2 - radius);
         star.setY(scene.getHeight() / 2 - radius);
         star.setFitHeight(radius * 2);
@@ -70,7 +70,7 @@ public class App extends Application{
         Tooltip.install(star, new Tooltip("Star \nMass: " + system.massOfStar + "\n" +
                 "Radius: " + system.radiusOfStar));
 
-        Button pause = new Button("Pause");
+        var pause = new Button("Pause");
         pause.setPrefWidth(80);
         pause.setLayoutX(1100);
         canvas.getChildren().addAll(pause);
@@ -86,18 +86,18 @@ public class App extends Application{
                 pause.setText("Pause");
             }
         });
-        Pagination animationSpeed = new Pagination(10, 0);
-        TextField timePortation = new TextField();
+        var animationSpeed = new Pagination(10, 0);
+        var timePortation = new TextField();
         timePortation.setMaxWidth(50);
         timePortation.setLayoutX(75);
         timePortation.setLayoutY(50);
-        Button tPBtn = new Button("Portation");
+        var tPBtn = new Button("Portation");
         tPBtn.setLayoutY(50);
         tPBtn.setLayoutX(135);
         canvas.getChildren().addAll(animationSpeed, timePortation, tPBtn);
 
-        boolean[] timePort = new boolean[system.numberOfPlanets];
-        AtomicReference<Double> a = new AtomicReference<>((double) 0);
+        var timePort = new boolean[system.numberOfPlanets];
+        var a = new AtomicReference<>((double) 0);
         tPBtn.setOnAction(event -> {
             if (timePortation.getText().matches("[0-9]+(,.[0-9]+)?")) {
                 Arrays.fill(timePort, true);
@@ -105,9 +105,9 @@ public class App extends Application{
             }
         });
 
-        for (int i = 0; i < system.planet.size(); i++) {
-            int finalI = i;
-            Circle planet = new Circle();
+        for (var i = 0; i < system.planet.size(); i++) {
+            var finalI = i;
+            var planet = new Circle();
             planet.setRadius(system.planet.get(i).radius / 2);
             canvas.getChildren().add(planet);
 
@@ -116,13 +116,11 @@ public class App extends Application{
             final double[] x = {system.planet.get(finalI).positionX + star.getX() + star.getFitWidth() / 2};
             final double[] y = {system.planet.get(finalI).positionY + star.getY() + star.getFitHeight() / 2};
 
+            var timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
-
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
-
-                double distance = logic.distance(star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, x[0],  y[0]);
-                vx[0] += logic.acceleration(system.planet.get(finalI).GC, system.massOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
-                vy[0] += logic.acceleration(system.planet.get(finalI).GC, system.massOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
+                var distance = logic.distance(star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, x[0],  y[0]);
+                vx[0] += logic.acceleration(system.GC, system.massOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
+                vy[0] += logic.acceleration(system.GC, system.massOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
                 x[0] += vx[0];
                 y[0] += vy[0];
                 planet.setCenterX(x[0]);
@@ -130,7 +128,7 @@ public class App extends Application{
                 canvas.requestLayout();
 
                 if (timePort[finalI]) {
-                    double[] tpXY = logic.timePortation(a.get(), x[0], y[0], vx[0], vy[0], star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, system.planet.get(finalI).GC, system.massOfStar);
+                    var tpXY = logic.timePortation(a.get(), x[0], y[0], vx[0], vy[0], star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, system.GC, system.massOfStar);
                     x[0] = tpXY[0];
                     y[0] = tpXY[1];
                     vx[0] = tpXY[2];
@@ -138,7 +136,7 @@ public class App extends Application{
                     timePort[finalI] = false;
                 }
 
-                RadialGradient gradient = new RadialGradient(0,
+                var gradient = new RadialGradient(0,
                         .1,
                         planet.getCenterX(),
                         planet.getCenterY(),
@@ -157,7 +155,7 @@ public class App extends Application{
 
             timeline.play();
 
-            Timer timer = new Timer();
+            var timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
