@@ -56,28 +56,31 @@ public class FileManager {
                     if (list[2].contains("-")) {
                         log.error("The file " + file.getAbsolutePath() + "has '-'");
                         error(true);
+                        return;
                     }
                     planet.setRadius(list[2]);
                     planet.setPositionX(list[3]);
                     planet.setPositionY(list[4]);
                     planet.speedX = Double.parseDouble(list[5]);
-                    planet.speedX = Double.parseDouble(list[6]);
+                    planet.speedY = Double.parseDouble(list[6]);
                     system.planet.add(planet);
                     size++;
                 }
                 else {
                     log.error("The file " + file.getAbsolutePath() + " is invalid");
                     error(true);
+                    return;
                 }
                 line = reader.readLine();
             }
             if (size != system.numberOfPlanets) {
                 log.error("In this file " + file.getAbsolutePath() + " the number of available planets does not match the specified number.");
                 error(true);
+                return;
             }
-            App.stageFile.close();
             var app = new App();
             app.space(system);
+
         } catch (IOException e) {
             error(true);
             log.error(e);
@@ -104,7 +107,6 @@ public class FileManager {
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
         alert.showAndWait();
-        System.exit(1);
     }
 
 }

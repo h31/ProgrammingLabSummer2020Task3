@@ -68,6 +68,8 @@ public class App extends Application{
         star.setFitHeight(radius * 2);
         star.setFitWidth(radius * 2);
         star.setPreserveRatio(true);
+        var starCenterX = star.getX() + star.getFitWidth() / 2;
+        var starCenterY = star.getY() + star.getFitHeight() / 2;
         canvas.getChildren().add(star);
 
         Tooltip.install(star, new Tooltip("Star \nMass: " + system.massOfStar + "\n" +
@@ -110,7 +112,13 @@ public class App extends Application{
         var saveBtn = new Button("Save config");
         saveBtn.setLayoutY(570);
         saveBtn.setLayoutX(10);
-        saveBtn.setOnAction(event -> FileManager.save(system));
+        saveBtn.setOnAction(event -> {
+            IntStream.range(0, system.planet.size()).forEach(i -> {
+                system.planet.get(i).positionX -= starCenterX;
+                system.planet.get(i).positionY -= starCenterY;
+            });
+            FileManager.save(system);
+        });
 
         canvas.getChildren().addAll(animationSpeed, timePortation, tPBtn, saveBtn);
 
@@ -120,13 +128,13 @@ public class App extends Application{
             canvas.getChildren().add(planet);
             final double[] vx = {system.planet.get(i).speedX};
             final double[] vy = {system.planet.get(i).speedY};
-            final double[] x = {system.planet.get(i).positionX + star.getX() + star.getFitWidth() / 2};
-            final double[] y = {system.planet.get(i).positionY + star.getY() + star.getFitHeight() / 2};
+            final double[] x = {system.planet.get(i).positionX + starCenterX};
+            final double[] y = {system.planet.get(i).positionY + starCenterY};
             var timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
-                var distance = logic.distance(star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, x[0], y[0]);
-                vx[0] += logic.acceleration(system.GC, system.massOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
-                vy[0] += logic.acceleration(system.GC, system.massOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
+                var distance = logic.distance(starCenterX, starCenterY, x[0], y[0]);
+                vx[0] += logic.acceleration(system.GC, system.massOfStar, starCenterX, x[0], distance);
+                vy[0] += logic.acceleration(system.GC, system.massOfStar, starCenterY, y[0], distance);
                 x[0] += vx[0];
                 y[0] += vy[0];
                 system.planet.get(i).positionX = x[0];
@@ -138,7 +146,7 @@ public class App extends Application{
                 canvas.requestLayout();
 
                 if (timePort[i]) {
-                    var tpXY = logic.timePortation(a.get(), x[0], y[0], vx[0], vy[0], star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, system.GC, system.massOfStar);
+                    var tpXY = logic.timePortation(a.get(), x[0], y[0], vx[0], vy[0], starCenterX, starCenterY, system.GC, system.massOfStar);
                     x[0] = tpXY[0];
                     y[0] = tpXY[1];
                     vx[0] = tpXY[2];
