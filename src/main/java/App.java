@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.IntStream;
 
 public class App extends Application{
 
@@ -105,20 +106,17 @@ public class App extends Application{
             }
         });
 
-        for (var i = 0; i < system.planet.size(); i++) {
-            var finalI = i;
+        IntStream.range(0, system.planet.size()).forEach(i -> {
             var planet = new Circle();
             planet.setRadius(system.planet.get(i).radius / 2);
             canvas.getChildren().add(planet);
-
-            final double[] vx = {system.planet.get(finalI).speedX};
-            final double[] vy = {system.planet.get(finalI).speedY};
-            final double[] x = {system.planet.get(finalI).positionX + star.getX() + star.getFitWidth() / 2};
-            final double[] y = {system.planet.get(finalI).positionY + star.getY() + star.getFitHeight() / 2};
-
+            final double[] vx = {system.planet.get(i).speedX};
+            final double[] vy = {system.planet.get(i).speedY};
+            final double[] x = {system.planet.get(i).positionX + star.getX() + star.getFitWidth() / 2};
+            final double[] y = {system.planet.get(i).positionY + star.getY() + star.getFitHeight() / 2};
             var timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
 
-                var distance = logic.distance(star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, x[0],  y[0]);
+                var distance = logic.distance(star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, x[0], y[0]);
                 vx[0] += logic.acceleration(system.GC, system.massOfStar, star.getX() + star.getFitWidth() / 2, x[0], distance);
                 vy[0] += logic.acceleration(system.GC, system.massOfStar, star.getY() + star.getFitHeight() / 2, y[0], distance);
                 x[0] += vx[0];
@@ -127,13 +125,13 @@ public class App extends Application{
                 planet.setCenterY(y[0]);
                 canvas.requestLayout();
 
-                if (timePort[finalI]) {
+                if (timePort[i]) {
                     var tpXY = logic.timePortation(a.get(), x[0], y[0], vx[0], vy[0], star.getX() + star.getFitWidth() / 2, star.getY() + star.getFitHeight() / 2, system.GC, system.massOfStar);
                     x[0] = tpXY[0];
                     y[0] = tpXY[1];
                     vx[0] = tpXY[2];
                     vy[0] = tpXY[3];
-                    timePort[finalI] = false;
+                    timePort[i] = false;
                 }
 
                 var gradient = new RadialGradient(0,
@@ -143,18 +141,16 @@ public class App extends Application{
                         planet.getRadius(),
                         false,
                         CycleMethod.NO_CYCLE,
-                        new Stop(0, (Color) Paint.valueOf(system.planet.get(finalI).color)),
+                        new Stop(0, (Color) Paint.valueOf(system.planet.get(i).color)),
                         new Stop(0.9, Color.BLACK));
 
                 planet.setFill(gradient);
 
-                Tooltip.install(planet, new Tooltip(system.planet.get(finalI).toShortString() + "\n"
+                Tooltip.install(planet, new Tooltip(system.planet.get(i).toShortString() + "\n"
                         + "Distance to the star " + distance));
             }));
             timeline.setCycleCount(Animation.INDEFINITE);
-
             timeline.play();
-
             var timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -165,8 +161,7 @@ public class App extends Application{
                 }
 
             }, 0, 1);
-
-        }
+        });
         stage.setScene(scene);
         stage.show();
         stage.setOnCloseRequest(windowEvent -> System.exit(0));

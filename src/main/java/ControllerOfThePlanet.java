@@ -37,14 +37,11 @@ public class ControllerOfThePlanet {
 
     private void enabler(boolean test, int num) {
         filled[num] = test;
-        for (var b : filled) {
+        for (var b : filled)
             if (!b) {
                 check = false;
                 break;
-            } else {
-                check = true;
-            }
-        }
+            } else check = true;
         applyPl.setDisable(!check);
     }
 
@@ -66,7 +63,6 @@ public class ControllerOfThePlanet {
         speedPl.setOnKeyTyped(event -> enabler(speedPl.getText().matches(regex), 5));
 
         applyPl.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-
             var stage = (Stage) applyPl.getScene().getWindow();
             stage.close();
             var planet = new PlanetCharacteristic();
