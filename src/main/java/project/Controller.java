@@ -1,11 +1,14 @@
 package project;
 
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -21,6 +24,7 @@ public class Controller {
 
     final Button restart = new Button("Restart");
     final Button skip = new Button("Skip");
+    final Button confirm = new Button("Confirm");
 
     final GridPane gridField = new GridPane();
 
@@ -42,8 +46,6 @@ public class Controller {
                 redrawCell(i, j, model.getCharFromField(i, j));
         }
 
-        //добавить начальное заполнение клеток, в которые можно сходить
-
         whoseMove.setText("1st player");
 
         firstScoreText.setText("0");
@@ -62,6 +64,36 @@ public class Controller {
 
         gc.setFill(Color.BLACK);
         gc.fillText(String.valueOf(newLetter).toUpperCase(), 40, 50);
+
+    }
+
+    public void chooseCell() {
+        gridField.getChildren().forEach(grid ->
+                grid.setOnMouseReleased((e) -> {
+                    if (e.getButton().equals(MouseButton.SECONDARY)) {
+                        Node cell = (javafx.scene.Node) e.getSource();
+
+                        int i = GridPane.getRowIndex(cell);
+                        int j = GridPane.getColumnIndex(cell);
+
+                        boolean isCellCorrect = false;
+                        for (Pair<Integer, Integer> coordinate : model.getPossibleMoves()) {
+                            if (coordinate.getKey() == i && coordinate.getValue() == j) {
+                                isCellCorrect = true;
+                                break;
+                            }
+                        }
+
+                        /*if (isCellCorrect) {
+
+                        }*/
+
+                        redrawCell(i, j, '?');
+                    }
+                }));
+    }
+
+    public void confirmWord() {
 
     }
 

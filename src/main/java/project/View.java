@@ -39,6 +39,8 @@ public class View extends Application {
         controller.restart.setLayoutY(100);
         controller.skip.setLayoutX(900);
         controller.skip.setLayoutY(200);
+        controller.confirm.setLayoutX(900);
+        controller.confirm.setLayoutY(150);
 
         controller.gridField.setLayoutX(20);
         controller.gridField.setLayoutY(50);
@@ -47,7 +49,8 @@ public class View extends Application {
         final Group root = new Group(controller.firstScoreText,
                 controller.secondScoreText, controller.firstPlayerText,
                 controller.secondPlayerText, controller.restart,
-                controller.skip, controller.gridField);
+                controller.skip, controller.gridField,
+                controller.confirm);
 
         final Scene scene = new Scene(root, Color.CORNFLOWERBLUE);
         stage.setScene(scene);
@@ -57,6 +60,10 @@ public class View extends Application {
 
         stage.show();
 
+        controller.confirm.setOnMouseClicked((e) -> controller.confirmWord());
+
         controller.restart.setOnMouseClicked((e) -> controller.start());
+
+        controller.gridField.setOnMousePressed((e) -> controller.chooseCell());
     }
 }

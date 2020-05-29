@@ -141,7 +141,7 @@ public class Model {
         return field[i][j];
     }
 
-    public static Set<Pair<Integer, Integer>> getPossibleMoves() {
+    public Set<Pair<Integer, Integer>> getPossibleMoves() {
         return possibleMoves;
     }
 }
