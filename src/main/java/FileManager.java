@@ -1,5 +1,7 @@
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileManager {
+    static Logger log = LogManager.getLogger(FileManager.class.getName());
 
     public static void save(SystemCharacteristic system) {
         var fileChooser = new FileChooser();
@@ -16,9 +19,10 @@ public class FileManager {
         var file = fileChooser.showSaveDialog(App.stageFile);
         try (var writer = new FileWriter(file)) {
             writer.write(system.toStringFile());
+            log.info("Save to " + file.getAbsolutePath());
         }
-        catch (IOException ex){
-            System.out.println(ex.getMessage());
+        catch (IOException | NullPointerException e){
+            log.error("Save to " + file.getAbsolutePath() + " was crashed with exception " + e);
         }
     }
 
@@ -47,8 +51,10 @@ public class FileManager {
                     var planet = new PlanetCharacteristic();
                     planet.setName(list[0].substring(1, list[0].length() - 1));
                     planet.color = list[1];
-                    if (list[2].contains("-"))
+                    if (list[2].contains("-")) {
+                        log.error("The file " + file.getAbsolutePath() + "has '-'");
                         error();
+                    }
                     planet.setRadius(list[2]);
                     planet.setPositionX(list[3]);
                     planet.setPositionY(list[4]);
@@ -57,12 +63,17 @@ public class FileManager {
                     system.planet.add(planet);
                     size++;
                 }
-                else
+                else {
+                    log.error("The file " + file.getAbsolutePath() + " is invalid");
                     error();
+                }
                 line = reader.readLine();
             }
-            if (size != system.numberOfPlanets)
+            if (size != system.numberOfPlanets) {
+                log.error("In this file " + file.getAbsolutePath() + " the number of available planets does not match the specified number.");
                 error();
+            }
+            App.stageFile.close();
             var app = new App();
             app.space(system);
         } catch (IOException e) {
@@ -76,6 +87,7 @@ public class FileManager {
         alert.setHeaderText("File invalid");
         alert.setContentText("This file cannot be used by the program.");
         alert.showAndWait();
+        System.exit(1);
     }
 
 }

@@ -108,7 +108,7 @@ public class App extends Application{
         });
 
         var saveBtn = new Button("Save config");
-        saveBtn.setLayoutY(580);
+        saveBtn.setLayoutY(570);
         saveBtn.setLayoutX(10);
         saveBtn.setOnAction(event -> FileManager.save(system));
 
