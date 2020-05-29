@@ -1,10 +1,8 @@
 package Controller;
 
-import Model.Level;
 import Model.Player;
 import Model.Status;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public final class Controller {
     private Scene primaryScene;
@@ -35,22 +33,22 @@ public final class Controller {
         primaryScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case DOWN:
-                    PLAYER.setVelY(1.4);
+                    PLAYER.setVelY(PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, PLAYER.getView());
                     keyState[1] = true;
                     break;
                 case UP:
-                    PLAYER.setVelY(-1.4);
+                    PLAYER.setVelY(-PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, PLAYER.getView());
                     keyState[0] = true;
                     break;
                 case LEFT:
-                    PLAYER.setVelX(-1.4);
+                    PLAYER.setVelX(-PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, Status.View.LEFT);
                     keyState[2] = true;
                     break;
                 case RIGHT:
-                    PLAYER.setVelX(1.4);
+                    PLAYER.setVelX(PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, Status.View.RIGHT);
                     keyState[3] = true;
                     break;

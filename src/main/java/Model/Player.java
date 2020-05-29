@@ -3,8 +3,7 @@ package Model;
 import View.View;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Group;
-import javafx.scene.Scene;
+import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -13,10 +12,10 @@ import javafx.util.Duration;
 
 public class Player {
 
-    private final Image[] SKELETON_IDLE_RIGHT;
-    private final Image[] SKELETON_IDLE_LEFT;
-    private final Image[] SKELETON_WALK_RIGHT;
-    private final Image[] SKELETON_WALK_LEFT;
+    private final ImageView[] SKELETON_IDLE_RIGHT;
+    private final ImageView[] SKELETON_IDLE_LEFT;
+    private final ImageView[] SKELETON_WALK_RIGHT;
+    private final ImageView[] SKELETON_WALK_LEFT;
 
     {
         SKELETON_IDLE_RIGHT = SpriteData.getSprites("Skeleton_Idle_Right");
@@ -27,13 +26,16 @@ public class Player {
 
     private Status action = Status.IDLE; // Текущая анимация
     private Status.View view = Status.View.LEFT; // Куда смотрит сейчас
-    private ImageView imgView = new ImageView(SKELETON_IDLE_LEFT[0]); // Как выглядит сейчас
-    private Image[] imgArray = SKELETON_IDLE_LEFT; // Массив кадров
+    private ImageView imgView = SKELETON_IDLE_LEFT[0]; // Как выглядит сейчас
+    private ImageView[] imgArray = SKELETON_IDLE_LEFT; // Массив кадров
     private final Rectangle COLLISION;
+    private double BOTTOM_COLLISION;
     private final Level level;
 
     private double velY = 0;
     private double velX = 0;
+    public final double SPEED = 1.2;
+    private boolean freezed = false;
 
     private final View VIEW;
 
@@ -51,7 +53,7 @@ public class Player {
             move(posX, posY);
             getCOLLISION().setX(getImgView().getX());
             getCOLLISION().setY(getImgView().getY());
-
+            setBOTTOM_COLLISION(getCOLLISION().getHeight() + getCOLLISION().getY());
         }
     };
 
@@ -62,7 +64,8 @@ public class Player {
         this.imgView.setY(y);
         this.COLLISION = new Rectangle(x, y, imgView.getImage().getWidth(), imgView.getImage().getHeight());
         this.COLLISION.setFill(Color.BLUE);
-        this.COLLISION.setOpacity(0.25);
+        this.COLLISION.setOpacity(0);
+        this.BOTTOM_COLLISION = this.COLLISION.getY() + this.COLLISION.getHeight(); // Получаем координаты по Y нижней части коллизии
         runAnimation();
     }
 
@@ -76,7 +79,7 @@ public class Player {
         animation.play();
     }
 
-    public Image[] getSKELETON_IDLE(Status.View view) {
+    public ImageView[] getSKELETON_IDLE(Status.View view) {
         if (view == Status.View.RIGHT) {
             return SKELETON_IDLE_RIGHT;
         } else {
@@ -85,7 +88,7 @@ public class Player {
     }
 
 
-    public Image[] getSKELETON_WALK(Status.View view) {
+    public ImageView[] getSKELETON_WALK(Status.View view) {
         if (view == Status.View.RIGHT) {
             return SKELETON_WALK_RIGHT;
         } else {
@@ -98,10 +101,13 @@ public class Player {
         getImgView().setY(y);
     }
 
+    //Передвижение на экране
     public void move(double posX, double posY) {
+        level.checkObjectView(this);
         View.movePlayer(this, posX, posY);
     }
 
+    //Анимация передвижения
     public void startWalkAnim() {
         getMovementAnim().start();
     }
@@ -132,16 +138,32 @@ public class Player {
                 return true;
             }
         }
+        for (LevelObject object : level.getOBJECTS()) {
+            if (getCOLLISION().intersects(object.getCurrentCollision().getBoundsInLocal())) {
+                System.out.println("YEAH");
+                return true;
+            }
+        }
         for (Rectangle colShape : level.getTRIGGERS()) {
+            if (this.isFreezed()) return false;
             if (getCOLLISION().intersects(colShape.getBoundsInLocal())) {
-                if (level.getLocation().equals("First")) {
-                    level.setLocation("Start");
-                } else if (level.getLocation().equals("Start")) {
-                    level.setLocation("First");
-                }
-                VIEW.showScene();
-                System.out.println("Trigger");
-
+                this.setFreezed(true);
+                FadeTransition ft = new FadeTransition(Duration.millis(1000), this.getImgView());
+                ft.setFromValue(1.0);
+                ft.setToValue(0);
+                ft.setCycleCount(1);
+                ft.setOnFinished(actionEvent -> {
+                    if (level.getLocation().equals("First")) {
+                        level.setLocation("Start");
+                    } else if (level.getLocation().equals("Start")) {
+                        level.setLocation("First");
+                    }
+                    VIEW.showScene();
+                    this.setFreezed(false);
+                    this.getImgView().setOpacity(1);
+                    System.out.println("Trigger");
+                });
+                ft.play();
             }
         }
         return false;
@@ -164,13 +186,13 @@ public class Player {
         this.imgView = imgView;
     }
 
-    public Image[] getImgArray() {
+    public ImageView[] getImgArray() {
         return this.imgArray;
     }
 
-    public void setImgArray(Image[] imgArray) {
+    public void setImgArray(ImageView[] imgArray) {
         this.imgArray = imgArray;
-        getImgView().setImage(imgArray[0]);
+        getImgView().setImage(imgArray[0].getImage());
     }
 
     public Rectangle getCOLLISION() {
@@ -198,4 +220,19 @@ public class Player {
         return level;
     }
 
+    public boolean isFreezed() {
+        return freezed;
+    }
+
+    public void setFreezed(boolean freezed) {
+        this.freezed = freezed;
+    }
+
+    public double getBOTTOM_COLLISION() {
+        return BOTTOM_COLLISION;
+    }
+
+    public void setBOTTOM_COLLISION(double BOTTOM_COLLISION) {
+        this.BOTTOM_COLLISION = BOTTOM_COLLISION;
+    }
 }
