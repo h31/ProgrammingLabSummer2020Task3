@@ -60,9 +60,9 @@ public class Player {
     public Player(View view, Level level) {
         this.VIEW = view;
         this.level = level;
-        this.imgView.setX(Level.START_pCOORD[0]);
-        this.imgView.setY(Level.START_pCOORD[1]);
-        this.COLLISION = new Rectangle(Level.START_pCOORD[0], Level.START_pCOORD[1], imgView.getImage().getWidth(), imgView.getImage().getHeight());
+        this.imgView.setX(Level.FIRST_pCOORD[0]);
+        this.imgView.setY(Level.FIRST_pCOORD[1]);
+        this.COLLISION = new Rectangle(Level.FIRST_pCOORD[0], Level.FIRST_pCOORD[1], imgView.getImage().getWidth(), imgView.getImage().getHeight());
         this.BOTTOM_COLLISION = this.COLLISION.getY() + this.COLLISION.getHeight(); // Получаем координаты по Y нижней части коллизии
         runAnimation();
     }

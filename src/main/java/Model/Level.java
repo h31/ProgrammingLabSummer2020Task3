@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 
 
 public final class Level {
-    private ImageView LEVEL_IMG;
+    private ImageView LEVEL_IMG = new ImageView();
     private Rectangle[] COLLISIONS;
     private Rectangle[] TRIGGERS;
     private LevelObject[] OBJECTS;
@@ -40,23 +40,30 @@ public final class Level {
     };
 
     public static final Rectangle[] FIRST_COLLISION = {
-            new Rectangle(490, 388, 525, 30)
+            new Rectangle(0, 520, 4, 240), //Первая левая стена
+            new Rectangle(0, 520, 251, 20), // Верхняя стена
+            new Rectangle(247,470,4,50), // Коридор в комнатку налево
+            new Rectangle(310,442,4,70), // Коридор в комнатку направо
+            new Rectangle(45,465,200,4), // Стена нижняя в комнатке
+            new Rectangle(42,330,4,135), // Стена левая в комнатке
+            new Rectangle(42,330,245,8), // Стена верхняя в комнате
+            new Rectangle(287,330,35,20), // Стена верхняя в комнате
+            new Rectangle(320,330,4,120), // Стена правая в комнате
+            new Rectangle(82,338,30,10), // Стена правая в комнате
+            new Rectangle(310, 520, 501, 20), // Начальный коридор сверху
     };
+
     public static final Rectangle[] FIRST_TRIGGERS = {
 
     };
     public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
 
     public static final int[] FIRST_pCOORD = {
-            800,
-            600
+            100,
+            650
     };
     public Level() {
-        this.LEVEL_IMG = new ImageView(new Image("background.png"));
-        this.COLLISIONS = START_COLLISIONS;
-        this.TRIGGERS = START_TRIGGERS;
-        this.OBJECTS = START_OBJECTS;
-        this.location = "Start";
+        setLocation("First");
     }
 
     public int[] setLocation(String location) {
@@ -73,7 +80,7 @@ public final class Level {
             return START_pCOORD;
         } else if (location.equals("First")) {
             try {
-                this.getLEVEL_IMG().setImage(new Image("/Monsters_Creatures_Fantasy/Skeleton/Death.png"));
+                this.getLEVEL_IMG().setImage(new Image("firstlevel.png"));
             } catch (NullPointerException e) {
                 System.out.println("Произошла ошибка :" + e.toString());
             }

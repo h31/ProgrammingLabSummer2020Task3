@@ -29,6 +29,7 @@ public class View {
 
     public static void movePlayer(Player player, double posX, double posY) {
         player.setPosition(posX, posY);
+        System.out.println("X = " + posX + " Y: " + posY);
     }
 
     public void showScene() {
