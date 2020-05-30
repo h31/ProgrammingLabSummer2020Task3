@@ -27,6 +27,17 @@ public final class Level {
     };
 
     public static final LevelObject[] START_OBJECTS = SpriteData.getLevelObjects("Objects");
+    {
+        START_OBJECTS[0].setLocation(480, 520);
+        START_OBJECTS[1].setLocation(755, 525);
+        START_OBJECTS[2].setLocation(385, 586);
+        START_OBJECTS[3].setLocation(570, 520);
+    }
+
+    public static final int[] START_pCOORD = {
+            800,
+            600
+    };
 
     public static final Rectangle[] FIRST_COLLISION = {
             new Rectangle(490, 388, 525, 30)
@@ -36,20 +47,10 @@ public final class Level {
     };
     public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
 
-    {
-        START_OBJECTS[0].setLocation(480, 520);
-        START_OBJECTS[1].setLocation(400, 520);
-        START_OBJECTS[2].setLocation(520, 520);
-        START_OBJECTS[3].setLocation(570, 520);
-        for (Rectangle colShape : START_COLLISIONS) {
-            colShape.setOpacity(1);
-            colShape.setFill(Color.GRAY);
-        }
-
-        START_TRIGGERS[0].setOpacity(1);
-        START_TRIGGERS[0].setFill(Color.YELLOW);
-    }
-
+    public static final int[] FIRST_pCOORD = {
+            800,
+            600
+    };
     public Level() {
         this.LEVEL_IMG = new ImageView(new Image("background.png"));
         this.COLLISIONS = START_COLLISIONS;
@@ -58,7 +59,7 @@ public final class Level {
         this.location = "Start";
     }
 
-    public void setLocation(String location) {
+    public int[] setLocation(String location) {
         if (location.equals("Start")) {
             try {
                 this.getLEVEL_IMG().setImage(new Image("background.png"));
@@ -69,6 +70,7 @@ public final class Level {
             this.COLLISIONS = START_COLLISIONS;
             this.TRIGGERS = START_TRIGGERS;
             this.OBJECTS = START_OBJECTS;
+            return START_pCOORD;
         } else if (location.equals("First")) {
             try {
                 this.getLEVEL_IMG().setImage(new Image("/Monsters_Creatures_Fantasy/Skeleton/Death.png"));
@@ -79,6 +81,7 @@ public final class Level {
             this.COLLISIONS = FIRST_COLLISION;
             this.TRIGGERS = FIRST_TRIGGERS;
             this.OBJECTS = FIRST_OBJECTS;
+            return FIRST_pCOORD;
         } else {
             throw new IllegalArgumentException("There are no location such like this");
         }

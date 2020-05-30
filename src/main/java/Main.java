@@ -8,16 +8,16 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-
+private static final boolean debugMode = true;
     @Override
     public void start(Stage stage) throws Exception {
         stage.setWidth(1024);
         stage.setHeight(768);
         stage.setTitle("Game");
         stage.setResizable(false);
-        View view = new View(stage);
+        View view = new View(stage, debugMode);
         Level level = new Level();
-        Player player = new Player(view, level, 800,600);
+        Player player = new Player(view, level);
         view.setPLAYER(player);
         view.setLEVEL(level);
         view.showScene();

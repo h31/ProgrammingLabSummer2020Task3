@@ -57,14 +57,12 @@ public class Player {
         }
     };
 
-    public Player(View view, Level level, int x, int y) {
+    public Player(View view, Level level) {
         this.VIEW = view;
         this.level = level;
-        this.imgView.setX(x);
-        this.imgView.setY(y);
-        this.COLLISION = new Rectangle(x, y, imgView.getImage().getWidth(), imgView.getImage().getHeight());
-        this.COLLISION.setFill(Color.BLUE);
-        this.COLLISION.setOpacity(0);
+        this.imgView.setX(Level.START_pCOORD[0]);
+        this.imgView.setY(Level.START_pCOORD[1]);
+        this.COLLISION = new Rectangle(Level.START_pCOORD[0], Level.START_pCOORD[1], imgView.getImage().getWidth(), imgView.getImage().getHeight());
         this.BOTTOM_COLLISION = this.COLLISION.getY() + this.COLLISION.getHeight(); // Получаем координаты по Y нижней части коллизии
         runAnimation();
     }
@@ -153,20 +151,28 @@ public class Player {
                 ft.setToValue(0);
                 ft.setCycleCount(1);
                 ft.setOnFinished(actionEvent -> {
-                    if (level.getLocation().equals("First")) {
-                        level.setLocation("Start");
-                    } else if (level.getLocation().equals("Start")) {
-                        level.setLocation("First");
-                    }
-                    VIEW.showScene();
-                    this.setFreezed(false);
-                    this.getImgView().setOpacity(1);
-                    System.out.println("Trigger");
+                    changingLocation();
                 });
                 ft.play();
             }
         }
         return false;
+    }
+
+    public void changingLocation() {
+        int[] newCoord;
+        if (level.getLocation().equals("First")) {
+            newCoord = level.setLocation("Start");
+        } else if (level.getLocation().equals("Start")) {
+            newCoord = level.setLocation("First");
+        } else {
+            throw new IllegalArgumentException("Error");
+        }
+        this.setPosition(newCoord[0], newCoord[1]);
+        VIEW.showScene();
+        this.setFreezed(false);
+        this.getImgView().setOpacity(1);
+        System.out.println("Trigger");
     }
 
     public Status.View getView() {

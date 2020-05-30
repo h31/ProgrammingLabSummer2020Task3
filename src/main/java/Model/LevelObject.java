@@ -16,16 +16,12 @@ public class LevelObject {
                 IMG_VIEW.getX(),
                 IMG_VIEW.getY(),
                 IMG_VIEW.getX() + IMG_VIEW.getImage().getWidth(),
-                (IMG_VIEW.getY() + IMG_VIEW.getImage().getHeight()) / 2);
-        TOP_COLLISION.setFill(Color.BLUE);
-        TOP_COLLISION.setOpacity(0.25);
+                5);
         BOTTOM_COLLISION = new Rectangle(
                 IMG_VIEW.getX(),
-                (IMG_VIEW.getY() + IMG_VIEW.getImage().getHeight()) - 10,
+                IMG_VIEW.getY(),
                 IMG_VIEW.getX() + IMG_VIEW.getImage().getWidth(),
-                10);
-        BOTTOM_COLLISION.setFill(Color.BLUE);
-        BOTTOM_COLLISION.setOpacity(0.25);
+                5);
         currentCollision = TOP_COLLISION;
     }
 
@@ -33,7 +29,7 @@ public class LevelObject {
         IMG_VIEW.setX(x);
         IMG_VIEW.setY(y);
         TOP_COLLISION.setX(x);
-        TOP_COLLISION.setY(y);
+        TOP_COLLISION.setY(IMG_VIEW.getY() + IMG_VIEW.getImage().getHeight() / 2.2);
         BOTTOM_COLLISION.setX(x);
         BOTTOM_COLLISION.setY(IMG_VIEW.getY() + IMG_VIEW.getImage().getHeight() - 10);
     }
