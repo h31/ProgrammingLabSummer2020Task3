@@ -8,7 +8,7 @@ class BoardTest {
     @Test
     void getCell() {
         Board board = new Board();
-        Cell cell = new Cell(3,3,board);
-        assertTrue(cell.equals(board.getCell(3,3)));
+        Cell cell = new Cell(3, 3, board);
+        assertTrue(cell.equals(board.getCell(3, 3)));
     }
 }

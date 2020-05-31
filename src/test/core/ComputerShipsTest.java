@@ -9,13 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ComputerShipsTest {
     BattleShipView view = new BattleShipView();
+
     @Test
     void placeComputerShips() {
     }
 
-    public int helper(){
-        Ship ship = new Ship(4,true, view.enemyBoard);
-        if(ship.canPlaceShip(3,3)){
+    public int helper() {
+        Ship ship = new Ship(4, true, view.enemyBoard);
+        if (ship.canPlaceShip(3, 3)) {
             for (Cell cell : ship.cells) {
                 Cell element = view.enemyBoard.getCell(cell.x, cell.y);
                 element.ship = ship;
