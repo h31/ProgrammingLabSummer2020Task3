@@ -1,3 +1,9 @@
+package simulator.view;
+
+import simulator.controller.ControllerOfThePlanet;
+import simulator.model.FileManager;
+import simulator.model.LogicManager;
+import simulator.model.SystemCharacteristic;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -36,6 +42,7 @@ public class App extends Application{
         var loader = new FXMLLoader(new File("src/main/resources/SystemParameters.fxml").toURI().toURL());
         Parent root = loader.load();
         var scene = new Scene(root);
+        stage.setTitle("Configuring the system");
         stage.setScene(scene);
         stage.show();
         stageFile = stage;
@@ -47,6 +54,7 @@ public class App extends Application{
         ControllerOfThePlanet controller = loader.getController();
         controller.initialize(system);
         var stage = new Stage();
+        stage.setTitle("Configuring the planet");
         stage.setScene(new Scene(root1));
         var rand = (1 + (int) (Math.random() * 6));
         root1.setStyle("-fx-background-image: url("+"images/" + rand +".jpg "+")");

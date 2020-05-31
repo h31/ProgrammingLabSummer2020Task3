@@ -1,3 +1,7 @@
+package simulator.model;
+
+import javafx.stage.Stage;
+import simulator.view.App;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +32,7 @@ public class FileManager {
         }
     }
 
-    public static void open() {
+    public static void open(Stage stage) {
         try {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Open config file");
@@ -78,6 +82,7 @@ public class FileManager {
                 error(true);
                 return;
             }
+            stage.close();
             var app = new App();
             app.space(system);
 

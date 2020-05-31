@@ -1,3 +1,8 @@
+package simulator.controller;
+
+import simulator.model.FileManager;
+import simulator.model.SystemCharacteristic;
+import simulator.view.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -51,7 +56,7 @@ public class ControllerOfTheSystem {
             alert.showAndWait();
         });
 
-        load.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> FileManager.open());
+        load.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> FileManager.open((Stage) apply.getScene().getWindow()));
 
         var regex = "[0-9]+([.,][0-9]+)?";
         mass.setOnKeyTyped(event -> enabler(mass.getText().matches(regex), 0));
@@ -59,8 +64,7 @@ public class ControllerOfTheSystem {
         G.setOnKeyTyped(event -> enabler(G.getText().matches(regex), 2));
 
         apply.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            var stage = (Stage) apply.getScene().getWindow();
-            stage.close();
+            ((Stage) apply.getScene().getWindow()).close();
             var system = new SystemCharacteristic();
             try {
                 system.setMassOfStar(mass.getText());

@@ -1,3 +1,8 @@
+package simulator.controller;
+
+import simulator.model.PlanetCharacteristic;
+import simulator.model.SystemCharacteristic;
+import simulator.view.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;

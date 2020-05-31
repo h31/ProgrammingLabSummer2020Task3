@@ -1,13 +1,15 @@
+package simulator.model;
+
 import javafx.scene.paint.Color;
 
 public class PlanetCharacteristic {
-    String name;
-    String color;
-    double radius;
-    double positionX;
-    double positionY;
-    double speedX;
-    double speedY;
+    public String name;
+    public String color;
+    public double radius;
+    public double positionX;
+    public double positionY;
+    public double speedX;
+    public double speedY;
 
 
     public void setName (String nameU){
@@ -47,7 +49,7 @@ public class PlanetCharacteristic {
     }
 
     public String toString() {
-        return "PlanetCharacteristic{" +
+        return "Model.PlanetCharacteristic{" +
                 "name=" + name +
                 ", color=" + color +
                 ", radius=" + radius +

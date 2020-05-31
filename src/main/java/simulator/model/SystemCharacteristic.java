@@ -1,16 +1,16 @@
+package simulator.model;
+
 import java.util.ArrayList;
 
 public class SystemCharacteristic {
-    ArrayList<PlanetCharacteristic> planet = new ArrayList<>();
-    double massOfStar;
-    double radiusOfStar;
-    int numberOfPlanets;
-    double GC;
+    public ArrayList<PlanetCharacteristic> planet = new ArrayList<>();
+    public double massOfStar;
+    public double radiusOfStar;
+    public int numberOfPlanets;
+    public double GC;
 
     public void setMassOfStar(String mass) {
-        double massDouble;
-        massDouble = Double.parseDouble(formatter(mass));
-        massOfStar = massDouble;
+        massOfStar = Double.parseDouble(formatter(mass));
     }
 
     public void setNumberOfPlanets (double num) {
@@ -30,7 +30,7 @@ public class SystemCharacteristic {
     }
 
     public String toString() {
-        return "SystemCharacteristic{" +
+        return "Model.SystemCharacteristic{" +
                 "planet=" + planet.toString() +
                 ", massOfStar=" + massOfStar +
                 ", radiusOfStar=" + radiusOfStar +

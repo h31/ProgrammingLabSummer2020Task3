@@ -1,3 +1,5 @@
+package simulator.model;
+
 public class LogicManager {
 
     public double speedX(double speed, double deg) {

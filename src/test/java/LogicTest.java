@@ -1,3 +1,4 @@
+import simulator.model.LogicManager;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
