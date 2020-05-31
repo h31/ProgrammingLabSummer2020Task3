@@ -1,4 +1,5 @@
 package controller;
+
 import core.Cell;
 import core.Ship;
 import core.Shoot;
@@ -10,10 +11,12 @@ public class BoardController {
     private int[] shipLength = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
     private int i = 0;
     Shoot shoot;
+
     public BoardController(BattleShipView view) {
         this.view = view;
         shoot = new Shoot(false, view);
     }
+
     public void placePlayerShips() {
         view.playerBoard.cellSetAction(e -> {
             Cell cell = (Cell) e.getSource();
@@ -31,10 +34,11 @@ public class BoardController {
             }
         });
     }
+
     public void playerGame() {
         view.enemyBoard.cellSetAction((event -> {
             Cell cell = (Cell) event.getSource();
-            shoot.move(cell.x,cell.y);
+            shoot.move(cell.x, cell.y);
         }));
     }
 }

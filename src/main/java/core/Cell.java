@@ -1,4 +1,5 @@
 package core;
+
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
@@ -11,7 +12,7 @@ public class Cell extends Rectangle {
     public int y;
     public Board board;
     public boolean wasHit = false;
-    public Ship ship;// показывает,является ли эта клетка частью корабля
+    public Ship ship;// присваивается корабль,который состоит из этой клетки
 
     public Cell(int x, int y, Board board) {
         super(30, 30);
@@ -24,29 +25,31 @@ public class Cell extends Rectangle {
 
     public boolean hasNeighbors() {//есть ли в соседних клетках корабли
         List<Cell> neighboursCell = cellNeighbours();
-        for (Cell element : neighboursCell ) {
+        for (Cell element : neighboursCell) {
             if (element.ship != null) return true;
         }
         return false;
     }
-    public List<Cell> cellNeighbours(){
+
+    public List<Cell> cellNeighbours() {// список соседних клеток
         int x = this.x;
         int y = this.y;
-        List<Cell> neighboursCell = new ArrayList<Cell>(){{
-            if(isPoint(x + 1, y)) add(board.getCell(x + 1, y));
-            if(isPoint(x - 1, y)) add(board.getCell(x - 1, y));
-            if(isPoint(x, y + 1)) add(board.getCell(x , y + 1));
-            if(isPoint(x, y - 1)) add(board.getCell(x , y - 1));
-            if(isPoint(x + 1, y + 1)) add(board.getCell(x + 1, y + 1));
-            if(isPoint(x - 1, y + 1)) add(board.getCell(x - 1, y + 1));
-            if(isPoint(x + 1, y - 1)) add(board.getCell(x + 1, y - 1));
-            if(isPoint(x - 1, y - 1)) add(board.getCell(x - 1, y - 1));
+        List<Cell> neighboursCell = new ArrayList<Cell>() {{
+            if (isPoint(x + 1, y)) add(board.getCell(x + 1, y));
+            if (isPoint(x - 1, y)) add(board.getCell(x - 1, y));
+            if (isPoint(x, y + 1)) add(board.getCell(x, y + 1));
+            if (isPoint(x, y - 1)) add(board.getCell(x, y - 1));
+            if (isPoint(x + 1, y + 1)) add(board.getCell(x + 1, y + 1));
+            if (isPoint(x - 1, y + 1)) add(board.getCell(x - 1, y + 1));
+            if (isPoint(x + 1, y - 1)) add(board.getCell(x + 1, y - 1));
+            if (isPoint(x - 1, y - 1)) add(board.getCell(x - 1, y - 1));
         }};
         return neighboursCell;
     }
+
     public static boolean isPoint(int x, int y) {
         return x >= 0 && x < 10 && y >= 0 && y < 10;
-    }
+    } //принадлежит ли клетка игровому полю
 
     @Override
     public boolean equals(Object o) {

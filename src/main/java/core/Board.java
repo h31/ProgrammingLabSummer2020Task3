@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class Board extends Pane {
     private VBox box = new VBox();
+
     public Board() {
         for (int y = 0; y < 10; y++) {
             HBox row = new HBox();
@@ -27,7 +28,7 @@ public class Board extends Pane {
         return (Cell) ((HBox) box.getChildren().get(y)).getChildren().get(x);
     }
 
-    public void cellSetAction(EventHandler<MouseEvent> handler) {
+    public void cellSetAction(EventHandler<MouseEvent> handler) {//передаю клетке обработчика события
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 Cell cell = getCell(i, j);

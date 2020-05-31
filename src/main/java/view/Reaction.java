@@ -1,4 +1,5 @@
 package view;
+
 import core.Cell;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -24,10 +25,9 @@ public class Reaction {
 
     public void justPhrase(boolean isEnemyBoard) {
         Text text;
-        if(isEnemyBoard){
+        if (isEnemyBoard) {
             text = new Text("Разместите свои корабли");
-        }
-        else text = new Text("\nВаш ход первый!Да начнется игра!");
+        } else text = new Text("\nВаш ход первый!Да начнется игра!");
         text.setFont(Font.font("Verdana", 20));
         text.setFill(Color.DARKGREEN);
         view.message.getChildren().add(text);
@@ -40,7 +40,8 @@ public class Reaction {
     public void setColorInjured(Cell cell) {
         cell.setFill(Color.RED);
     }
-    public void setShipColor(Cell cell){
+
+    public void setShipColor(Cell cell) {
         cell.setFill(Color.DARKBLUE);
     }
 }

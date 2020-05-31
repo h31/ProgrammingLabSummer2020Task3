@@ -1,4 +1,5 @@
 package view;
+
 import controller.BoardController;
 import core.Board;
 import core.ComputerShips;
@@ -20,7 +21,7 @@ import javafx.stage.Stage;
 
 import java.util.Optional;
 
-public  class BattleShipView extends Application {
+public class BattleShipView extends Application {
     public Board playerBoard = new Board();
     public Board enemyBoard = new Board();
     public TextFlow message = new TextFlow();
@@ -45,34 +46,36 @@ public  class BattleShipView extends Application {
         nameOfBoard1.setFont(Font.font(30));
         Text nameOfBoard2 = new Text("Поле врага");
         nameOfBoard2.setFont(Font.font(30));
-        HBox boards = new HBox(50, playerBoard,enemyBoard);
+        HBox boards = new HBox(50, playerBoard, enemyBoard);
         boards.setAlignment(Pos.CENTER);
-        HBox text = new HBox(200, nameOfBoard1,nameOfBoard2);
+        HBox text = new HBox(200, nameOfBoard1, nameOfBoard2);
         text.setAlignment(Pos.CENTER);
         message.setTextAlignment(TextAlignment.CENTER);
         message.setLineSpacing(20);
-        VBox game = new VBox(20, boards,text,message);
+        VBox game = new VBox(20, boards, text, message);
         root.setCenter(game);
         Scene scene = new Scene(root);
         computerShips.placeComputerShips();
         primaryStage.setScene(scene);
         primaryStage.show();
-        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
-    public void showDialog(){
+
+    public void showDialog() {
         Alert newGame = new Alert(Alert.AlertType.CONFIRMATION);
         newGame.setTitle("Начать новую игру?");
         newGame.setHeaderText("Хотите начать новую игру?");
         Optional<ButtonType> option = newGame.showAndWait();
-        if(option.get() == ButtonType.OK){
-           BattleShipView restart = new BattleShipView();
-           Stage primaryStage = new Stage();
-           restart.start(primaryStage);
-           newGame.close();
-           this.primaryStage.close();
-        } else if(option.get() == ButtonType.CANCEL){
+        if (option.get() == ButtonType.OK) {
+            BattleShipView restart = new BattleShipView();
+            Stage primaryStage = new Stage();
+            restart.start(primaryStage);
+            newGame.close();
+            this.primaryStage.close();
+        } else if (option.get() == ButtonType.CANCEL) {
             newGame.close();
             this.primaryStage.close();
         }
