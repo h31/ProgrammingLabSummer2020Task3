@@ -1,12 +1,10 @@
 package View;
 
 import Controller.Controller;
-import Model.Effect;
-import Model.Level;
-import Model.LevelObject;
-import Model.Player;
+import Model.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -59,8 +57,13 @@ public class View {
                 colShape.setOpacity(0);
             }
         }
-        for (Pair colShape : LEVEL.getTRIGGERS()) {
-            Rectangle rect = (Rectangle) colShape.getKey();
+        for (Trigger trigger : LEVEL.getTRIGGERS()) {
+            Rectangle rect = trigger.getRECT();
+            ImageView effect = trigger.getEFFECT().getImgView();
+            if (effect != null) {
+                general.getChildren().add(effect);
+                effect.setVisible(false);
+            }
             general.getChildren().add(rect);
             if (DEBUG_MODE) {
                 rect.setOpacity(DEBUG_OPACITY);
@@ -81,10 +84,6 @@ public class View {
                 object.getTOP_COLLISION().setOpacity(0);
                 object.getBOTTOM_COLLISION().setOpacity(0);
             }
-        }
-        for (Effect effect : LEVEL.getEFFECTS()) {
-            general.getChildren().add(effect.getImgView());
-            effect.getImgView().setVisible(false);
         }
         Scene newScene = new Scene(general, 1024, 768);
         if (controller == null) {

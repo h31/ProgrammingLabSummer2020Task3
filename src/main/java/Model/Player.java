@@ -10,6 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+import java.util.LinkedList;
+
 public class Player extends Animated {
 
     private final ImageView[] SKELETON_IDLE_RIGHT;
@@ -57,9 +59,9 @@ public class Player extends Animated {
         super.setImgView(SKELETON_IDLE_LEFT[0]);
         this.VIEW = view;
         this.level = level;
-        super.getImgView().setX(Level.FIRST_pCOORD[0]);
-        super.getImgView().setY(Level.FIRST_pCOORD[1]);
-        this.COLLISION = new Rectangle(Level.FIRST_pCOORD[0], Level.FIRST_pCOORD[1], super.getImgView().getImage().getWidth(), super.getImgView().getImage().getHeight());
+        super.getImgView().setX(Level.START_pCOORD[0]);
+        super.getImgView().setY(Level.START_pCOORD[1]);
+        this.COLLISION = new Rectangle(super.getImgView().getX(), super.getImgView().getY(), super.getImgView().getImage().getWidth(), super.getImgView().getImage().getHeight());
         this.BOTTOM_COLLISION = this.COLLISION.getY() + this.COLLISION.getHeight(); // Получаем координаты по Y нижней части коллизии
         runAnimation();
     }
@@ -139,25 +141,25 @@ public class Player extends Animated {
                 return true;
             }
         }
-        for (Pair colShape : level.getTRIGGERS()) {
-            Rectangle rect = (Rectangle) colShape.getKey();
+        for (Trigger trigger : level.getTRIGGERS()) {
             if (this.isFreezed()) return false;
+            Rectangle rect = trigger.getRECT();
             if (getCOLLISION().intersects(rect.getBoundsInLocal())) {
-                if (colShape.getValue() == COLLISION_TYPE.ENTER) {
+                if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
                     changingLocation();
-                } else if (colShape.getValue() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
-                    setFreezed(true);
-                    System.out.println("Now freezed, key was pressed");
-                    interact();
+                } else if (trigger == level.getTRIGGERS().element() && trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
+                    interact(level.getTRIGGERS().poll());
                 }
             }
         }
         return false;
     }
 
-    public void interact() {
+    public void interact(Trigger trigger) {
+        setFreezed(true);
         System.out.println("Now in interact()");
-        VIEW.showEffect(level.getEFFECTS()[0]);
+        Effect effect = trigger.getEFFECT();
+        VIEW.showEffect(effect);
     }
 
     public void changingLocation() {

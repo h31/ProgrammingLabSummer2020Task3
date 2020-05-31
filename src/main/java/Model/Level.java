@@ -6,13 +6,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
+import java.util.LinkedList;
+
 
 public final class Level {
     private ImageView LEVEL_IMG = new ImageView();
     private Rectangle[] COLLISIONS;
-    private Pair[] TRIGGERS;
+    private LinkedList<Trigger> TRIGGERS;
     private LevelObject[] OBJECTS;
-    private Effect[] EFFECTS;
     private String location;
 
     public static final Rectangle[] START_COLLISIONS = {
@@ -24,11 +25,12 @@ public final class Level {
             new Rectangle(400, 370, 80, 10)
     };
 
-    public static final Pair[] START_TRIGGERS = {
-            new Pair<>(new Rectangle(425, 381, 30, 30), COLLISION_TYPE.ENTER),
-    };
+    public static final LinkedList<Trigger> START_TRIGGERS = new LinkedList<>() {{
+        add(new Trigger(new Rectangle(425, 381, 30, 30), new Effect(), COLLISION_TYPE.ENTER));
+    }};
 
     public static final LevelObject[] START_OBJECTS = SpriteData.getLevelObjects("Objects");
+
     {
         START_OBJECTS[0].setLocation(480, 520);
         START_OBJECTS[1].setLocation(755, 525);
@@ -41,30 +43,27 @@ public final class Level {
             600
     };
 
-    public static final Effect[] START_EFFECTS = {
-            new Effect(EFFECT_TYPE.MAGIC, 70, 345)
-    };
 
     public static final Rectangle[] FIRST_COLLISION = {
             new Rectangle(0, 730, 1000, 4), // Вся нижняя стена
             new Rectangle(0, 520, 4, 240), //Первая левая стена
             new Rectangle(0, 520, 251, 20), // Верхняя стена
-            new Rectangle(247,470,4,50), // Коридор в комнатку налево
-            new Rectangle(310,442,4,70), // Коридор в комнатку направо
-            new Rectangle(45,465,200,4), // Стена нижняя в комнатке
-            new Rectangle(42,330,4,135), // Стена левая в комнатке
-            new Rectangle(42,330,245,8), // Стена верхняя в комнате
-            new Rectangle(287,330,35,20), // Стена верхняя в комнате
-            new Rectangle(320,330,4,120), // Стена правая в комнате
-            new Rectangle(82,338,30,10), // Стена правая в комнате
+            new Rectangle(247, 470, 4, 50), // Коридор в комнатку налево
+            new Rectangle(310, 442, 4, 70), // Коридор в комнатку направо
+            new Rectangle(45, 465, 200, 4), // Стена нижняя в комнатке
+            new Rectangle(42, 330, 4, 135), // Стена левая в комнатке
+            new Rectangle(42, 330, 245, 8), // Стена верхняя в комнате
+            new Rectangle(287, 330, 35, 20), // Стена верхняя в комнате
+            new Rectangle(320, 330, 4, 120), // Стена правая в комнате
+            new Rectangle(82, 338, 30, 10), // Стена правая в комнате
             new Rectangle(310, 520, 501, 20), // Начальный коридор сверху
     };
 
 
-    public static final Pair[] FIRST_TRIGGERS = new Pair[] {
-            //new Pair<>(new Rectangle(320, 330, 4, 120), COLLISION_TYPE.ENTER),
-            new Pair<>(new Rectangle(70, 345, 50, 50), COLLISION_TYPE.INTERACT),
-    };
+    public static final LinkedList<Trigger> FIRST_TRIGGERS = new LinkedList<>() {{
+        //new Pair<>(new Rectangle(320, 330, 4, 120), COLLISION_TYPE.ENTER),
+        add(new Trigger(new Rectangle(70, 345, 40, 40), new Effect(EFFECT_TYPE.MAGIC, 50, 325),  COLLISION_TYPE.INTERACT));
+    }};
     public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
 
     public static final int[] FIRST_pCOORD = {
@@ -72,12 +71,8 @@ public final class Level {
             650
     };
 
-    public static final Effect[] FIRST_EFFECTS = {
-            new Effect(EFFECT_TYPE.MAGIC, 70, 345)
-    };
-
     public Level() {
-        setLocation("First");
+        setLocation("Start");
     }
 
     public int[] setLocation(String location) {
@@ -91,7 +86,6 @@ public final class Level {
             this.COLLISIONS = START_COLLISIONS;
             this.TRIGGERS = START_TRIGGERS;
             this.OBJECTS = START_OBJECTS;
-            this.EFFECTS = START_EFFECTS;
             return START_pCOORD;
         } else if (location.equals("First")) {
             try {
@@ -103,7 +97,6 @@ public final class Level {
             this.COLLISIONS = FIRST_COLLISION;
             this.TRIGGERS = FIRST_TRIGGERS;
             this.OBJECTS = FIRST_OBJECTS;
-            this.EFFECTS = FIRST_EFFECTS;
             return FIRST_pCOORD;
         } else {
             throw new IllegalArgumentException("There are no location such like this");
@@ -129,7 +122,7 @@ public final class Level {
         return COLLISIONS;
     }
 
-    public Pair[] getTRIGGERS() {
+    public LinkedList<Trigger> getTRIGGERS() {
         return TRIGGERS;
     }
 
@@ -140,17 +133,4 @@ public final class Level {
     public String getLocation() {
         return location;
     }
-
-    public Effect[] getEFFECTS() {
-        return EFFECTS;
-    }
-
-    public void setEFFECTS(Effect[] EFFECTS) {
-        this.EFFECTS = EFFECTS;
-    }
-}
-
-enum COLLISION_TYPE {
-    ENTER,
-    INTERACT
 }

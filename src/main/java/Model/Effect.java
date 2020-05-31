@@ -10,6 +10,8 @@ public class Effect extends Animated {
         ImageView[] effect;
         if (type == EFFECT_TYPE.MAGIC) {
             effect = SpriteData.getSprites("vortexmagic");
+        } else if (type == EFFECT_TYPE.EXPLOSION) {
+            effect = SpriteData.getSprites("X_plosion");
         } else {
             throw new IllegalArgumentException();
         }
@@ -18,11 +20,15 @@ public class Effect extends Animated {
         setPosition(x,y);
     }
 
+    public Effect() {
+
+    }
+
     public void runAnimation() {
         System.out.println("Run Animation");
         this.getImgView().setVisible(true);
         final Animation animation = new SpriteAnimation(
-                Duration.millis(2000),
+                Duration.millis(1500),
                 this
         );
         animation.setOnFinished(actionEvent -> {
@@ -30,8 +36,7 @@ public class Effect extends Animated {
             Player.freezed = false;
             this.getImgView().setVisible(false);
         });
-        animation.setCycleCount(2);
-        animation.setAutoReverse(true);
+        animation.setCycleCount(1);
         animation.play();
     }
 
