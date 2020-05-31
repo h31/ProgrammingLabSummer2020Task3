@@ -8,9 +8,9 @@ import javafx.animation.FadeTransition;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import javafx.util.Pair;
 
-import java.util.LinkedList;
+import java.util.Objects;
+
 
 public class Player extends Animated {
 
@@ -28,7 +28,7 @@ public class Player extends Animated {
     private double velY = 0;
     private double velX = 0;
     public final double SPEED = 1.2;
-    public static boolean freezed = false;
+    static boolean freezed = false;
 
     private final View VIEW;
 
@@ -59,8 +59,8 @@ public class Player extends Animated {
         super.setImgView(SKELETON_IDLE_LEFT[0]);
         this.VIEW = view;
         this.level = level;
-        super.getImgView().setX(Level.START_pCOORD[0]);
-        super.getImgView().setY(Level.START_pCOORD[1]);
+        super.getImgView().setX(Level.FIRST_pCOORD[0]);
+        super.getImgView().setY(Level.FIRST_pCOORD[1]);
         this.COLLISION = new Rectangle(super.getImgView().getX(), super.getImgView().getY(), super.getImgView().getImage().getWidth(), super.getImgView().getImage().getHeight());
         this.BOTTOM_COLLISION = this.COLLISION.getY() + this.COLLISION.getHeight(); // Получаем координаты по Y нижней части коллизии
         runAnimation();
@@ -76,7 +76,7 @@ public class Player extends Animated {
         animation.play();
     }
 
-    public ImageView[] getSKELETON_IDLE(Status.View view) {
+    private ImageView[] getSKELETON_IDLE(Status.View view) {
         if (view == Status.View.RIGHT) {
             return SKELETON_IDLE_RIGHT;
         } else {
@@ -85,7 +85,7 @@ public class Player extends Animated {
     }
 
 
-    public ImageView[] getSKELETON_WALK(Status.View view) {
+    private ImageView[] getSKELETON_WALK(Status.View view) {
         if (view == Status.View.RIGHT) {
             return SKELETON_WALK_RIGHT;
         } else {
@@ -99,7 +99,7 @@ public class Player extends Animated {
     }
 
     //Передвижение на экране
-    public void move(double posX, double posY) {
+    private void move(double posX, double posY) {
         level.checkObjectView(this);
         View.movePlayer(this, posX, posY);
     }
@@ -109,7 +109,7 @@ public class Player extends Animated {
         getMovementAnim().start();
     }
 
-    public AnimationTimer getMovementAnim() {
+    private AnimationTimer getMovementAnim() {
         return movementAnim;
     }
 
@@ -128,7 +128,7 @@ public class Player extends Animated {
         setView(view);
     }
 
-    public boolean isCollision() {
+    private boolean isCollision() {
         for (Rectangle colShape : level.getCOLLISION()) {
             if (getCOLLISION().intersects(colShape.getBoundsInLocal())) {
                 System.out.println("Collision");
@@ -148,21 +148,22 @@ public class Player extends Animated {
                 if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
                     changingLocation();
                 } else if (trigger == level.getTRIGGERS().element() && trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
-                    interact(level.getTRIGGERS().poll());
+                    interact(Objects.requireNonNull(level.getTRIGGERS().poll()));
                 }
             }
         }
         return false;
     }
 
-    public void interact(Trigger trigger) {
+    private void interact(Trigger trigger) {
         setFreezed(true);
         System.out.println("Now in interact()");
         Effect effect = trigger.getEFFECT();
+        trigger.runObjectAnim();
         VIEW.showEffect(effect);
     }
 
-    public void changingLocation() {
+    private void changingLocation() {
         this.setFreezed(true);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), this.getImgView());
         ft.setFromValue(1.0);
@@ -190,7 +191,7 @@ public class Player extends Animated {
         return this.view;
     }
 
-    public void setView(Status.View newView) {
+    private void setView(Status.View newView) {
         this.view = newView;
     }
 
@@ -217,7 +218,7 @@ public class Player extends Animated {
     }
 
 
-    public double getVelY() {
+    private double getVelY() {
         return velY;
     }
 
@@ -225,7 +226,7 @@ public class Player extends Animated {
         this.velY = velY;
     }
 
-    public double getVelX() {
+    private double getVelX() {
         return velX;
     }
 
@@ -237,19 +238,19 @@ public class Player extends Animated {
         return level;
     }
 
-    public boolean isFreezed() {
+    private boolean isFreezed() {
         return freezed;
     }
 
-    public void setFreezed(boolean freezed) {
-        this.freezed = freezed;
+    private void setFreezed(boolean freezed) {
+        Player.freezed = freezed;
     }
 
-    public double getBOTTOM_COLLISION() {
+    double getBOTTOM_COLLISION() {
         return BOTTOM_COLLISION;
     }
 
-    public void setBOTTOM_COLLISION(double BOTTOM_COLLISION) {
+    private void setBOTTOM_COLLISION(double BOTTOM_COLLISION) {
         this.BOTTOM_COLLISION = BOTTOM_COLLISION;
     }
 }

@@ -9,6 +9,7 @@ public class LevelObject {
     private final Rectangle BOTTOM_COLLISION;
     private Rectangle currentCollision;
     private OBJECT_VIEW view = OBJECT_VIEW.FRONT;
+
     LevelObject(ImageView imgView) {
         this.IMG_VIEW = imgView;
         TOP_COLLISION = new Rectangle(
@@ -24,17 +25,13 @@ public class LevelObject {
         currentCollision = TOP_COLLISION;
     }
 
-    public void setLocation(double x, double y) {
+    void setLocation(double x, double y) {
         IMG_VIEW.setX(x);
         IMG_VIEW.setY(y);
         TOP_COLLISION.setX(x);
         TOP_COLLISION.setY(IMG_VIEW.getY() + IMG_VIEW.getImage().getHeight() / 2.2);
         BOTTOM_COLLISION.setX(x);
         BOTTOM_COLLISION.setY(IMG_VIEW.getY() + IMG_VIEW.getImage().getHeight() - 10);
-    }
-
-    public void deleteCollision() {
-
     }
 
     public ImageView getIMG_VIEW() {
@@ -46,7 +43,7 @@ public class LevelObject {
         return view;
     }
 
-    public void setView(OBJECT_VIEW newView) {
+    void setView(OBJECT_VIEW newView) {
         this.view = newView;
         if (newView == OBJECT_VIEW.BACK) {
             getIMG_VIEW().setViewOrder(2);
@@ -68,7 +65,8 @@ public class LevelObject {
     public Rectangle getBOTTOM_COLLISION() {
         return BOTTOM_COLLISION;
     }
-    public Rectangle getCurrentCollision() {
+
+    Rectangle getCurrentCollision() {
         return currentCollision;
     }
 }

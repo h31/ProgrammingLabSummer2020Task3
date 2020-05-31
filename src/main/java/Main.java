@@ -6,9 +6,10 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-private static final boolean debugMode = true;
+    private static final boolean debugMode = true;
+
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         stage.setWidth(1024);
         stage.setHeight(768);
         stage.setTitle("Game");

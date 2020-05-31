@@ -6,7 +6,7 @@ import javafx.util.Duration;
 
 public class Effect extends Animated {
 
-    public Effect(EFFECT_TYPE type, int x, int y) {
+    Effect(EFFECT_TYPE type, int x, int y) {
         ImageView[] effect;
         if (type == EFFECT_TYPE.MAGIC) {
             effect = SpriteData.getSprites("vortexmagic");
@@ -17,10 +17,10 @@ public class Effect extends Animated {
         }
         super.setImgArray(effect);
         super.setImgView(effect[0]);
-        setPosition(x,y);
+        setPosition(x, y);
     }
 
-    public Effect() {
+    Effect() {
 
     }
 
@@ -57,7 +57,7 @@ public class Effect extends Animated {
         getImgView().setImage(imgArray[0].getImage());
     }
 
-    public void setPosition(int x, int y) {
+    private void setPosition(int x, int y) {
         super.getImgView().setX(x);
         super.getImgView().setY(y);
     }

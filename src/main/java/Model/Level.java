@@ -2,49 +2,56 @@ package Model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Pair;
-
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public final class Level {
     private ImageView LEVEL_IMG = new ImageView();
-    private Rectangle[] COLLISIONS;
+    private List<Rectangle> COLLISIONS;
     private LinkedList<Trigger> TRIGGERS;
     private LevelObject[] OBJECTS;
     private String location;
 
-    public static final Rectangle[] START_COLLISIONS = {
+    private static final List<Rectangle> START_COLLISIONS = Arrays.asList(
             new Rectangle(480, 381, 540, 30), //Верхняя стена справа
             new Rectangle(270, 381, 130, 30), // Верхняя стена слева
             new Rectangle(265, 381, 10, 500), // Стена слева
             new Rectangle(265, 730, 700, 10), // Стена снизу
             new Rectangle(1010, 400, 10, 650), // Стена справа
             new Rectangle(400, 370, 80, 10)
-    };
+    );
 
-    public static final LinkedList<Trigger> START_TRIGGERS = new LinkedList<>() {{
+    private static final LinkedList<Trigger> START_TRIGGERS = new LinkedList<>() {{
         add(new Trigger(new Rectangle(425, 381, 30, 30), new Effect(), COLLISION_TYPE.ENTER));
     }};
 
-    public static final LevelObject[] START_OBJECTS = SpriteData.getLevelObjects("Objects");
+    private static final LevelObject[] START_OBJECTS = SpriteData.getLevelObjects("Objects");
 
-    {
+    static {
         START_OBJECTS[0].setLocation(480, 520);
         START_OBJECTS[1].setLocation(755, 525);
         START_OBJECTS[2].setLocation(385, 586);
         START_OBJECTS[3].setLocation(570, 520);
     }
 
-    public static final int[] START_pCOORD = {
+    private static final int[] START_pCOORD = {
             800,
             600
     };
 
 
-    public static final Rectangle[] FIRST_COLLISION = {
+    private static final LinkedList<Trigger> FIRST_TRIGGERS = new LinkedList<>() {{
+        //new Pair<>(new Rectangle(320, 330, 4, 120), COLLISION_TYPE.ENTER),
+        add(new Trigger(new Rectangle(70, 345, 40, 40),
+                new Effect(EFFECT_TYPE.MAGIC, 50, 325),
+                COLLISION_TYPE.INTERACT,
+                SpriteData.getSprite("wall.png")));
+    }};
+
+    private static final List<Rectangle> FIRST_COLLISION = Arrays.asList(
             new Rectangle(0, 730, 1000, 4), // Вся нижняя стена
             new Rectangle(0, 520, 4, 240), //Первая левая стена
             new Rectangle(0, 520, 251, 20), // Верхняя стена
@@ -56,26 +63,21 @@ public final class Level {
             new Rectangle(287, 330, 35, 20), // Стена верхняя в комнате
             new Rectangle(320, 330, 4, 120), // Стена правая в комнате
             new Rectangle(82, 338, 30, 10), // Стена правая в комнате
-            new Rectangle(310, 520, 501, 20), // Начальный коридор сверху
-    };
+            new Rectangle(310, 520, 501, 20) // Начальный коридор сверху
+    );
 
+    private static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
 
-    public static final LinkedList<Trigger> FIRST_TRIGGERS = new LinkedList<>() {{
-        //new Pair<>(new Rectangle(320, 330, 4, 120), COLLISION_TYPE.ENTER),
-        add(new Trigger(new Rectangle(70, 345, 40, 40), new Effect(EFFECT_TYPE.MAGIC, 50, 325),  COLLISION_TYPE.INTERACT));
-    }};
-    public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
-
-    public static final int[] FIRST_pCOORD = {
+    static final int[] FIRST_pCOORD = {
             100,
             650
     };
 
     public Level() {
-        setLocation("Start");
+        setLocation("First");
     }
 
-    public int[] setLocation(String location) {
+    int[] setLocation(String location) {
         if (location.equals("Start")) {
             try {
                 this.getLEVEL_IMG().setImage(new Image("background.png"));
@@ -118,7 +120,7 @@ public final class Level {
         return LEVEL_IMG;
     }
 
-    public Rectangle[] getCOLLISION() {
+    public List<Rectangle> getCOLLISION() {
         return COLLISIONS;
     }
 
@@ -130,7 +132,7 @@ public final class Level {
         return OBJECTS;
     }
 
-    public String getLocation() {
+    String getLocation() {
         return location;
     }
 }

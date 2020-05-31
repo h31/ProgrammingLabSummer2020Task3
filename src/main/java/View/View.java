@@ -60,9 +60,14 @@ public class View {
         for (Trigger trigger : LEVEL.getTRIGGERS()) {
             Rectangle rect = trigger.getRECT();
             ImageView effect = trigger.getEFFECT().getImgView();
+            Pair<ImageView, Rectangle> interactedObject = trigger.getInteractedObject();
             if (effect != null) {
                 general.getChildren().add(effect);
                 effect.setVisible(false);
+            }
+            if (interactedObject.getValue() != null && interactedObject.getKey() != null) {
+                general.getChildren().add(interactedObject.getValue());// Коллизия
+                general.getChildren().add(interactedObject.getKey());
             }
             general.getChildren().add(rect);
             if (DEBUG_MODE) {
