@@ -4,13 +4,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 
 
 public final class Level {
     private ImageView LEVEL_IMG = new ImageView();
     private Rectangle[] COLLISIONS;
-    private Rectangle[] TRIGGERS;
+    private Pair[] TRIGGERS;
     private LevelObject[] OBJECTS;
+    private Effect[] EFFECTS;
     private String location;
 
     public static final Rectangle[] START_COLLISIONS = {
@@ -22,8 +24,8 @@ public final class Level {
             new Rectangle(400, 370, 80, 10)
     };
 
-    public static final Rectangle[] START_TRIGGERS = {
-            new Rectangle(425, 381, 30, 30)
+    public static final Pair[] START_TRIGGERS = {
+            new Pair<>(new Rectangle(425, 381, 30, 30), COLLISION_TYPE.ENTER),
     };
 
     public static final LevelObject[] START_OBJECTS = SpriteData.getLevelObjects("Objects");
@@ -39,7 +41,12 @@ public final class Level {
             600
     };
 
+    public static final Effect[] START_EFFECTS = {
+            new Effect(EFFECT_TYPE.MAGIC, 70, 345)
+    };
+
     public static final Rectangle[] FIRST_COLLISION = {
+            new Rectangle(0, 730, 1000, 4), // Вся нижняя стена
             new Rectangle(0, 520, 4, 240), //Первая левая стена
             new Rectangle(0, 520, 251, 20), // Верхняя стена
             new Rectangle(247,470,4,50), // Коридор в комнатку налево
@@ -53,8 +60,10 @@ public final class Level {
             new Rectangle(310, 520, 501, 20), // Начальный коридор сверху
     };
 
-    public static final Rectangle[] FIRST_TRIGGERS = {
 
+    public static final Pair[] FIRST_TRIGGERS = new Pair[] {
+            //new Pair<>(new Rectangle(320, 330, 4, 120), COLLISION_TYPE.ENTER),
+            new Pair<>(new Rectangle(70, 345, 50, 50), COLLISION_TYPE.INTERACT),
     };
     public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
 
@@ -62,6 +71,11 @@ public final class Level {
             100,
             650
     };
+
+    public static final Effect[] FIRST_EFFECTS = {
+            new Effect(EFFECT_TYPE.MAGIC, 70, 345)
+    };
+
     public Level() {
         setLocation("First");
     }
@@ -77,6 +91,7 @@ public final class Level {
             this.COLLISIONS = START_COLLISIONS;
             this.TRIGGERS = START_TRIGGERS;
             this.OBJECTS = START_OBJECTS;
+            this.EFFECTS = START_EFFECTS;
             return START_pCOORD;
         } else if (location.equals("First")) {
             try {
@@ -88,6 +103,7 @@ public final class Level {
             this.COLLISIONS = FIRST_COLLISION;
             this.TRIGGERS = FIRST_TRIGGERS;
             this.OBJECTS = FIRST_OBJECTS;
+            this.EFFECTS = FIRST_EFFECTS;
             return FIRST_pCOORD;
         } else {
             throw new IllegalArgumentException("There are no location such like this");
@@ -102,7 +118,6 @@ public final class Level {
             } else {
                 colShape.setView(OBJECT_VIEW.FRONT);
             }
-            //System.out.println();
         }
     }
 
@@ -114,7 +129,7 @@ public final class Level {
         return COLLISIONS;
     }
 
-    public Rectangle[] getTRIGGERS() {
+    public Pair[] getTRIGGERS() {
         return TRIGGERS;
     }
 
@@ -125,4 +140,17 @@ public final class Level {
     public String getLocation() {
         return location;
     }
+
+    public Effect[] getEFFECTS() {
+        return EFFECTS;
+    }
+
+    public void setEFFECTS(Effect[] EFFECTS) {
+        this.EFFECTS = EFFECTS;
+    }
+}
+
+enum COLLISION_TYPE {
+    ENTER,
+    INTERACT
 }

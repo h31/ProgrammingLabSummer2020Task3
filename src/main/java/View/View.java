@@ -1,17 +1,16 @@
 package View;
 
 import Controller.Controller;
+import Model.Effect;
 import Model.Level;
 import Model.LevelObject;
 import Model.Player;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import javax.naming.ldap.Control;
+import javafx.util.Pair;
 
 public class View {
     private final Stage stage;
@@ -29,7 +28,6 @@ public class View {
 
     public static void movePlayer(Player player, double posX, double posY) {
         player.setPosition(posX, posY);
-        System.out.println("X = " + posX + " Y: " + posY);
     }
 
     public void showScene() {
@@ -61,13 +59,14 @@ public class View {
                 colShape.setOpacity(0);
             }
         }
-        for (Rectangle colShape : LEVEL.getTRIGGERS()) {
-            general.getChildren().add(colShape);
+        for (Pair colShape : LEVEL.getTRIGGERS()) {
+            Rectangle rect = (Rectangle) colShape.getKey();
+            general.getChildren().add(rect);
             if (DEBUG_MODE) {
-                colShape.setOpacity(DEBUG_OPACITY);
-                colShape.setFill(Color.YELLOW);
+                rect.setOpacity(DEBUG_OPACITY);
+                rect.setFill(Color.YELLOW);
             } else {
-                colShape.setOpacity(0);
+                rect.setOpacity(0);
             }
         }
         for (LevelObject object : LEVEL.getOBJECTS()) {
@@ -83,6 +82,10 @@ public class View {
                 object.getBOTTOM_COLLISION().setOpacity(0);
             }
         }
+        for (Effect effect : LEVEL.getEFFECTS()) {
+            general.getChildren().add(effect.getImgView());
+            effect.getImgView().setVisible(false);
+        }
         Scene newScene = new Scene(general, 1024, 768);
         if (controller == null) {
             this.controller = new Controller(newScene, PLAYER);
@@ -91,6 +94,12 @@ public class View {
         }
         return newScene;
     }
+
+    public void showEffect(Effect effect) {
+        System.out.println("Now in View");
+        effect.runAnimation();
+    }
+
 
     public Scene getScene() {
         return scene;
@@ -107,5 +116,4 @@ public class View {
     public void setLEVEL(Level LEVEL) {
         this.LEVEL = LEVEL;
     }
-
 }

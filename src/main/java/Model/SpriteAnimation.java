@@ -4,18 +4,18 @@ import javafx.animation.Transition;
 import javafx.util.Duration;
 
 public final class SpriteAnimation extends Transition {
-    private Player player;
+    private Animated animated;
 
-    SpriteAnimation(Duration duration, Player player) {
-        this.player = player;
+    SpriteAnimation(Duration duration, Animated animated) {
+        this.animated = animated;
         setCycleDuration(duration);
     }
 
 
     @Override
     protected void interpolate(double k) {
-        final int index = Math.min((int) Math.floor((k * player.getImgArray().length)), player.getImgArray().length - 1);
-        player.getImgView().setImage(player.getImgArray()[index].getImage());
+        final int index = Math.min((int) Math.floor((k * animated.getImgArray().length)), animated.getImgArray().length - 1);
+        animated.getImgView().setImage(animated.getImgArray()[index].getImage());
     }
 
 }

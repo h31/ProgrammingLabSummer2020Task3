@@ -1,4 +1,6 @@
 import Controller.Controller;
+import Model.EFFECT_TYPE;
+import Model.Effect;
 import Model.Level;
 import Model.Player;
 import View.View;

@@ -9,8 +9,9 @@ public final class Controller {
     private final Player PLAYER;
 
 
-    // 0 - up, 1 - down, 2 - left, 3 - right
-    private Boolean[] keyState = {
+    // 0 - up, 1 - down, 2 - left, 3 - right, 4 - E
+    public final static Boolean[] keyState = {
+            false,
             false,
             false,
             false,
@@ -36,24 +37,30 @@ public final class Controller {
                     PLAYER.setVelY(PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, PLAYER.getView());
                     keyState[1] = true;
+                    PLAYER.startWalkAnim();
                     break;
                 case UP:
                     PLAYER.setVelY(-PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, PLAYER.getView());
                     keyState[0] = true;
+                    PLAYER.startWalkAnim();
                     break;
                 case LEFT:
                     PLAYER.setVelX(-PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, Status.View.LEFT);
                     keyState[2] = true;
+                    PLAYER.startWalkAnim();
                     break;
                 case RIGHT:
                     PLAYER.setVelX(PLAYER.SPEED);
                     PLAYER.setAction(Status.WALK, Status.View.RIGHT);
                     keyState[3] = true;
+                    PLAYER.startWalkAnim();
+                    break;
+                case E:
+                    keyState[4] = true;
                     break;
             }
-            PLAYER.startWalkAnim();
         });
         primaryScene.setOnKeyReleased(e -> {
             switch (e.getCode()) {
@@ -84,6 +91,9 @@ public final class Controller {
                         PLAYER.setAction(Status.IDLE, PLAYER.getView());
                     }
                     keyState[3] = false;
+                    break;
+                case E:
+                    keyState[4] = false;
                     break;
             }
         });
