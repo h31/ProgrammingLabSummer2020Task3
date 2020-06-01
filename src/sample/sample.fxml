@@ -9,29 +9,99 @@
    <children>
       <AnchorPane layoutX="20.0" layoutY="110.0" prefHeight="410.0" prefWidth="410.0" style="-fx-background-color: #afa196;">
          <children>
-            <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="110.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="210.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="310.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="10.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="110.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="210.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="310.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="10.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="110.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="210.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="310.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="10.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="110.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="210.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
-            <AnchorPane layoutX="310.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" />
+            <Label fx:id="l11" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="310.0" layoutY="10.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="110.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="210.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="210.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="310.0" layoutY="110.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="110.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="210.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="310.0" layoutY="210.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="10.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="110.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="210.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="310.0" layoutY="310.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: #bbada0;" text="">
+               <font>
+                  <Font name="Arial Black" size="56.0" />
+               </font>
+            </Label>
+
          </children></AnchorPane>
       <Label layoutX="20.0" layoutY="14.0" text="2048" textFill="#84776e">
          <font>
             <Font name="Arial Black" size="56.0" />
          </font>
       </Label>
-      <Button fx:id="newGame" layoutX="342.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleButtonAction" style="-fx-background-color: #84776e;" text="New Game" textFill="#faf8ef">
+      <Button fx:id="newGame" layoutX="342.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleButtonAction" text="New Game">
          <font>
             <Font name="Arial Black" size="12.0" />
          </font>

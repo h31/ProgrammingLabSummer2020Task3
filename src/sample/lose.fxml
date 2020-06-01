@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #faf8ef;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.loseController">
+<AnchorPane prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #faf8ef;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <Label layoutX="50.0" layoutY="14.0" prefHeight="24.0" prefWidth="100.0" text="Game Over" textFill="#84776e">
          <font>
