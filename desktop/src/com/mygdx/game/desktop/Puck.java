@@ -13,8 +13,8 @@ public class Puck extends Actor {
     Body body;
     Sprite sprite;
     Texture texture;
-    float max = 1.3f;
-    float min = -1.3f;
+    float max = 1f;
+    float min = -1f;
     Vector2 vec;
     Vector2 veccopy;
 
@@ -34,7 +34,7 @@ public class Puck extends Actor {
         fDef.shape = shape;
         fDef.density = 0.2f;
         fDef.restitution = 0.5f;
-        fDef.friction = 0f;
+        fDef.friction = 0.4f;
         body.createFixture(fDef);
         texture = new Texture(Gdx.files.internal("puck.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

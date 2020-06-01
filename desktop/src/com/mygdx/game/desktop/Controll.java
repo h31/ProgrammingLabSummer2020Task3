@@ -14,8 +14,6 @@ class Controll extends Actor {
     public boolean auto;
     World world;
     Body body;
-    float x;
-    float y;
     Sprite sprite;
     Texture con;
 
@@ -36,7 +34,7 @@ class Controll extends Actor {
         fDef.shape = shape;
         fDef.density = 0.3f;
         fDef.restitution = 0.6f;
-        fDef.friction = 0;
+        fDef.friction = 0.4f;
         body.createFixture(fDef);
         con = new Texture(Gdx.files.internal("c1.png"));
 
@@ -59,8 +57,6 @@ class Controll extends Actor {
                 control2.body.setTransform(vec.x, vec.y, 0);
                 Vector2 imp = new Vector2(vel(control2.body.getWorldCenter().x, vec.y));
                 control2.body.setLinearVelocity(imp);
-                if (body.getWorldCenter().y > 2 || body.getWorldCenter().y < 1 || body.getWorldCenter().x > 1 || body.getWorldCenter().x < 0)
-                    body.setTransform(0.5f, 1.8f, 0);
             }
         } else body.setLinearVelocity(0,0);
         sprite.setPosition(body.getPosition().x - 0.07f, body.getPosition().y - 0.07f);

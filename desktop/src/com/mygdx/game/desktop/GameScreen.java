@@ -2,7 +2,6 @@ package com.mygdx.game.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.Random;
 
+import static com.mygdx.game.desktop.MainMenuScreen.click;
+
 public class GameScreen implements Screen {
     public static Puck puck;
     public static Controll control2;
@@ -33,12 +34,11 @@ public class GameScreen implements Screen {
     public static double yo2 = 1.8;
     public static double xo1;
     public static double yo1;
-    BitmapFont font;
+    static Sound hit;
+    static Sound hip;
+    private static boolean dif = false;
     final Aero game;
-    Sound stack;
-    Sound stackcontrol;
-    Music background;
-    Sound end;
+    BitmapFont font;
     World world;
     Stage stage;
     //  Box2DDebugRenderer rend;
@@ -55,7 +55,6 @@ public class GameScreen implements Screen {
     Button restartb;
     Button menub;
     Button pauseb;
-
     private float timeSeconds = 0f;
 
 
@@ -74,9 +73,9 @@ public class GameScreen implements Screen {
     }
 
     public static Vector2 botwork(Body body, float conX, float conY) {
-
         Vector2 vec = new Vector2();
         xo = xp;
+        Random r = new Random();
         yo = yp;
         xp = body.getWorldCenter().x;
         yp = body.getWorldCenter().y;
@@ -96,16 +95,33 @@ public class GameScreen implements Screen {
             vec.y = 1.8f;
             return vec;
         }
-
-        if (xp - xo > 0) vec.x += (xp - xo) * (Math.random() * (0.5) + 0.3);
-        if (xp - xo < 0) vec.x += (xp - xo) * (Math.random() * (0.5) + 0.3);
-
-        if (yp - yo > 0f && yp > 1 && 1.8 - yp < 0.5 || yp > 1 && Math.abs(yo - yp) < 0.0011f && Math.abs(xo - xp) < 0.0011f) {
-            Random r = new Random();
-            vec.y = conY - (r.nextFloat() * (0.02f) + 0.008f);
-        } else if (yp - yo < 0) {
-            if (conY < 1.8f) vec.y = conY + 0.01f;
+      //  if ((Math.abs(yo - yp) < 0.001f || Math.abs(xo - xp) > 0.05f)) vec.x += (xp - xo);
+        if (Math.abs(yo - yp) < 0.003f && Math.abs(xo - xp) < 0.003f) vec.x+=(xp-conX)/65;
+        else vec.x += (xp - xo) * (r.nextFloat() * (0.5) + 0.25);
+        // if (xp - xo < 0) vec.x += (xp - xo) * (r.nextFloat() * (0.5) + 0.3);
+        if (yp > vec.y || dif) {
+            dif = true;
+            if (vec.y < 1.8) vec.y += 0.02;
+            else dif = false;
+        } else {
+            if (yp - yo > 0f && yp > 1 && yp < 2) {
+                //  if (yp + 0.2 > conY) vec.y += 0.03;
+                if (yp > 1.35) vec.y = vec.y - (r.nextFloat() * (0.02f) + 0.008f);
+                if (Math.abs(yo - yp) < 0.003f || Math.abs(xo - xp) > 0.05f) {
+                    vec.y = vec.y - (r.nextFloat() * (0.02f) + 0.008f);
+                }
+            }
+            if (yp - yo < 0f) {
+                if ((Math.abs(yo - yp) < 0.003f || Math.abs(xo - xp) > 0.05f) && yp > 1 && yp < 2) {
+                    vec.y = vec.y - (r.nextFloat() * (0.02f) + 0.008f);
+                } else if (vec.y < 1.8f) vec.y += 0.02;
+            }
         }
+        if (vec.x > 1) vec.x = 1;
+        if (vec.x < 0) vec.x = 0;
+        if (vec.y > 1.9) vec.y = 1.9f;
+
+
         return vec;
 
     }
@@ -113,19 +129,21 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        hit = new Gdx().audio.newSound(Gdx.files.internal("hit.mp3"));
+        hip = new Gdx().audio.newSound(Gdx.files.internal("hip.mp3"));
         world = new World(new Vector2(0, 0), false);
-        //    world.setContactListener(new MyContact());
+        world.setContactListener(new MyContact());
         world.setVelocityThreshold(0f);
         stage = new Stage(new FitViewport(1, 2));
         final Controll control1 = new Controll(world, 0.5f, 0.2f, false);
         control2 = new Controll(world, 0.5f, 1.8f, true);
-        control1.body.setUserData("player1");
+        control1.body.setUserData("player");
         puck = new Puck(world);
         puck.body.setUserData("puck");
         control2.body.setUserData("bot");
         //rend = new Box2DDebugRenderer();
         Walls walls = new Walls(world);
+        walls.body.setUserData("wall");
         Score.initialize();
         batch = new SpriteBatch();
         stage.addActor(walls);
@@ -164,6 +182,7 @@ public class GameScreen implements Screen {
         resumeb.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (MainMenuScreen.s) click.play();
                 GameScreen.k = true;
                 pauseb.remove();
                 menub.remove();
@@ -175,6 +194,7 @@ public class GameScreen implements Screen {
         restartb.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (MainMenuScreen.s) click.play();
                 GameScreen.k = true;
                 Score.b = 0;
                 Score.c = 0;
@@ -185,6 +205,7 @@ public class GameScreen implements Screen {
         menub.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (MainMenuScreen.s) click.play();
                 game.setScreen(new MainMenuScreen(game));
                 k = true;
                 Score.b = 0;
@@ -257,14 +278,14 @@ public class GameScreen implements Screen {
         //   rend.render(world, stage.getCamera().combined);
         world.step(1 / 25f, 4, 4);
         stage.draw();
-        timeSeconds += Gdx.graphics.getRawDeltaTime();
+        if (k) timeSeconds += Gdx.graphics.getRawDeltaTime();
         float period = 180f;
         if (timeSeconds > period) {
             timeSeconds -= period;
             handleEvent();
         }
         GlyphLayout glyphLayout = new GlyphLayout();
-        glyphLayout.setText(font, (int)(180-timeSeconds)/60 +  ":" + (59-(int) timeSeconds % 60));
+        glyphLayout.setText(font, (int) (180 - timeSeconds) / 60 + ":" + (59 - (int) timeSeconds % 60));
         batch.begin();
         font.draw(batch, glyphLayout, 450 - 35f, 900 * 0.9f);
 

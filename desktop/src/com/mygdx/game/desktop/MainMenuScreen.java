@@ -2,6 +2,7 @@ package com.mygdx.game.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,22 +11,21 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class MainMenuScreen implements Screen {
-    public static float volume;
     final Aero game;
     OrthographicCamera camera;
     Stage stage;
     Texture fon;
     SpriteBatch batch;
-    boolean s = true;
-
+    static Sound click;
+    static boolean s = true;
+    String mus;
 
 
     public MainMenuScreen(final Aero gam) {
         game = gam;
+        click = new Gdx().audio.newSound(Gdx.files.internal("click.mp3"));
         fon = new Texture(Gdx.files.internal("fonmenu.png"));
         batch = new SpriteBatch();
         Texture startTexture = new Texture(Gdx.files.internal("start.png"));
@@ -42,16 +42,20 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         Button.ButtonStyle startstyle = new Button.ButtonStyle();
         Button.ButtonStyle duelstyle = new Button.ButtonStyle();
+        Button.ButtonStyle  soundfstyle = new Button.ButtonStyle();
         final Button.ButtonStyle soundstyle = new Button.ButtonStyle();
         Button.ButtonStyle exitstyle = new Button.ButtonStyle();
         final Button.ButtonStyle soundoffstyle = new Button.ButtonStyle();
+        if (s) mus = "sound";
+        else mus="soundoff";
+        soundfstyle.up = game.skin.getDrawable(mus);
         exitstyle.up = game.skin.getDrawable("exit");
         soundstyle.up = game.skin.getDrawable("sound");
         soundoffstyle.up = game.skin.getDrawable("soundoff");
         duelstyle.up = game.skin.getDrawable("duel");
         startstyle.up = game.skin.getDrawable("startImage");
         Button exitb = new Button(exitstyle);
-        final Button soundb = new Button(soundstyle);
+        final Button soundb = new Button(soundfstyle);
         Button duelb = new Button(duelstyle);
         Button start = new Button(startstyle);
         exitb.setPosition(225 - 125, 310);
@@ -61,6 +65,7 @@ public class MainMenuScreen implements Screen {
                 new InputListener() {
                     public boolean touchDown(InputEvent event, float x,
                                              float y, int pointer, int button) {
+                        if (s) click.play();
                         game.setScreen(new GameScreen(game));
                         return true;
                     }
@@ -74,14 +79,13 @@ public class MainMenuScreen implements Screen {
         });
         soundb.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                click.play();
                 if (s) {
                     soundb.setStyle(soundoffstyle);
-                    volume = 0f;
                 } else {
                     soundb.setStyle(soundstyle);
-                    volume = 1f;
                 }
-                s=!s;
+                s = !s;
                 return true;
             }
         });
