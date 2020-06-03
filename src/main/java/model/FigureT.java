@@ -330,8 +330,6 @@ public class FigureT extends Figure {
         if (!endGame()) {
             if (intersectsDefaultForm() || intersectsFirstForm() || intersectsSecondForm() || intersectsThirdForm()) {
 
-                setDelta(0);
-
                 if (changedToFirstForm) {
                     for (int i = cellColumnY; i < cellColumnY + 3; i++) {
                         getGameField()[i][cellRowX] = Elements.FigureT;
@@ -365,11 +363,23 @@ public class FigureT extends Figure {
                 column.setY(-25);
                 column.setX(175);
                 row.setX(150);
-
-                setDelta(25);
-
             }
         }
         return figureSet;
+    }
+
+    @Override
+    public String toString() {
+        return "FigureT{" +
+                "row=" + row +
+                ", column=" + column +
+                ", cellRowX=" + cellRowX +
+                ", cellColumnX=" + cellColumnX +
+                ", cellRowY=" + cellRowY +
+                ", cellColumnY=" + cellColumnY +
+                ", changedToFirstForm=" + changedToFirstForm +
+                ", changedToSecondForm=" + changedToSecondForm +
+                ", changedToThirdForm=" + changedToThirdForm +
+                '}';
     }
 }

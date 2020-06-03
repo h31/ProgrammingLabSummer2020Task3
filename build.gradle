@@ -22,7 +22,7 @@ test {
 }
 
 javafx {
-    modules('javafx.controls','javafx.fxml')
+    modules('javafx.controls')
     version = '11.0.2'
 }
 mainClassName = 'view.Tetris'

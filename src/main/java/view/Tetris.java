@@ -34,7 +34,6 @@ public class Tetris extends Application {
     public void start(final Stage primaryStage) throws FileNotFoundException {
         GameField gameField = new GameField();
         GameCycle gameCycle = new GameCycle();
-
         //установка картинки на задний фон
         Image image = new Image(new FileInputStream("C:\\Users\\timco\\IdeaProjects\\ProgrammingLabSummer2020Task3\\src\\main\\resources\\image.jpg"),
                 600,500,false,true);

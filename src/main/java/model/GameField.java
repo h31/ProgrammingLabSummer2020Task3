@@ -13,7 +13,6 @@ import java.util.Objects;
  * Отвечает за заполнение клеток, отрисовку фигур, очистку заполненных клеток
  */
 public class GameField extends Pane {
-
     private final int widthCell = 25;
     private final int heightCell = 25;
 
@@ -88,7 +87,6 @@ public class GameField extends Pane {
         for (int j = 0; j < gameField.length * heightCell; j += heightCell) {
             tetris.getCanvas().getGraphicsContext2D().strokeLine(0, j, heightCell * gameField.length, j);
         }
-
 
         tetris.getCanvas().setStyle("-fx-background-color: #0a0a0a");
         score.setTextFill(Color.RED);
@@ -186,18 +184,15 @@ public class GameField extends Pane {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GameField gameField = (GameField) o;
-        return delta == gameField.delta &&
-                countScore == gameField.countScore &&
-                Objects.equals(tetris, gameField.tetris) &&
-                Objects.equals(score, gameField.score) && Objects.equals(endGame, gameField.endGame);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(widthCell, heightCell, delta, tetris, countScore, score, endGame);
+    public String toString() {
+        return "GameField{" +
+                "widthCell=" + widthCell +
+                ", heightCell=" + heightCell +
+                ", delta=" + delta +
+                ", tetris=" + tetris +
+                ", countScore=" + countScore +
+                ", score=" + score +
+                ", endGame=" + endGame +
+                '}';
     }
 }

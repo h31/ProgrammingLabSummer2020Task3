@@ -13,6 +13,7 @@ import model.*;
 import view.Tetris;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class GameCycle extends GameField {
@@ -31,11 +32,11 @@ public class GameCycle extends GameField {
     Button pauseButton = new Button("PAUSE");
 
     public GameCycle() {
-      //  figures.add(figureL);
-        //figures.add(figureT);
+        figures.add(figureL);
+        figures.add(figureT);
         figures.add(figureZ);
-       // figures.add(figureI);
-        //figures.add(figureO);
+        figures.add(figureI);
+      figures.add(figureO);
 
         Tetris tetris = new Tetris();
 
@@ -56,10 +57,6 @@ public class GameCycle extends GameField {
 
         startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
 
-        pauseButton.setOnAction(event -> {
-
-        });
-
         getChildren().addAll(figureI, figureL, figureO, figureT, figureZ, tetris.getCanvas(), startButton);
         keyController();
     }
@@ -72,7 +69,7 @@ public class GameCycle extends GameField {
             figure = figures.get(random.nextInt(figures.size()));
         });
 
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(210), t -> {
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(250), t -> {
             //движение фигуры вниз и проверка остановки
             if (figure == figureI) {
                 figureI.moveDown();
@@ -136,7 +133,14 @@ public class GameCycle extends GameField {
                     } else if (figure == figureZ) {
                         figureZ.moveRight();
                     }
-                } else if (event.getCode() == KeyCode.UP) {
+                }
+                else if (event.getCode()==KeyCode.DOWN){
+                    if (figure==figureI) {
+                        figureI.acceleration();
+                    }
+                }
+
+                else if (event.getCode() == KeyCode.UP) {
                     if (figure == figureI) {
                         keyPressedCount++;
                         if (keyPressedCount == 1) {
@@ -180,6 +184,7 @@ public class GameCycle extends GameField {
                     }
                 }
             });
+
             //проверка на окончание игры
             if (!endGame()) {
                 clearRow();
@@ -196,5 +201,45 @@ public class GameCycle extends GameField {
         }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameCycle gameCycle = (GameCycle) o;
+        return keyPressedCount == gameCycle.keyPressedCount &&
+                Objects.equals(figureL, gameCycle.figureL) &&
+                Objects.equals(figureZ, gameCycle.figureZ) &&
+                Objects.equals(figureT, gameCycle.figureT) &&
+                Objects.equals(figureO, gameCycle.figureO) &&
+                Objects.equals(figureI, gameCycle.figureI) &&
+                Objects.equals(figures, gameCycle.figures) &&
+                Objects.equals(random, gameCycle.random) &&
+                Objects.equals(figure, gameCycle.figure) &&
+                Objects.equals(startButton, gameCycle.startButton) &&
+                Objects.equals(pauseButton, gameCycle.pauseButton);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(figureL, figureZ, figureT, figureO, figureI, keyPressedCount, figures, random, figure, startButton, pauseButton);
+    }
+
+    @Override
+    public String toString() {
+        return "GameCycle{" +
+                "figureL=" + figureL +
+                ", figureZ=" + figureZ +
+                ", figureT=" + figureT +
+                ", figureO=" + figureO +
+                ", figureI=" + figureI +
+                ", keyPressedCount=" + keyPressedCount +
+                ", figures=" + figures +
+                ", random=" + random +
+                ", figure=" + figure +
+                ", startButton=" + startButton +
+                ", pauseButton=" + pauseButton +
+                '}';
     }
 }

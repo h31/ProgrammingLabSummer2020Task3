@@ -4,9 +4,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.Tetris;
 
+import java.util.Objects;
+
 public class FigureO extends Figure {
     private final Rectangle square = new Rectangle(150, -50, 50, 50);
-    private int delta = getDelta();
     private int cellX;
     private int cellY;
 
@@ -23,50 +24,50 @@ public class FigureO extends Figure {
     @Override
     public void moveDown() {
         if (!endGame())
-            square.setY(square.getY() + delta);
+            square.setY(square.getY() + getDelta());
     }
 
     @Override
     public void moveLeft() {
-        cellX = (int) (square.getX() / delta);
-        cellY = (int) (square.getY() / delta);
+        cellX = (int) (square.getX() / getDelta());
+        cellY = (int) (square.getY() / getDelta());
 
         if (cellY > 0 && cellY + 1 > 0 && cellY + 2 != 20 && cellX != 0) {
-            square.setX(square.getX() - delta);
+            square.setX(square.getX() - getDelta());
             if (square.getX() < 0) {
-                square.setX(square.getX() + delta);
+                square.setX(square.getX() + getDelta());
             } else if (getGameField()[cellY + 1][cellX - 1] != Elements.EmptyCell) {
-                square.setX(square.getX() + delta);
+                square.setX(square.getX() + getDelta());
             } else if (getGameField()[cellY + 2][cellX - 1] != Elements.EmptyCell) {
-                square.setX(square.getX() + delta);
+                square.setX(square.getX() + getDelta());
             } else if (getGameField()[cellY][cellX - 1] != Elements.EmptyCell) {
-                square.setX(square.getX() + delta);
+                square.setX(square.getX() + getDelta());
             }
         }
     }
 
     @Override
     public void moveRight() {
-        cellX = (int) (square.getX() / delta);
-        cellY = (int) (square.getY() / delta);
+        cellX = (int) (square.getX() / getDelta());
+        cellY = (int) (square.getY() / getDelta());
 
         if (cellY > 0 && cellY + 1 > 0 && cellY + 2 != 20) {
-            square.setX(square.getX() + delta);
+            square.setX(square.getX() + getDelta());
             if (square.getX() == 375) {
-                square.setX(square.getX() - delta);
+                square.setX(square.getX() - getDelta());
             } else if (getGameField()[cellY][cellX + 2] != Elements.EmptyCell) {
-                square.setX(square.getX() - delta);
+                square.setX(square.getX() - getDelta());
             } else if (getGameField()[cellY + 2][cellX + 2] != Elements.EmptyCell) {
-                square.setX(square.getX() - delta);
+                square.setX(square.getX() - getDelta());
             } else if (getGameField()[cellY + 1][cellX + 2] != Elements.EmptyCell) {
-                square.setX(square.getX() - delta);
+                square.setX(square.getX() - getDelta());
             }
         }
     }
 
     public boolean intersectsDefaultForm() {
-        cellX = (int) (square.getX() / delta);
-        cellY = (int) (square.getY() / delta);
+        cellX = (int) (square.getX() / getDelta());
+        cellY = (int) (square.getY() / getDelta());
         boolean intersection = false;
 
         //столкновение O c нижней границей
@@ -86,11 +87,10 @@ public class FigureO extends Figure {
     @Override
     public boolean stop() {
         boolean figureSet = false;
-        cellX = (int) (square.getX() / delta);
-        cellY = (int) (square.getY() / delta);
+        cellX = (int) (square.getX() / getDelta());
+        cellY = (int) (square.getY() / getDelta());
 
         if (intersectsDefaultForm() && !endGame()) {
-            delta = 0;
 
             for (int i = cellX; i < cellX + 2; i++) {
                 getGameField()[cellY][i] = GameField.Elements.FigureO;
@@ -102,8 +102,17 @@ public class FigureO extends Figure {
 
             square.setY(-50);
             square.setX(150);
-            delta = 25;
         }
         return figureSet;
     }
+
+    @Override
+    public String toString() {
+        return "FigureO{" +
+                "square=" + square +
+                ", cellX=" + cellX +
+                ", cellY=" + cellY +
+                '}';
+    }
+
 }

@@ -362,7 +362,6 @@ public class FigureL extends Figure {
 
         if (!endGame()) {
             if (intersectsFirstForm() || intersectsSecondForm() || intersectsThirdForm() || intersectsDefaultForm()) {
-                setDelta(0);
 
                 if (changedToFirstForm) {
                     for (int i = cellColumnY; i < cellColumnY + 3; i++) {
@@ -407,12 +406,24 @@ public class FigureL extends Figure {
                 row.setX(150);
                 column.setX(200);
 
-                setDelta(25);
                 figureSet = true;
             }
         }
         return figureSet;
     }
 
-
+    @Override
+    public String toString() {
+        return "FigureL{" +
+                "cellRowX=" + cellRowX +
+                ", cellColumnX=" + cellColumnX +
+                ", cellRowY=" + cellRowY +
+                ", cellColumnY=" + cellColumnY +
+                ", changedToFirstForm=" + changedToFirstForm +
+                ", changedToSecondForm=" + changedToSecondForm +
+                ", changedToThirdForm=" + changedToThirdForm +
+                ", column=" + column +
+                ", row=" + row +
+                '}';
+    }
 }

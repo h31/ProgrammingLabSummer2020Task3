@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Абстрактный класс, описывающий поведение фигур
+ */
 public abstract class Figure extends GameField {
     public abstract void moveDown();
 

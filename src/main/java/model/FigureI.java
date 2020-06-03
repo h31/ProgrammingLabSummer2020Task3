@@ -20,7 +20,7 @@ public class FigureI extends Figure {
         getChildren().addAll(tetris.getCanvas(), row);
     }
 
-    public double getRowX(){
+    public double getRowX() {
         return row.getX();
     }
 
@@ -33,6 +33,11 @@ public class FigureI extends Figure {
             row.setY(row.getY() + getDelta());
         }
     }
+
+    public void acceleration() {
+        //доделать
+    }
+
     /**
      * Проверка возможности движения влево
      * и само движение
@@ -147,8 +152,7 @@ public class FigureI extends Figure {
         if (changed) {
             if (cellY == 17) {
                 intersection = true;
-            }
-            else if (getGameField()[cellY + 3][cellX] != Elements.EmptyCell) {
+            } else if (getGameField()[cellY + 3][cellX] != Elements.EmptyCell) {
                 intersection = true;
             }
 
@@ -198,7 +202,6 @@ public class FigureI extends Figure {
         if (!endGame()) {
             //остановка фигуры при столкновении и заполнение игрового поля
             if (intersectsVertical() || intersectsDefaultForm()) {
-                setDelta(0);
 
                 //заполнение игрового поля элементами
                 if (changed) {
@@ -218,9 +221,19 @@ public class FigureI extends Figure {
                 row.setHeight(25);
                 row.setWidth(100);
                 changed = false;
-                setDelta(25);
             }
         }
         return figureSet;
+    }
+
+    @Override
+    public String toString() {
+        return "FigureI{" +
+                "field=" + field +
+                ", row=" + row +
+                ", cellX=" + cellX +
+                ", cellY=" + cellY +
+                ", changed=" + changed +
+                '}';
     }
 }

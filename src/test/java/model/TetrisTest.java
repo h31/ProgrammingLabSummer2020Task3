@@ -34,7 +34,6 @@ class TetrisTest {
         assertEquals(175, figureL.getColumnX());
         assertEquals(125, figureL.getRowX());
     }
-
     @Test
     void moveLeftFigureO() {
         figureO.moveDown();

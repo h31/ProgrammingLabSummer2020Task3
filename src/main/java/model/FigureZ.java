@@ -220,7 +220,6 @@ public class FigureZ extends Figure {
 
         if (!endGame()) {
             if (intersectsDefaultForm() || intersectsVertical()) {
-                setDelta(0);
 
                 if (!changedForm) {
                     for (int i = cellUpRowX; i < cellUpRowX + 2; i++) {
@@ -247,12 +246,25 @@ public class FigureZ extends Figure {
                 downRow.setY(-25);
                 upRow.setX(150);
                 downRow.setX(125);
-                setDelta(25);
 
                 figureSet = true;
                 changedForm = false;
             }
         }
         return figureSet;
+    }
+
+    @Override
+    public String toString() {
+        return "FigureZ{" +
+                "cellUpRowX=" + cellUpRowX +
+                ", cellDownRowX=" + cellDownRowX +
+                ", cellDownRowY=" + cellDownRowY +
+                ", cellUpRowY=" + cellUpRowY +
+                ", changedForm=" + changedForm +
+                ", gameField=" + gameField +
+                ", downRow=" + downRow +
+                ", upRow=" + upRow +
+                '}';
     }
 }
