@@ -34,62 +34,18 @@ public class View {
         stage.show();
     }
 
-
+    /*
+        Создание сцены
+     */
     private Scene createScene() {
         Group general = new Group();
-        general.getChildren().addAll(PLAYER.getImgView(), PLAYER.getCOLLISION());
-        general.getChildren().add(LEVEL.getLEVEL_IMG());
-        PLAYER.getImgView().setViewOrder(1);
-        if (DEBUG_MODE) {
-            PLAYER.getCOLLISION().setOpacity(DEBUG_OPACITY);
-            PLAYER.getCOLLISION().setFill(Color.BLUE);
-        } else {
-            PLAYER.getCOLLISION().setOpacity(0);
-        }
-        LEVEL.getLEVEL_IMG().setViewOrder(3);
 
-        for (Rectangle colShape : LEVEL.getCOLLISION()) {
-            general.getChildren().add(colShape);
-            if (DEBUG_MODE) {
-                colShape.setOpacity(DEBUG_OPACITY);
-                colShape.setFill(Color.GRAY);
-            } else {
-                colShape.setOpacity(0);
-            }
-        }
-        for (Trigger trigger : LEVEL.getTRIGGERS()) {
-            Rectangle rect = trigger.getRECT();
-            ImageView effect = trigger.getEFFECT().getImgView();
-            Pair<ImageView, Rectangle> interactedObject = trigger.getInteractedObject();
-            if (effect != null) {
-                general.getChildren().add(effect);
-                effect.setVisible(false);
-            }
-            if (interactedObject.getValue() != null && interactedObject.getKey() != null) {
-                general.getChildren().add(interactedObject.getValue());// Коллизия
-                general.getChildren().add(interactedObject.getKey());
-            }
-            general.getChildren().add(rect);
-            if (DEBUG_MODE) {
-                rect.setOpacity(DEBUG_OPACITY);
-                rect.setFill(Color.YELLOW);
-            } else {
-                rect.setOpacity(0);
-            }
-        }
-        for (LevelObject object : LEVEL.getOBJECTS()) {
-            general.getChildren().addAll(object.getIMG_VIEW());
-            general.getChildren().addAll(object.getTOP_COLLISION(), object.getBOTTOM_COLLISION());
-            if (DEBUG_MODE) {
-                object.getTOP_COLLISION().setOpacity(DEBUG_OPACITY);
-                object.getBOTTOM_COLLISION().setOpacity(DEBUG_OPACITY);
-                object.getTOP_COLLISION().setFill(Color.GRAY);
-                object.getBOTTOM_COLLISION().setFill(Color.GRAY);
-            } else {
-                object.getTOP_COLLISION().setOpacity(0);
-                object.getBOTTOM_COLLISION().setOpacity(0);
-            }
-        }
+        loadLevelIMG(general);
+        loadPlayer(general);
+        loadCollision(general);
+        loadTriggers(general);
+        loadObjects(general);
+
         Scene newScene = new Scene(general, 1024, 768);
         if (controller == null) {
             this.controller = new Controller(newScene, PLAYER);
@@ -99,11 +55,64 @@ public class View {
         return newScene;
     }
 
+
+    private void loadLevelIMG(Group general) {
+        general.getChildren().add(LEVEL.getLEVEL_IMG()); 
+        LEVEL.getLEVEL_IMG().setViewOrder(3);
+    }
+    private void loadPlayer(Group general) {
+        general.getChildren().addAll(PLAYER.getImgView(), PLAYER.getCOLLISION()); // Загрузка персонажа
+        PLAYER.getImgView().setViewOrder(1);
+        checkDebugMode(PLAYER.getCOLLISION(), DEBUG_MODE);
+    }
+
+    private void loadCollision(Group general) {
+        for (Rectangle colShape : LEVEL.getCOLLISION()) {
+            general.getChildren().add(colShape);
+            checkDebugMode(colShape, DEBUG_MODE);
+        }
+    }
+
+    private void loadTriggers(Group general) {
+        for (Trigger trigger : LEVEL.getTRIGGERS()) {
+            Rectangle rect = trigger.getRECT();
+            ImageView effect = trigger.getEFFECT().getImgView();
+            Pair<ImageView, Rectangle> interactedObject = trigger.getInteractedObject();
+            if (effect != null) {
+                general.getChildren().add(effect);
+                effect.setVisible(false);
+            }
+            if (interactedObject.getValue() != null && interactedObject.getKey() != null) {
+                general.getChildren().add(interactedObject.getValue()); // Коллизия
+                general.getChildren().add(interactedObject.getKey());
+            }
+            general.getChildren().add(rect);
+            checkDebugMode(rect, DEBUG_MODE);
+        }
+    }
+
+    private void loadObjects(Group general) {
+        for (LevelObject object : LEVEL.getOBJECTS()) {
+            general.getChildren().addAll(object.getIMG_VIEW());
+            general.getChildren().addAll(object.getTOP_COLLISION(), object.getBOTTOM_COLLISION());
+            checkDebugMode(object.getTOP_COLLISION(), DEBUG_MODE);
+            checkDebugMode(object.getBOTTOM_COLLISION(), DEBUG_MODE);
+        }
+    }
+
+    private void checkDebugMode(Rectangle rect, boolean status) {
+        if (status) {
+            rect.setOpacity(DEBUG_OPACITY);
+            rect.setFill(Color.BLUE);
+        } else {
+            rect.setOpacity(0);
+        }
+    }
+
     public void showEffect(Effect effect) {
         System.out.println("Now in View");
         effect.runAnimation();
     }
-
 
     public Scene getScene() {
         return scene;

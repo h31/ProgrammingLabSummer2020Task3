@@ -129,18 +129,30 @@ public class Player extends Animated {
     }
 
     private boolean isCollision() {
+        return isWallCollision() || isObjectCollision() || isTriggerCollision();
+    }
+
+    public boolean isWallCollision() {
         for (Rectangle colShape : level.getCOLLISION()) {
             if (getCOLLISION().intersects(colShape.getBoundsInLocal())) {
                 System.out.println("Collision");
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean isObjectCollision() {
         for (LevelObject object : level.getOBJECTS()) {
             if (getCOLLISION().intersects(object.getCurrentCollision().getBoundsInLocal())) {
                 System.out.println("YEAH");
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean isTriggerCollision() {
         for (Trigger trigger : level.getTRIGGERS()) {
             if (this.isFreezed()) return false;
             Rectangle rect = trigger.getRECT();
@@ -169,7 +181,12 @@ public class Player extends Animated {
         ft.setFromValue(1.0);
         ft.setToValue(0);
         ft.setCycleCount(1);
-        ft.setOnFinished(actionEvent -> {
+        onFtFinish(ft);
+        ft.play();
+    }
+
+    public void onFtFinish(FadeTransition fadeTransition) {
+        fadeTransition.setOnFinished(actionEvent -> {
             if (level.getLocation().equals("First")) {
                 level = new SecondLevel();
             } else if (level.getLocation().equals("Start")) {
@@ -185,7 +202,6 @@ public class Player extends Animated {
             this.getImgView().setOpacity(1);
             System.out.println("Trigger");
         });
-        ft.play();
     }
 
     public Status.View getView() {

@@ -1,5 +1,4 @@
 import Model.FirstLevel;
-import Model.Level;
 import Model.Player;
 import View.View;
 import javafx.application.Application;
