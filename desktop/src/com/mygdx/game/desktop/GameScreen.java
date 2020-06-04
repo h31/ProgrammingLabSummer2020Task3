@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -28,14 +27,11 @@ public class GameScreen implements Screen {
     public static boolean k = true;
     public static float xp = 0.5f;
     public static float yp = 1f;
-    public static float xo;
-    public static float yo;
+    public static float xo, yo;
     public static double xo2 = 0.5;
     public static double yo2 = 1.8;
-    public static double xo1;
-    public static double yo1;
-    static Sound hit;
-    static Sound hip;
+    public static double xo1, yo1;
+    static Sound hit, hip;
     private static boolean dif = false;
     final Aero game;
     BitmapFont font;
@@ -47,14 +43,8 @@ public class GameScreen implements Screen {
     double x1, y1;
     boolean mouse = false;
     SpriteBatch batch;
-    Texture pause;
-    Texture resume;
-    Texture restart;
-    Texture mainmenu;
-    Button resumeb;
-    Button restartb;
-    Button menub;
-    Button pauseb;
+    Texture pause, resume, restart, mainmenu;
+    Button resumeb, restartb, menub, pauseb;
     private float timeSeconds = 0f;
 
 
@@ -72,40 +62,37 @@ public class GameScreen implements Screen {
         return new Vector2(oX * 10, oY * 10);
     }
 
-    public static Vector2 botwork(Body body, float conX, float conY) {
+    public static Vector2 botwork(float conX, float conY) {
         Vector2 vec = new Vector2();
         xo = xp;
         Random r = new Random();
         yo = yp;
-        xp = body.getWorldCenter().x;
-        yp = body.getWorldCenter().y;
+        xp = puck.body.getWorldCenter().x;
+        yp = puck.body.getWorldCenter().y;
         vec.x = conX;
         vec.y = conY;
-        if (Math.abs(yo - yp) < 0.0001f && Math.abs(xo - xp) < 0.0001f) body.setLinearVelocity(0, 0);
+        if (Math.abs(yo - yp) < 0.0001f && Math.abs(xo - xp) < 0.0001f) puck.body.setLinearVelocity(0, 0);
         if (yp > 2 || yp < 0 || xp < 0 || xp > 1) {
             if (yp > 2) Score.c++;
             if (yp < 0) Score.b++;
             xo2 = 0.5f;
             yo2 = 1.8f;
-            body.setTransform(0.5f, 1, 0);
-            body.setLinearVelocity(0, 0);
+            puck.body.setTransform(0.5f, 1, 0);
+            puck.body.setLinearVelocity(0, 0);
             xp = 0.5f;
             yp = 1f;
             vec.x = 0.5f;
             vec.y = 1.8f;
             return vec;
         }
-      //  if ((Math.abs(yo - yp) < 0.001f || Math.abs(xo - xp) > 0.05f)) vec.x += (xp - xo);
-        if (Math.abs(yo - yp) < 0.003f && Math.abs(xo - xp) < 0.003f) vec.x+=(xp-conX)/65;
+        if (Math.abs(yo - yp) < 0.003f && Math.abs(xo - xp) < 0.003f) vec.x += (xp - conX) / 65;
         else vec.x += (xp - xo) * (r.nextFloat() * (0.5) + 0.25);
-        // if (xp - xo < 0) vec.x += (xp - xo) * (r.nextFloat() * (0.5) + 0.3);
         if (yp > vec.y || dif) {
             dif = true;
             if (vec.y < 1.8) vec.y += 0.02;
             else dif = false;
         } else {
             if (yp - yo > 0f && yp > 1 && yp < 2) {
-                //  if (yp + 0.2 > conY) vec.y += 0.03;
                 if (yp > 1.35) vec.y = vec.y - (r.nextFloat() * (0.02f) + 0.008f);
                 if (Math.abs(yo - yp) < 0.003f || Math.abs(xo - xp) > 0.05f) {
                     vec.y = vec.y - (r.nextFloat() * (0.02f) + 0.008f);
@@ -126,6 +113,15 @@ public class GameScreen implements Screen {
 
     }
 
+    public Vector2 impulse(Float x, Float y) {
+        x1 = x2;
+        y1 = y2;
+        x2 = x.doubleValue();
+        y2 = y.doubleValue();
+        float oX = Float.parseFloat(String.valueOf(x2 - x1));
+        float oY = Float.parseFloat(String.valueOf(y2 - y1));
+        return new Vector2(oX * 10, oY * 10);
+    }
 
     @Override
     public void show() {
@@ -315,17 +311,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-
-    public Vector2 impulse(Float x, Float y) {
-        x1 = x2;
-        y1 = y2;
-        x2 = x.doubleValue();
-        y2 = y.doubleValue();
-        float oX = Float.parseFloat(String.valueOf(x2 - x1));
-        float oY = Float.parseFloat(String.valueOf(y2 - y1));
-        return new Vector2(oX * 10, oY * 10);
     }
 
 

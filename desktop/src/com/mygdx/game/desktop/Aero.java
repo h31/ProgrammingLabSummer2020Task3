@@ -23,8 +23,6 @@ public class Aero extends Game {
     }
 
     public void dispose() {
-        batch.dispose();
-        font.dispose();
     }
 
 }

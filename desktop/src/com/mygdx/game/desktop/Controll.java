@@ -53,10 +53,10 @@ class Controll extends Actor {
                 if (body.getWorldCenter().x > 1) body.setTransform(1, body.getWorldCenter().y, 0);
                 if (body.getWorldCenter().x < 0) body.setTransform(0, body.getWorldCenter().y, 0);
             } else {
-                Vector2 vec = botwork(puck.body, control2.body.getWorldCenter().x, control2.body.getWorldCenter().y);
+                Vector2 vec = botwork(control2.body.getWorldCenter().x, control2.body.getWorldCenter().y);
                 control2.body.setTransform(vec.x, vec.y, 0);
-                Vector2 imp = new Vector2(vel(control2.body.getWorldCenter().x, vec.y));
-                control2.body.setLinearVelocity(imp);
+                Vector2 speed = new Vector2(vel(vec.x, vec.y));
+                control2.body.setLinearVelocity(speed);
             }
         } else body.setLinearVelocity(0,0);
         sprite.setPosition(body.getPosition().x - 0.07f, body.getPosition().y - 0.07f);
