@@ -1,26 +1,26 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.Scanner;
 
 
-public class Main {
-    public static int[][] a = {{2, 4, 8, 8},
+public class Main extends Application {
+    /*public static int[][] a = {{2, 4, 8, 8},
                                {2, 2, 2, 2},
                                {0, 2, 4, 8},
-                               {0, 0, 0, 2}};
-
-    /*public static Stage primaryStage = new Stage();
-
+                               {0, 0, 0, 2}};*/
+    public static Label[][] labels = new Label[4][4];
 
     public static void main(String[] args) {
         launch(args);
@@ -28,109 +28,54 @@ public class Main {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        primaryStage = this.primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Pane pane = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Group root = new Group();
+        root.getChildren().add(pane);
         Scene scene = new Scene(root);
         primaryStage.setTitle("2048");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
-    }
-    public void setter (Label l, float x, float y) {
-        l.setLayoutX(x);
-        l.setLayoutY(y);
-        l.setText("4");
-        l.setFont(Font.font("Arial Black", 24));
-    }*/
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String str = scanner.nextLine();
-        if (str.equals("a")) left();
-        if (str.equals("w")) up();
-        if (str.equals("d")) right();
-        if (str.equals("s")) down();
-
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println();
+        FieldDrawer.spawn();
+        FieldDrawer.spawn();
+        for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++) {
-                System.out.print(a[i][j] + " ");
+                Label l = new Label();
+                l.setLayoutX(30 + 100 * j);
+                l.setLayoutY(120 + 100 * i);
+                l.setPrefSize(90, 90);
+                l.setStyle("-fx-background-color: #bbada0");
+                l.setFont(Font.font("Arial Rounded MT Bold", 48));
+                l.setAlignment(Pos.CENTER);
+                labels[i][j] = l;
+                FieldDrawer.colours(FieldDrawer.a[i][j], labels[i][j]);
+                root.getChildren().add(labels[i][j]);
             }
-        }
-    }
-
-    public static void left() {
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 3; j++) {
-                if (a[i][j] == a[i][j + 1]) {
-                    a[i][j] *= 2;
-                    a[i][j + 1] = 0;
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.W) {
+                    /*Label la = new Label();
+                    la.setStyle("-fx-background-color: #000000");
+                    la.setFont(Font.font("Arial Black", 36));
+                    la.setTextFill(Color.WHITE);
+                    la.setAlignment(Pos.CENTER);
+                    la.setLayoutX(30 + 100);
+                    la.setLayoutY(120 + 100);
+                    la.setPrefSize(90, 90);
+                    la.setText("4");
+                    root.getChildren().add(la);*/
+                    FieldDrawer.up();
+               }
+                if (event.getCode() == KeyCode.A) {
+                    FieldDrawer.left();
                 }
-            }
-        for (int i = 3; i >= 0; i--) {
-            for (int s = 0; s < 3; s++)
-                for (int j = 3; j >= 1; j--) {
-                    if (a[i][j - 1] == 0) {
-                        a[i][j - 1] = a[i][j];
-                        a[i][j] = 0;
-                    }
+                if (event.getCode() == KeyCode.S) {
+                    FieldDrawer.down();
                 }
-        }
-
-    }
-
-    public static void up() {
-        for (int j = 0; j < 4; j++)
-            for (int i = 0; i < 3; i++) {
-                if (a[i][j] == a[i + 1][j]) {
-                    a[i][j] *= 2;
-                    a[i + 1][j] = 0;
-                }
-            }
-        for (int j = 3; j >= 0; j--)
-            for (int s = 0; s < 3; s++)
-                for (int i = 3; i >= 1; i--) {
-                    if (a[i - 1][j] == 0) {
-                        a[i - 1][j] = a[i][j];
-                        a[i][j] = 0;
-                    }
-                }
-    }
-
-    public static void right() {
-        for (int i = 3; i >= 0; i--)
-            for (int j = 3; j >= 1; j--) {
-                if (a[i][j] == a[i][j - 1]) {
-                    a[i][j] *= 2;
-                    a[i][j - 1] = 0;
+                if (event.getCode() == KeyCode.D) {
+                    FieldDrawer.right();
                 }
             }
-        for (int i = 0; i < 4; i++)
-            for (int s = 0; s < 3; s++)
-                for (int j = 0; j < 3; j++) {
-                    if (a[i][j + 1] == 0) {
-                        a[i][j + 1] = a[i][j];
-                        a[i][j] = 0;
-                    }
-                }
-    }
-
-    public static void down() {
-        for (int j = 3; j >= 0; j--)
-            for (int i = 3; i >= 1; i--) {
-                if (a[i][j] == a[i - 1][j]) {
-                    a[i][j] *= 2;
-                    a[i - 1][j] = 0;
-                }
-            }
-        for (int j = 0; j < 4; j++)
-            for (int s = 0; s < 3; s++)
-                for (int i = 0; i < 3; i++) {
-                    if (a[i + 1][j] == 0) {
-                        a[i + 1][j] = a[i][j];
-                        a[i][j] = 0;
-                    }
-                }
+        });
     }
 }
