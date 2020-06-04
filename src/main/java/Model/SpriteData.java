@@ -42,6 +42,16 @@ final class SpriteData {
         return imgList.toArray(levelObjects);
     }
 
+    static Image getBackgroundImg(String name) {
+        Image image = null;
+        try {
+            image = new Image(name);
+        } catch (NullPointerException e) {
+            System.out.println("Произошла ошибка :" + e.toString());
+        }
+        return image;
+    }
+
     static ImageView getSprite(String path) {
         File directory = new File("src/main/resources/" + path);
         ImageView image;
@@ -54,5 +64,6 @@ final class SpriteData {
     static Rectangle spriteToCollision(ImageView img) {
         return new Rectangle(img.getX(), img.getY(), img.getImage().getWidth(), img.getImage().getHeight());
     }
+
 }
 

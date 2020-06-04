@@ -23,7 +23,7 @@ public class Player extends Animated {
     private Status.View view = Status.View.LEFT; // Куда смотрит сейчас
     private final Rectangle COLLISION;
     private double BOTTOM_COLLISION;
-    private final Level level;
+    private Level level;
 
     private double velY = 0;
     private double velX = 0;
@@ -59,8 +59,8 @@ public class Player extends Animated {
         super.setImgView(SKELETON_IDLE_LEFT[0]);
         this.VIEW = view;
         this.level = level;
-        super.getImgView().setX(Level.FIRST_pCOORD[0]);
-        super.getImgView().setY(Level.FIRST_pCOORD[1]);
+        super.getImgView().setX(level.getpCoord()[0]);
+        super.getImgView().setY(level.getpCoord()[1]);
         this.COLLISION = new Rectangle(super.getImgView().getX(), super.getImgView().getY(), super.getImgView().getImage().getWidth(), super.getImgView().getImage().getHeight());
         this.BOTTOM_COLLISION = this.COLLISION.getY() + this.COLLISION.getHeight(); // Получаем координаты по Y нижней части коллизии
         runAnimation();
@@ -170,15 +170,16 @@ public class Player extends Animated {
         ft.setToValue(0);
         ft.setCycleCount(1);
         ft.setOnFinished(actionEvent -> {
-            int[] newCoord;
             if (level.getLocation().equals("First")) {
-                newCoord = level.setLocation("Start");
+                level = new SecondLevel();
             } else if (level.getLocation().equals("Start")) {
-                newCoord = level.setLocation("First");
+                level = new FirstLevel();
             } else {
                 throw new IllegalArgumentException("Error");
             }
+            int[] newCoord = level.getpCoord();
             this.setPosition(newCoord[0], newCoord[1]);
+            VIEW.setLEVEL(level);
             VIEW.showScene();
             this.setFreezed(false);
             this.getImgView().setOpacity(1);

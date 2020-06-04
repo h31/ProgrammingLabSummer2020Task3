@@ -38,6 +38,7 @@ public class View {
     private Scene createScene() {
         Group general = new Group();
         general.getChildren().addAll(PLAYER.getImgView(), PLAYER.getCOLLISION());
+        general.getChildren().add(LEVEL.getLEVEL_IMG());
         PLAYER.getImgView().setViewOrder(1);
         if (DEBUG_MODE) {
             PLAYER.getCOLLISION().setOpacity(DEBUG_OPACITY);
@@ -45,7 +46,6 @@ public class View {
         } else {
             PLAYER.getCOLLISION().setOpacity(0);
         }
-        general.getChildren().add(LEVEL.getLEVEL_IMG());
         LEVEL.getLEVEL_IMG().setViewOrder(3);
 
         for (Rectangle colShape : LEVEL.getCOLLISION()) {
