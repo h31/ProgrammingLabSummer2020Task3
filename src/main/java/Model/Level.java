@@ -25,6 +25,8 @@ public abstract class Level {
     }
 
 
+    abstract void interact(Trigger trigger);
+
     void checkObjectView(Player player) {
         double playerCol = player.getBOTTOM_COLLISION();
         for (LevelObject colShape : getOBJECTS()) {

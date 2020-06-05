@@ -22,7 +22,7 @@ public class FirstLevel extends Level {
     );
 
     private static final LinkedList<Trigger> TRIGGERS = new LinkedList<>() {{
-        add(new Trigger(new Rectangle(425, 381, 30, 30), new Effect(), COLLISION_TYPE.ENTER));
+        add(new Trigger("Enter", new Rectangle(425, 381, 30, 30), new Effect(), COLLISION_TYPE.ENTER));
     }};
 
     private static final LevelObject[] OBJECTS = SpriteData.getLevelObjects("Objects");
@@ -42,5 +42,10 @@ public class FirstLevel extends Level {
 
     public FirstLevel() {
         super(LOCATION, IMG, COLLISIONS, TRIGGERS, OBJECTS, pCOORD);
+    }
+
+    @Override
+    void interact(Trigger trigger) {
+
     }
 }

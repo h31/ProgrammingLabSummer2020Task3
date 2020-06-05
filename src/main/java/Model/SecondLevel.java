@@ -1,7 +1,11 @@
 package Model;
+import View.View;
+import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +16,7 @@ public class SecondLevel extends Level {
     private static final String LOCATION = "Second";
 
     private static final LinkedList<Trigger> TRIGGERS = new LinkedList<>() {{
-        add(new Trigger(new Rectangle(70, 345, 40, 40),
+        add(new Trigger("OpenWall",new Rectangle(70, 345, 40, 40),
                 new Effect(EFFECT_TYPE.MAGIC, 50, 325),
                 COLLISION_TYPE.INTERACT,
                 SpriteData.getSprite("wall.png")));
@@ -42,5 +46,25 @@ public class SecondLevel extends Level {
 
     public SecondLevel() {
         super(LOCATION, IMG, COLLISION, TRIGGERS, OBJECTS, pCOORD);
+    }
+
+    @Override
+    public void interact(Trigger trigger) {
+        if (trigger.getNAME().equals("OpenWall")) openWall();
+    }
+
+    /**
+     * Открытие двери при попадании на триггер OpenWall
+     */
+    private void openWall() {
+        Trigger trigger = TRIGGERS.element();
+        Effect effect = trigger.getEFFECT();
+        View.showEffect(effect);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), trigger.getInteractedObject().getKey());
+        ft.setFromValue(1.0);
+        ft.setToValue(0);
+        ft.setCycleCount(1);
+        ft.setOnFinished(actionEvent -> System.out.println("MAGIC"));
+        ft.play();
     }
 }

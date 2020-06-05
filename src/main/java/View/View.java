@@ -11,16 +11,17 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 public class View {
-    private final Stage stage;
+    private final Stage STAGE;
     private Player PLAYER;
     private Level LEVEL;
     private Scene scene;
     private Controller controller;
+
     private final boolean DEBUG_MODE;
     private final double DEBUG_OPACITY = 0.25;
 
     public View(Stage stage, boolean debugMode) {
-        this.stage = stage;
+        this.STAGE = stage;
         this.DEBUG_MODE = debugMode;
     }
 
@@ -30,8 +31,8 @@ public class View {
 
     public void showScene() {
         scene = createScene();
-        stage.setScene(scene);
-        stage.show();
+        STAGE.setScene(scene);
+        STAGE.show();
     }
 
     /*
@@ -109,7 +110,7 @@ public class View {
         }
     }
 
-    public void showEffect(Effect effect) {
+    public static void showEffect(Effect effect) {
         System.out.println("Now in View");
         effect.runAnimation();
     }

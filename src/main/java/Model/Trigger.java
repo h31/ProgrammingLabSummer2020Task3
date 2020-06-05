@@ -7,13 +7,15 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Trigger {
+    private final String NAME;
     private final Rectangle RECT;
     private final Effect EFFECT;
     private final COLLISION_TYPE TYPE;
     private final Pair<ImageView, Rectangle> interactedObject;
 
 
-    Trigger(Rectangle rect, Effect effect, COLLISION_TYPE type, ImageView interactedObject) {
+    Trigger(String name, Rectangle rect, Effect effect, COLLISION_TYPE type, ImageView interactedObject) {
+        this.NAME = name;
         this.RECT = rect;
         this.EFFECT = effect;
         this.TYPE = type;
@@ -21,26 +23,12 @@ public class Trigger {
         setObjectPosition(479,530);
     }
 
-    Trigger(Rectangle rect, Effect effect, COLLISION_TYPE type) {
+    Trigger(String name, Rectangle rect, Effect effect, COLLISION_TYPE type) {
+        this.NAME = name;
         this.RECT = rect;
         this.EFFECT = effect;
         this.TYPE = type;
         this.interactedObject = new Pair<>(null, null);
-    }
-
-    void runObjectAnim() {
-        if (getIntObjectImg().getImage().getUrl().contains("wall.png")) {
-            rotateObject();
-        }
-    }
-
-    private void rotateObject() {
-        FadeTransition ft = new FadeTransition(Duration.millis(1000), getIntObjectImg());
-        ft.setFromValue(1.0);
-        ft.setToValue(0);
-        ft.setCycleCount(1);
-        ft.setOnFinished(actionEvent -> System.out.println("MAGIC"));
-        ft.play();
     }
 
     private void setObjectPosition(int x, int y) {
@@ -59,8 +47,12 @@ public class Trigger {
         return EFFECT;
     }
 
-    COLLISION_TYPE getTYPE() {
+    public COLLISION_TYPE getTYPE() {
         return TYPE;
+    }
+
+    public String getNAME() {
+        return NAME;
     }
 
     public Pair<ImageView, Rectangle> getInteractedObject() {

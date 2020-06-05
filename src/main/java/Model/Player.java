@@ -23,6 +23,7 @@ public class Player extends Animated {
     private Status.View view = Status.View.LEFT; // Куда смотрит сейчас
     private final Rectangle COLLISION;
     private double BOTTOM_COLLISION;
+
     private Level level;
 
     private double velY = 0;
@@ -159,20 +160,13 @@ public class Player extends Animated {
             if (getCOLLISION().intersects(rect.getBoundsInLocal())) {
                 if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
                     changingLocation();
-                } else if (trigger == level.getTRIGGERS().element() && trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
-                    interact(Objects.requireNonNull(level.getTRIGGERS().poll()));
+                } else if (trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
+                    level.interact(Objects.requireNonNull(level.getTRIGGERS().element()));
+                    setFreezed(true);
                 }
             }
         }
         return false;
-    }
-
-    private void interact(Trigger trigger) {
-        setFreezed(true);
-        System.out.println("Now in interact()");
-        Effect effect = trigger.getEFFECT();
-        trigger.runObjectAnim();
-        VIEW.showEffect(effect);
     }
 
     private void changingLocation() {
