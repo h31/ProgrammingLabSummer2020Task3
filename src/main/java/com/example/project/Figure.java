@@ -113,4 +113,5 @@ public class Figure {
         array[12][y[2] / 30] += 1;
         array[12][y[3] / 30] += 1;
     }
+
 }

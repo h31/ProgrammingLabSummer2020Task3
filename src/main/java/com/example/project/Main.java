@@ -12,9 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
-import java.util.List;
+
+
 
 public class Main extends Application {
 
@@ -29,19 +29,14 @@ public class Main extends Application {
         ArrayList<String> input = new ArrayList<>();
 
         scene.setOnKeyPressed(
-                new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent event) {
-                        String code = event.getCode().toString();
-                        if (!input.contains(code)) input.add(code);
-                    }
+                event -> {
+                    String code = event.getCode().toString();
+                    if (!input.contains(code)) input.add(code);
                 });
         scene.setOnKeyReleased(
-                new EventHandler<KeyEvent>() {
-                    public void handle(KeyEvent e) {
-                        String code = e.getCode().toString();
-                        input.remove(code);
-                    }
+                e -> {
+                    String code = e.getCode().toString();
+                    input.remove(code);
                 });
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -58,30 +53,33 @@ public class Main extends Application {
         figure2.startIndex(gc, random2[0]);
         figure2.draw(gc);
 
+        // создаем массив кубиков, где последний столбик - кол-во заполненных кубиков
+        Integer[][] array = new Integer[13][21];
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 21; j++) {
+                if (i == 0 || i == 11 || j == 20) array[i][j] = -8;
+                else array[i][j] = 0;
+            }
+        }
+        int[] lines = {0};
+        final int[] score = {0};
+
+        gc.setFill(Color.BLUEVIOLET);
+        Font theFont;
+        theFont = Font.font(25);
+        gc.setFont(theFont);
+        gc.fillText("next", 375, 240);
+        gc.fillText("score", 375, 300);
+        gc.fillText("0", 375, 330);
+
         // создаем текущую фигуру
         int[] random1 = {1 + (int) (Math.random() * 7)};
         Figure figure1 = new Figure(new int[]{150, 150, 150, 150}, new int[]{0, 30, 60, 90});
         figure1.startIndex(gc, random1[0]);
         figure1.draw(gc);
 
-        // создаем массив кубиков, где последний столбик - кол-во заполненных кубиков
-        Integer[][] array = new Integer[13][21];
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 21; j++) {
-                if (i == 0 || i == 11 || j == 0 || j == 20) array[i][j] = -8;
-                else array[i][j] = 0;
-            }
-        }
-        int[] lines = {0};
-        final int[] score = {0};
-        Font theFont;
-        theFont = Font.font(25);
-        gc.setFont(theFont);
-        gc.fillText("next", 375, 240);
-        gc.fillText("score", 375, 300);
-        gc.fillText("0", 390, 330);
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.7), actionEvent -> {
+        Timeline timeline;
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.7), actionEvent -> {
             if (figure1.canDown(array)) {
 
                 figure1.clear(gc);
@@ -94,7 +92,9 @@ public class Main extends Application {
 
                 figure1.inArray(array, random1[0]);
                 random1[0] = random2[0];
-                random2[0] = 1 + (int) (Math.random() * 7);
+
+                while (random2[0] == random1[0])
+                    random2[0] = 1 + (int) (Math.random() * 7);
 
                 gc.setFill(Color.WHITE);
                 gc.fillRect(330, 30, 150, 180);
@@ -104,10 +104,9 @@ public class Main extends Application {
                 figure2.draw(gc);
 
 
-                for (int jj = 0; jj < 21; jj++) {
+                for (int jj = 0; jj < 20; jj++) {
                     if (array[12][jj] == 10) {
                         lines[0] += 1;
-
                         for (int j = jj; j > 0; j--) {
                             for (int i = 10; i > 0; i--) {
                                 gc.clearRect((i - 1) * 30, (j * 30), 30, 30);
@@ -134,17 +133,25 @@ public class Main extends Application {
                                         gc.setFill(Color.PURPLE);
                                     }
                                     gc.fillRect((i - 1) * 30, (j) * 30, 30, 30);
-                                    array[i][j] = array[i][j-1];
-                                }
 
+
+                                }
+                                array[i][j] = array[i][j - 1];
+                                array[12][j] = array[12][j-1];
                             }
+
                         }
+                        if (lines[0] == 1) score[0] += 100;
+                        if (lines[0] == 2) score[0] += 300;
+                        if (lines[0] == 3) score[0] += 700;
+                        if (lines[0] == 4) score[0] += 1500;
+                        lines[0] = 0;
+                        gc.setFill(Color.LAVENDER);
+                        gc.fillRect(375, 300, 100, 30);
+                        gc.setFill(Color.BLUEVIOLET);
+                        gc.fillText(String.valueOf(score[0]), 375, 330);
                     }
-                    if (lines.length == 1) score[0] += 100;
-                    if (lines.length == 2) score[0] += 300;
-                    if (lines.length == 3) score[0] += 700;
-                    if (lines.length == 4) score[0] += 1500;
-                    gc.fillText(String.valueOf(score), 390, 330);
+
                 }
 
                 gc.setFill(Color.BLUEVIOLET);
@@ -183,7 +190,7 @@ public class Main extends Application {
                 figure1.draw(gc);
             }
             if (input.contains("UP")) {
-                // пока хз
+                
             }
         }));
         keyboardControl.setCycleCount(Timeline.INDEFINITE);
