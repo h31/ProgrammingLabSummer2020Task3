@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
@@ -50,14 +51,14 @@ public class App extends Application{
 
     public void planetSetup(SystemCharacteristic system) throws Exception {
         var loader = new FXMLLoader(new File("src/main/resources/PlanetParameters.fxml").toURI().toURL());
-        Parent root1 = loader.load();
+        Parent root = loader.load();
         ControllerOfThePlanet controller = loader.getController();
         controller.initialize(system);
         var stage = new Stage();
         stage.setTitle("Configuring the planet");
-        stage.setScene(new Scene(root1));
+        stage.setScene(new Scene(root));
         var rand = (1 + (int) (Math.random() * 6));
-        root1.setStyle("-fx-background-image: url("+"images/" + rand +".jpg "+")");
+        root.setStyle(String.format("-fx-background-image: url(images/%d.jpg)", rand));
         stage.show();
     }
 
@@ -80,6 +81,8 @@ public class App extends Application{
         var starCenterY = star.getY() + star.getFitHeight() / 2;
         canvas.getChildren().add(star);
 
+
+
         Tooltip.install(star, new Tooltip("Star \nMass: " + system.massOfStar + "\n" +
                 "Radius: " + system.radiusOfStar));
 
@@ -88,14 +91,14 @@ public class App extends Application{
         pause.setLayoutX(1100);
         canvas.getChildren().addAll(pause);
 
-        final boolean[] p = {false};
+        var p = new AtomicBoolean(false);
 
         pause.setOnAction(event -> {
-            if (!p[0]) {
-                p[0] = true;
+            if (!p.get()) {
+                p.set(true);
                 pause.setText("Play");
             } else {
-                p[0] = false;
+                p.set(false);
                 pause.setText("Pause");
             }
         });
@@ -183,7 +186,7 @@ public class App extends Application{
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    if (p[0]) timeline.stop();
+                    if (p.get()) timeline.stop();
                     else timeline.play();
                     timeline.setRate(10 * (animationSpeed.getCurrentPageIndex() + 1));
                 }
