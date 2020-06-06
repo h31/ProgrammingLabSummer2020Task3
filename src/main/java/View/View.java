@@ -85,6 +85,7 @@ public class View {
             }
             if (interactedObject.getValue() != null && interactedObject.getKey() != null) {
                 general.getChildren().add(interactedObject.getValue()); // Коллизия
+                checkDebugMode(interactedObject.getValue(), DEBUG_MODE);
                 general.getChildren().add(interactedObject.getKey());
             }
             general.getChildren().add(rect);

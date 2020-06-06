@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    private static final boolean debugMode = true;
+    private static final boolean debugMode = false;
 
     @Override
     public void start(Stage stage) {

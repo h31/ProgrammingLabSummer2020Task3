@@ -3,7 +3,6 @@ package Model;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Trigger {
@@ -20,7 +19,6 @@ public class Trigger {
         this.EFFECT = effect;
         this.TYPE = type;
         this.interactedObject = new Pair<>(interactedObject, SpriteData.spriteToCollision(interactedObject));
-        setObjectPosition(479,530);
     }
 
     Trigger(String name, Rectangle rect, Effect effect, COLLISION_TYPE type) {
@@ -31,13 +29,12 @@ public class Trigger {
         this.interactedObject = new Pair<>(null, null);
     }
 
-    private void setObjectPosition(int x, int y) {
+    public void setObjectPosition(int x, int y) {
         getIntObjectCol().setX(x);
         getIntObjectCol().setY(y);
         getIntObjectImg().setX(x);
         getIntObjectImg().setY(y);
     }
-
 
     public Rectangle getRECT() {
         return RECT;

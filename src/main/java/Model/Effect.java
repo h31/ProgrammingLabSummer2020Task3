@@ -32,7 +32,6 @@ public class Effect extends Animated {
                 this
         );
         animation.setOnFinished(actionEvent -> {
-            System.out.println("bruh");
             Player.freezed = false;
             this.getImgView().setVisible(false);
         });

@@ -2,13 +2,10 @@ package Model;
 import View.View;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class SecondLevel extends Level {
 
@@ -22,7 +19,11 @@ public class SecondLevel extends Level {
                 SpriteData.getSprite("wall.png")));
     }};
 
-    private static final List<Rectangle> COLLISION = Arrays.asList(
+    static {
+        TRIGGERS.get(0).setObjectPosition(479, 530);
+    }
+
+    private static final LinkedList<Rectangle> COLLISION = new LinkedList<>(Arrays.asList(
             new Rectangle(0, 730, 1000, 4), // Вся нижняя стена
             new Rectangle(0, 520, 4, 240), //Первая левая стена
             new Rectangle(0, 520, 251, 20), // Верхняя стена
@@ -34,8 +35,9 @@ public class SecondLevel extends Level {
             new Rectangle(287, 330, 35, 20), // Стена верхняя в комнате
             new Rectangle(320, 330, 4, 120), // Стена правая в комнате
             new Rectangle(82, 338, 30, 10), // Стена правая в комнате
-            new Rectangle(310, 520, 501, 20) // Начальный коридор сверху
-    );
+            new Rectangle(310, 520, 501, 20), // Начальный коридор сверху
+            new Rectangle(479, 530, 4, 240)
+    ));
 
     private static final LevelObject[] OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
 
@@ -64,7 +66,7 @@ public class SecondLevel extends Level {
         ft.setFromValue(1.0);
         ft.setToValue(0);
         ft.setCycleCount(1);
-        ft.setOnFinished(actionEvent -> System.out.println("MAGIC"));
+        ft.setOnFinished(actionEvent -> COLLISION.remove(COLLISION.getLast()));
         ft.play();
     }
 }
