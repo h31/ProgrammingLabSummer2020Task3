@@ -50,7 +50,7 @@ public class Main extends Application {
             }
         }
 
-        labelSetter(score, 340, 15, 90, 25, "#84776e", 14, "#faf8ef", " Score: ");
+        labelSetter(score, 300, 45, 130, 30, "#84776e", 16, "#faf8ef", " Score: ");
         score.setText(" Score: " + FieldDrawer.score);
         root.getChildren().add(score);
 
