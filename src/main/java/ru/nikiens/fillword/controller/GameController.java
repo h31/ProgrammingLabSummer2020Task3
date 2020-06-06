@@ -52,7 +52,7 @@ public class GameController implements Initializable {
     private final int BOARD_SIZE = Game.getInstance().getBoardSize().value();
 
     public void initialize(URL location, ResourceBundle resources) {
-        GridLocation mouseDownLoc = new GridLocation();
+        GridLocation dragged = new GridLocation();
         Game.getInstance().initializeBoard();
         Game.getInstance().fillWithWords();
         //Game.getInstance().fillWithLetters();
@@ -66,7 +66,7 @@ public class GameController implements Initializable {
 
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                table.add(generateLabel(i, j, mouseDownLoc), i, j);
+                table.add(generateLabel(i, j, dragged), i, j);
             }
         }
 
