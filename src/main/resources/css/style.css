@@ -15,6 +15,7 @@
     -fx-opacity: 55%;
 }
 
-.cell {
-    -fx-font-size: 14
+.label:selected {
+    -fx-background-color: #eb5074;
+    -fx-text-fill: white
 }

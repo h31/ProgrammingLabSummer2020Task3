@@ -18,6 +18,7 @@ import ru.nikiens.fillword.model.Game;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Random;
 
 public class MenuController {
 
@@ -50,12 +51,13 @@ public class MenuController {
 
     @FXML
     void switchToRandomGame() throws IOException {
+        Random random = new Random();
         LevelsController lc = new LevelsController();
 
         Path[] sources = Files.list(LevelsController.WORDS_DIR).toArray(Path[]::new);
         BoardSize[] sizes = BoardSize.values();
 
-        Game.getInstance().setBoardSize(sizes[(int) System.currentTimeMillis() % sizes.length]);
-        lc.switchToGame(sources[(int) System.currentTimeMillis() % sources.length], anchorPane);
+        Game.getInstance().setBoardSize(sizes[random.nextInt(sizes.length)]);
+        lc.switchToGame(sources[random.nextInt(sources.length)], anchorPane);
     }
 }

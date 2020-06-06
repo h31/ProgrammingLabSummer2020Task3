@@ -1,24 +1,17 @@
 package ru.nikiens.fillword.model;
 
-public class Cell {
-    private String letter;
+import javafx.scene.control.Label;
+
+public class Cell extends Label {
     private CellState state;
     private int x;
     private int y;
 
-    public Cell(int x, int y, String letter) {
-        this.state = CellState.UNMARKED;
+    public Cell(int x, int y) {
+        super();
+
         this.x = x;
         this.y = y;
-        this.letter = letter;
-    }
-
-    public String getLetter() {
-        return letter;
-    }
-
-    public void setLetter(String  letter) {
-        this.letter = letter;
     }
 
     public int getX() {
@@ -51,9 +44,5 @@ public class Cell {
 
     public boolean equals(Object obj) {
         return super.equals(obj);
-    }
-
-    public String toString() {
-        return super.toString();
     }
 }

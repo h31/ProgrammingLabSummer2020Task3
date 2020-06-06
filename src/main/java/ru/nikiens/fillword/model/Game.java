@@ -5,8 +5,7 @@ import ru.nikiens.fillword.model.util.RandomizedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Game {
     private static Game inst;
@@ -60,8 +59,8 @@ public class Game {
         this.category = category;
     }
 
-    public Cell[][] getBoard() {
-        return board;
+    public Cell getCell(int x, int y) {
+        return board[x][y];
     }
 
     public void initCategory() throws IOException {
@@ -77,13 +76,48 @@ public class Game {
         setCategory(category);
     }
 
-    public void generateBoard() {
+    public void initializeBoard() {
         this.board = new Cell[getBoardSize().value()][getBoardSize().value()];
+        for (int i = 0; i < getBoardSize().value(); i++) {
+            for (int j = 0; j < getBoardSize().value(); j++) {
+                this.board[i][j] = new Cell(i, j);
+            }
+        }
+    }
+
+    public void fillWithLetters() {
+        Random random = new Random();
+        char[] alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".toCharArray();
 
         for (int i = 0; i < getBoardSize().value(); i++) {
             for (int j = 0; j < getBoardSize().value(); j++) {
-                this.board[i][j] = new Cell(i, j, "s");
+                Cell cell = getCell(i, j);
+                if (cell.getState() == null) {
+                    cell.setText(Character.toString(alphabet[random.nextInt(alphabet.length)]));
+                    cell.setState(CellState.UNMARKED);
+                }
             }
+        }
+    }
+
+    public void fillWithWords() {
+        Random random = new Random();
+
+        for (String word : this.words) {
+            int x = 0;
+            int y = 0;
+
+            List<PlacementDirection> directions = new ArrayList<>();
+
+            while (directions.isEmpty()) {
+                x = random.nextInt(getBoardSize().value());
+                y = random.nextInt(getBoardSize().value());
+
+                directions.addAll(WordPlaceholder.getAvailableDirections(x, y, word.length()));
+            }
+
+            PlacementDirection direction = directions.get(random.nextInt(directions.size()));
+            WordPlaceholder.placeWord(x, y, word, direction);
         }
     }
 }
