@@ -18,23 +18,14 @@ import ru.nikiens.fillword.model.BoardSize;
 import ru.nikiens.fillword.model.Game;
 import ru.nikiens.fillword.model.util.SourceVerifier;
 
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class LevelsController implements Initializable {
-    static final Path WORDS_DIR = Paths.get("src", "main", "resources", "words");
-
-    /*static Path WORDS_DIR = null;
-
-    static {
-        try {
-            WORDS_DIR = Paths.get(LevelsController.class.getResource("/words").toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }*/
+    static final Path WORDS_DIR = Paths.get(URI.create(LevelsController.class.getResource("/words").toString()));
 
     @FXML
     private AnchorPane anchorPane;
