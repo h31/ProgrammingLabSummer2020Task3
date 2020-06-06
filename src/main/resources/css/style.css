@@ -1,0 +1,21 @@
+.root {
+    -fx-background-image: url("../img/background.png");
+    -fx-background-size: 100% 100%;
+}
+
+.logo {
+    -fx-background-image: url("../img/logo.png");
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.game {
+    -fx-background-color: #301934;
+    -fx-opacity: 55%;
+}
+
+.label:selected {
+    -fx-background-color: #eb5074;
+    -fx-text-fill: white
+}
