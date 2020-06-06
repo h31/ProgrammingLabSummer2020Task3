@@ -137,31 +137,24 @@ public class App extends Application{
             var planet = new Circle();
             planet.setRadius(system.planet.get(i).radius / 2);
             canvas.getChildren().add(planet);
-            final double[] vx = {system.planet.get(i).speedX};
-            final double[] vy = {system.planet.get(i).speedY};
-            final double[] x = {system.planet.get(i).positionX + starCenterX};
-            final double[] y = {system.planet.get(i).positionY + starCenterY};
+            system.planet.get(i).positionX += starCenterX;
+            system.planet.get(i).positionY += starCenterY;
             var timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
-
-                var distance = logic.distance(starCenterX, starCenterY, x[0], y[0]);
-                vx[0] += logic.acceleration(system.GC, system.massOfStar, starCenterX, x[0], distance);
-                vy[0] += logic.acceleration(system.GC, system.massOfStar, starCenterY, y[0], distance);
-                x[0] += vx[0];
-                y[0] += vy[0];
-                system.planet.get(i).positionX = x[0];
-                system.planet.get(i).positionY = y[0];
-                system.planet.get(i).speedX = vx[0];
-                system.planet.get(i).speedY = vy[0];
-                planet.setCenterX(x[0]);
-                planet.setCenterY(y[0]);
+                var distance = logic.distance(starCenterX, starCenterY, system.planet.get(i).positionX, system.planet.get(i).positionY);
+                system.planet.get(i).speedX += logic.acceleration(system.GC, system.massOfStar, starCenterX, system.planet.get(i).positionX, distance);
+                system.planet.get(i).speedY += logic.acceleration(system.GC, system.massOfStar, starCenterY, system.planet.get(i).positionY, distance);
+                system.planet.get(i).positionX += system.planet.get(i).speedX;
+                system.planet.get(i).positionY += system.planet.get(i).speedY;
+                planet.setCenterX(system.planet.get(i).positionX);
+                planet.setCenterY(system.planet.get(i).positionY);
                 canvas.requestLayout();
 
                 if (timePort[i]) {
-                    var tpXY = logic.timePortation(a.get(), x[0], y[0], vx[0], vy[0], starCenterX, starCenterY, system.GC, system.massOfStar);
-                    x[0] = tpXY[0];
-                    y[0] = tpXY[1];
-                    vx[0] = tpXY[2];
-                    vy[0] = tpXY[3];
+                    var tpXY = logic.timePortation(a.get(), system.planet.get(i).positionX, system.planet.get(i).positionY, system.planet.get(i).speedX, system.planet.get(i).speedY, starCenterX, starCenterY, system.GC, system.massOfStar);
+                    system.planet.get(i).positionX = tpXY[0];
+                    system.planet.get(i).positionY = tpXY[1];
+                    system.planet.get(i).speedX = tpXY[2];
+                    system.planet.get(i).speedY = tpXY[3];
                     timePort[i] = false;
                 }
 
