@@ -36,13 +36,13 @@ public class ControllerOfThePlanet {
     @FXML
     private TextField speedPl;
 
-    boolean[] filled = new boolean[6];
+    boolean[] completion = new boolean[6];
 
     private boolean check = false;
 
-    private void enabler(boolean test, int num) {
-        filled[num] = test;
-        for (var b : filled)
+    private void btnEnabler(boolean test, int num) {
+        completion[num] = test;
+        for (var b : completion)
             if (!b) {
                 check = false;
                 break;
@@ -60,12 +60,12 @@ public class ControllerOfThePlanet {
         });
 
         var regex = "[0-9]+([.,][0-9]+)?";
-        namePl.setOnKeyTyped(event -> enabler(!namePl.getText().contains(" "), 0));
-        radiusPl.setOnKeyTyped(event -> enabler(radiusPl.getText().matches(regex), 1));
-        positionXPl.setOnKeyTyped(event -> enabler(positionXPl.getText().matches("-?" + regex), 2));
-        positionYPl.setOnKeyTyped(event -> enabler(positionYPl.getText().matches("-?" + regex), 3));
-        degreesPl.setOnKeyTyped(event -> enabler(degreesPl.getText().matches("-?" + regex), 4));
-        speedPl.setOnKeyTyped(event -> enabler(speedPl.getText().matches(regex), 5));
+        namePl.setOnKeyTyped(event -> btnEnabler(!namePl.getText().contains(" "), 0));
+        radiusPl.setOnKeyTyped(event -> btnEnabler(radiusPl.getText().matches(regex), 1));
+        positionXPl.setOnKeyTyped(event -> btnEnabler(positionXPl.getText().matches("-?" + regex), 2));
+        positionYPl.setOnKeyTyped(event -> btnEnabler(positionYPl.getText().matches("-?" + regex), 3));
+        degreesPl.setOnKeyTyped(event -> btnEnabler(degreesPl.getText().matches("-?" + regex), 4));
+        speedPl.setOnKeyTyped(event -> btnEnabler(speedPl.getText().matches(regex), 5));
 
         applyPl.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             var stage = (Stage) applyPl.getScene().getWindow();

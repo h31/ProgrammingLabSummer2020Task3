@@ -124,11 +124,23 @@ public class App extends Application{
         saveBtn.setLayoutY(570);
         saveBtn.setLayoutX(10);
         saveBtn.setOnAction(event -> {
+            p.set(true);
             IntStream.range(0, system.planet.size()).forEach(i -> {
                 system.planet.get(i).positionX -= starCenterX;
                 system.planet.get(i).positionY -= starCenterY;
             });
-            FileManager.save(system);
+            var file = new FileManager();
+            file.save(system);
+            IntStream.range(0, system.planet.size()).forEach(i -> {
+                system.planet.get(i).positionX += starCenterX;
+                system.planet.get(i).positionY += starCenterY;
+            });
+            try {
+                Thread.sleep(100 * system.numberOfPlanets);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            p.set(false);
         });
 
         canvas.getChildren().addAll(animationSpeed, timePortation, tPBtn, saveBtn);

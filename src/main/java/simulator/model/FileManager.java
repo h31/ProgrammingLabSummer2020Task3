@@ -15,30 +15,37 @@ import java.io.IOException;
 public class FileManager {
     static Logger log = LogManager.getLogger(FileManager.class.getName());
 
-    public static void save(SystemCharacteristic system) {
+    public void save(SystemCharacteristic system) {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Select directory for save");
         fileChooser.setInitialFileName("configuration");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Configuration file .pss", "*.pss"));
         var file = fileChooser.showSaveDialog(App.stageFile);
+        if (file == null) {
+            log.info("The user closed the saving window");
+            return;
+        }
         try (var writer = new FileWriter(file)) {
             writer.write(system.toStringFile());
             log.info("Save to " + file.getAbsolutePath());
         } catch (IOException e) {
             error(false);
             log.error(e);
-        } catch (NullPointerException e) {
-            log.info("The user closed the opening window");
         }
     }
 
-    public static void open(Stage stage) {
+    public void open(Stage stage) {
         try {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Open config file");
         var filter = new FileChooser.ExtensionFilter("Configuration file .pss", "*.pss");
         fileChooser.getExtensionFilters().add(filter);
-        var file = fileChooser.showOpenDialog(App.stageFile).getAbsoluteFile();
+        var file = fileChooser.showOpenDialog(App.stageFile);
+        if (file == null) {
+            log.info("The user closed the opening window");
+            return;
+        }
+        file = file.getAbsoluteFile();
         var system = new SystemCharacteristic();
         var size = 0;
             var fr = new FileReader(file);
@@ -85,12 +92,9 @@ public class FileManager {
             stage.close();
             var app = new App();
             app.space(system);
-
         } catch (IOException e) {
             error(true);
             log.error(e);
-        } catch (NullPointerException e) {
-            log.info("The user closed the opening window");
         }
     }
 

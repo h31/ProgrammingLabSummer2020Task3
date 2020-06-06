@@ -32,13 +32,13 @@ public class ControllerOfTheSystem {
     @FXML
     public Button load;
 
-    boolean[] filled = new boolean[3];
+    boolean[] completion = new boolean[3];
 
     private boolean check = false;
 
-    private void enabler(boolean test, int num) {
-        filled[num] = test;
-        for (var b : filled)
+    private void btnEnabler(boolean test, int num) {
+        completion[num] = test;
+        for (var b : completion)
             if (!b) {
                 check = false;
                 break;
@@ -51,17 +51,19 @@ public class ControllerOfTheSystem {
         help.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             var alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Help");
-            alert.setContentText("In this window, specify the mass and radius of the star in accordance with the specified explanations.\n" +
-                    "For example, mass = 900, radius = 80, Gravitational constant = 7");
+            alert.setContentText("For example, mass = 900, radius = 80, Gravitational constant = 7");
             alert.showAndWait();
         });
 
-        load.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> FileManager.open((Stage) apply.getScene().getWindow()));
+        load.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            var file = new FileManager();
+            file.open((Stage) apply.getScene().getWindow());
+        });
 
         var regex = "[0-9]+([.,][0-9]+)?";
-        mass.setOnKeyTyped(event -> enabler(mass.getText().matches(regex), 0));
-        radius.setOnKeyTyped(event -> enabler(radius.getText().matches(regex), 1));
-        G.setOnKeyTyped(event -> enabler(G.getText().matches(regex), 2));
+        mass.setOnKeyTyped(event -> btnEnabler(mass.getText().matches(regex), 0));
+        radius.setOnKeyTyped(event -> btnEnabler(radius.getText().matches(regex), 1));
+        G.setOnKeyTyped(event -> btnEnabler(G.getText().matches(regex), 2));
 
         apply.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             ((Stage) apply.getScene().getWindow()).close();
