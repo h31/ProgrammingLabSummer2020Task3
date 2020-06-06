@@ -26,6 +26,16 @@ import java.util.ResourceBundle;
 public class LevelsController implements Initializable {
     static final Path WORDS_DIR = Paths.get("src", "main", "resources", "words");
 
+    /*static Path WORDS_DIR = null;
+
+    static {
+        try {
+            WORDS_DIR = Paths.get(LevelsController.class.getResource("/words").toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }*/
+
     @FXML
     private AnchorPane anchorPane;
 
