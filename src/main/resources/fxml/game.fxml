@@ -16,5 +16,5 @@
       </font>
    </Label>
    <JFXListView fx:id="wordsList" focusTraversable="false" layoutX="14.0" layoutY="86.0" mouseTransparent="true" prefHeight="517.0" prefWidth="272.0" style="-fx-font-size: 16; -fx-background-color: transparent;" styleClass="game" stylesheets="@../css/style.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="86.0" />
-   <StackPane fx:id="stackPane" prefHeight="633.0" prefWidth="880.0" styleClass="game" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <StackPane fx:id="stackPane" prefHeight="633.0" prefWidth="880.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>
