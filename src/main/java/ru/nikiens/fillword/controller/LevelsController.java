@@ -31,18 +31,6 @@ public class LevelsController implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
-    private JFXButton levelButtonSport;
-
-    @FXML
-    private JFXButton levelButtonFoods;
-
-    @FXML
-    private JFXButton levelButtonMusic;
-
-    @FXML
-    private JFXButton levelButtonCustom;
-
-    @FXML
     private JFXComboBox<BoardSize> sizeChooser;
 
     public void initialize(URL location, ResourceBundle resources) {

@@ -19,3 +19,8 @@
     -fx-background-color: #eb5074;
     -fx-text-fill: white
 }
+
+.label:marked {
+    -fx-background-color: #00a5b8;
+    -fx-text-fill: white
+}

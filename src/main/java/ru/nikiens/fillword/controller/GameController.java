@@ -16,7 +16,6 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import ru.nikiens.fillword.model.Cell;
 import ru.nikiens.fillword.model.CellState;
 import ru.nikiens.fillword.model.Game;
 
@@ -30,9 +29,6 @@ import java.util.stream.Collectors;
 public class GameController implements Initializable {
 
     @FXML
-    private Label timer;
-
-    @FXML
     private GridPane table;
 
     @FXML
@@ -44,9 +40,10 @@ public class GameController implements Initializable {
     @FXML
     private StackPane dialoguePane;
 
-    private ObservableSet<Cell> selectedCells = FXCollections.observableSet(new LinkedHashSet<>());
     private PseudoClass selected = PseudoClass.getPseudoClass("selected");
+    private PseudoClass marked = PseudoClass.getPseudoClass("marked");
 
+    private ObservableSet<Label> selectedCells = FXCollections.observableSet(new LinkedHashSet<>());
     private Set<String> words = Game.getInstance().getWords();
 
     private final int BOARD_SIZE = Game.getInstance().getBoardSize().value();
@@ -101,49 +98,52 @@ public class GameController implements Initializable {
         };
     }
 
-    private Cell generateLabel(int x, int y, GridLocation gridLocation) {
-        Cell cell = Game.getInstance().getCell(y, x);
+    private Label generateLabel(int x, int y, GridLocation gridLocation) {
+        Label label = new Label(Character.toString(Game.getInstance().getCell(x, y).getLetter()));
 
-        cell.prefHeightProperty().bind(table.heightProperty().divide(BOARD_SIZE));
-        cell.prefWidthProperty().bind(table.widthProperty().divide(BOARD_SIZE));
-        cell.setAlignment(Pos.CENTER);
+        label.prefHeightProperty().bind(table.heightProperty().divide(BOARD_SIZE));
+        label.prefWidthProperty().bind(table.widthProperty().divide(BOARD_SIZE));
+        label.setAlignment(Pos.CENTER);
 
-        cell.setOnDragDetected(event -> {
+        label.setOnDragDetected(event -> {
             gridLocation.x = x;
             gridLocation.y = y;
 
             selectedCells.clear();
-            selectedCells.add(cell);
-            cell.startFullDrag();
+            selectedCells.add(label);
+            label.startFullDrag();
         });
 
-        cell.setOnMouseDragEntered(event -> recomputeSelection(gridLocation, x, y));
-        cell.setOnMouseDragReleased(event -> processSelection());
+        label.setOnMouseDragEntered(event -> recomputeSelection(gridLocation, x, y));
+        label.setOnMouseDragReleased(event -> processSelection());
 
-        return cell;
+        return label;
     }
 
     private void recomputeSelection(GridLocation dragged, int x, int y) {
-        Set<Cell> selection = new HashSet<>();
-        Set<Cell> horizontalSelection = new HashSet<>();
-        Set<Cell> diagonalSelection = new HashSet<>();
+        Set<Label> selection = new HashSet<>();
+        Set<Label> horizontalSelection = new HashSet<>();
+        Set<Label> diagonalSelection = new HashSet<>();
 
+        loop:
         for (int j = dragged.y; j <= y; j++) {
             for (int i = dragged.x; i <= x; i++) {
-                Cell cell = (Cell) table.getChildren().get(i * BOARD_SIZE + j);
+                Label label = (Label) table.getChildren().get(i * BOARD_SIZE+1 + j);
 
-                if (cell.getState() == CellState.MARKED) return;
+                if (Game.getInstance().getCell(j, i).getState() == CellState.MARKED) {
+                    break loop;
+                }
 
                 if (j == dragged.y) {
-                    selection.add(cell);
+                    selection.add(label);
                 }
                 if (i == dragged.x) {
-                    horizontalSelection.add(cell);
+                    horizontalSelection.add(label);
                     selection.clear();
                     selection.addAll(horizontalSelection);
                 }
                 if (j - i == dragged.y - dragged.x) {
-                    diagonalSelection.add(cell);
+                    diagonalSelection.add(label);
                     selection.clear();
                     selection.addAll(diagonalSelection);
                 }
@@ -160,7 +160,13 @@ public class GameController implements Initializable {
             words.remove(word);
             wordsList.refresh();
 
-            selectedCells.forEach(it -> it.setState(CellState.MARKED));
+            selectedCells.forEach(it -> {
+                int x = GridPane.getRowIndex(it);
+                int y = GridPane.getColumnIndex(it);
+
+                Game.getInstance().getCell(x, y).setState(CellState.MARKED);
+                it.pseudoClassStateChanged(marked, true);
+            });
         }
 
         selectedCells.clear();
@@ -172,6 +178,7 @@ public class GameController implements Initializable {
 
     private void finishGame() {
         dialoguePane.setVisible(true);
+
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("You won!"));
         content.setBody(new Text("You have successfully completed the level!"));

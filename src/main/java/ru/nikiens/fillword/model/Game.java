@@ -76,7 +76,7 @@ public class Game {
         this.board = new Cell[getBoardSize().value()][getBoardSize().value()];
         for (int i = 0; i < getBoardSize().value(); i++) {
             for (int j = 0; j < getBoardSize().value(); j++) {
-                this.board[i][j] = new Cell(i, j);
+                this.board[i][j] = new Cell();
             }
         }
     }
@@ -92,9 +92,8 @@ public class Game {
         for (int i = 0; i < getBoardSize().value(); i++) {
             for (int j = 0; j < getBoardSize().value(); j++) {
                 Cell cell = getCell(i, j);
-                if (cell.getState() == null) {
-                    cell.setText(Character.toString(alphabet[random.nextInt(alphabet.length)]));
-                    cell.setState(CellState.UNMARKED);
+                if (cell.getLetter() == 0) {
+                    cell.setLetter(alphabet[random.nextInt(alphabet.length)]);
                 }
             }
         }
@@ -113,11 +112,87 @@ public class Game {
                 x = random.nextInt(getBoardSize().value());
                 y = random.nextInt(getBoardSize().value());
 
-                directions.addAll(WordPlaceholder.getAvailableDirections(x, y, word.length()));
+                directions.addAll(getAvailableDirections(x, y, word.length()));
             }
 
             PlacementDirection direction = directions.get(random.nextInt(directions.size()));
-            WordPlaceholder.placeWord(x, y, word, direction);
+            placeWord(x, y, word, direction);
+        }
+    }
+
+    private static boolean checkVertical(int x, int y, int length) {
+        for (int i = 0; i < length; i++) {
+            if (x + i < Game.getInstance().getBoardSize().value() && x >= 0 &&
+                    y < Game.getInstance().getBoardSize().value() && y >= 0) {
+                Cell cell = Game.getInstance().getCell(x + i, y);
+
+                if (cell.getLetter() != 0) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean checkHorizontal(int x, int y, int length) {
+        for (int i = 0; i < length; i++) {
+            if (y + i < Game.getInstance().getBoardSize().value() && y >= 0 &&
+                    x < Game.getInstance().getBoardSize().value() && x >= 0) {
+                Cell cell = Game.getInstance().getCell(x, y + i);
+
+                if (cell.getLetter() != 0) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean checkDiagonal(int x, int y, int length) {
+        for (int i = 0; i < length; i++) {
+            if (x + i < Game.getInstance().getBoardSize().value() && x >= 0 &&
+                    y + i < Game.getInstance().getBoardSize().value() && y >= 0) {
+                Cell cell = Game.getInstance().getCell(x + i, y + i);
+
+                if (cell.getLetter() != 0) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static List<PlacementDirection> getAvailableDirections(int x, int y, int length) {
+        List<PlacementDirection> list = new ArrayList<>();
+
+        if (checkHorizontal(x, y, length)) list.add(PlacementDirection.HORIZONTAL);
+        if (checkVertical(x, y, length)) list.add(PlacementDirection.VERTICAL);
+        if (checkDiagonal(x, y, length)) list.add(PlacementDirection.DIAGONAL);
+
+        return list;
+    }
+
+    public static void placeWord(int x, int y, String word, PlacementDirection pd) {
+        for (int i = 0; i < word.length(); i++) {
+            Cell cell = null;
+            switch (pd) {
+                case VERTICAL:
+                    cell = Game.getInstance().getCell(x + i, y);
+                    break;
+                case HORIZONTAL:
+                    cell = Game.getInstance().getCell(x, y + i);
+                    break;
+                case DIAGONAL:
+                    cell = Game.getInstance().getCell(x + i, y + i);
+                    break;
+            }
+            cell.setLetter(word.charAt(i));
         }
     }
 }

@@ -1,33 +1,13 @@
 package ru.nikiens.fillword.model;
 
-import javafx.scene.control.Label;
+import java.util.Objects;
 
-public class Cell extends Label {
+public class Cell {
     private CellState state;
-    private int x;
-    private int y;
+    private char letter;
 
-    public Cell(int x, int y) {
-        super();
-
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public Cell() {
+        this.state = CellState.UNMARKED;
     }
 
     public CellState getState() {
@@ -38,11 +18,23 @@ public class Cell extends Label {
         this.state = state;
     }
 
-    public int hashCode() {
-        return super.hashCode();
+    public char getLetter() {
+        return letter;
     }
 
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public void setLetter(char letter) {
+        this.letter = letter;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return getLetter() == cell.getLetter() &&
+                getState() == cell.getState();
+    }
+
+    public int hashCode() {
+        return Objects.hash(getState(), getLetter());
     }
 }

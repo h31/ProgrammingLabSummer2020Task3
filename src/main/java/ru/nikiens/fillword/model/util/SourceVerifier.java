@@ -22,7 +22,7 @@ public class SourceVerifier {
         Map<Integer, Integer> hashes = new HashMap<> ();
         Map<Integer, Integer> duplicates = new HashMap<>();
 
-        Pattern pattern = Pattern.compile("(?U:\\w+)");
+        Pattern pattern = Pattern.compile("(?i:[a-z]+)");
         Matcher matcher;
         Integer prevHash;
         String line;
