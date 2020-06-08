@@ -17,7 +17,6 @@ import ru.nikiens.fillword.model.BoardSize;
 import ru.nikiens.fillword.model.Game;
 import ru.nikiens.fillword.model.util.SourceVerifier;
 
-import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -65,6 +64,8 @@ public class LevelsController implements Initializable {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/game.fxml"));
 
             Stage stage = new Stage();
+            stage.setMinWidth(800.0);
+            stage.setMinHeight(600.0);
             stage.setTitle("Fillword");
             stage.setScene(new Scene(root));
             stage.show();
@@ -73,10 +74,9 @@ public class LevelsController implements Initializable {
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
 
-            alert.setTitle("Ошибка");
+            alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
-            e.printStackTrace();
             alert.show();
         }
     }
@@ -90,22 +90,22 @@ public class LevelsController implements Initializable {
         FileChooser chooser = new FileChooser();
         Stage stage = (Stage) anchorPane.getScene().getWindow();
 
-        chooser.setTitle("Выберите файл");
+        chooser.setTitle("Choose file");
         switchToGame(chooser.showOpenDialog(stage).toPath());
     }
 
     @FXML
-    void onFoodsGameButton() {
+    void onFoodsGameButton() throws URISyntaxException {
         switchToGame(getGlossary().resolve("foods.txt"));
     }
 
     @FXML
-    void onMusicGameButton() {
+    void onMusicGameButton() throws URISyntaxException {
         switchToGame(getGlossary().resolve("music.txt"));
     }
 
     @FXML
-    void onSportsGameButton() {
+    void onSportsGameButton() throws URISyntaxException {
         switchToGame(getGlossary().resolve("sports.txt"));
     }
 
@@ -114,11 +114,7 @@ public class LevelsController implements Initializable {
         Game.getInstance().setBoardSize(sizeChooser.getSelectionModel().getSelectedItem());
     }
 
-    static Path getGlossary() {
-        try {
-            return Paths.get(LevelsController.class.getResource("/glossary").toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException();
-        }
+    static Path getGlossary() throws URISyntaxException {
+        return Paths.get(LevelsController.class.getResource("/glossary").toURI());
     }
 }

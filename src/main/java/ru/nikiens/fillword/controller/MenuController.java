@@ -16,6 +16,7 @@ import ru.nikiens.fillword.model.BoardSize;
 import ru.nikiens.fillword.model.Game;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
@@ -50,7 +51,7 @@ public class MenuController {
     }
 
     @FXML
-    void switchToRandomGame() throws IOException {
+    void switchToRandomGame() throws IOException, URISyntaxException {
         Random random = new Random();
         LevelsController lc = new LevelsController();
 
