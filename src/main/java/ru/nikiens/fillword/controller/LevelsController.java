@@ -1,6 +1,5 @@
 package ru.nikiens.fillword.controller;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -18,14 +17,14 @@ import ru.nikiens.fillword.model.BoardSize;
 import ru.nikiens.fillword.model.Game;
 import ru.nikiens.fillword.model.util.SourceVerifier;
 
-import java.net.URI;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class LevelsController implements Initializable {
-    static final Path WORDS_DIR = Paths.get(URI.create(LevelsController.class.getResource("/words").toString()));
 
     @FXML
     private AnchorPane anchorPane;
@@ -97,21 +96,29 @@ public class LevelsController implements Initializable {
 
     @FXML
     void onFoodsGameButton() {
-        switchToGame(WORDS_DIR.resolve("foods.txt"));
+        switchToGame(getGlossary().resolve("foods.txt"));
     }
 
     @FXML
     void onMusicGameButton() {
-        switchToGame(WORDS_DIR.resolve("music.txt"));
+        switchToGame(getGlossary().resolve("music.txt"));
     }
 
     @FXML
     void onSportsGameButton() {
-        switchToGame(WORDS_DIR.resolve("sports.txt"));
+        switchToGame(getGlossary().resolve("sports.txt"));
     }
 
     @FXML
     void changeBorderSize() {
         Game.getInstance().setBoardSize(sizeChooser.getSelectionModel().getSelectedItem());
+    }
+
+    static Path getGlossary() {
+        try {
+            return Paths.get(LevelsController.class.getResource("/glossary").toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException();
+        }
     }
 }

@@ -54,7 +54,7 @@ public class MenuController {
         Random random = new Random();
         LevelsController lc = new LevelsController();
 
-        Path[] sources = Files.list(LevelsController.WORDS_DIR).toArray(Path[]::new);
+        Path[] sources = Files.list(LevelsController.getGlossary()).toArray(Path[]::new);
         BoardSize[] sizes = BoardSize.values();
 
         Game.getInstance().setBoardSize(sizes[random.nextInt(sizes.length)]);

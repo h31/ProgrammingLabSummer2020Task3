@@ -16,6 +16,7 @@ import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+
 import ru.nikiens.fillword.model.CellState;
 import ru.nikiens.fillword.model.Game;
 
@@ -38,7 +39,7 @@ public class GameController implements Initializable {
     private JFXListView<String> wordsList;
 
     @FXML
-    private StackPane dialoguePane;
+    private StackPane stackPane;
 
     private PseudoClass selected = PseudoClass.getPseudoClass("selected");
     private PseudoClass marked = PseudoClass.getPseudoClass("marked");
@@ -50,13 +51,12 @@ public class GameController implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         GridLocation dragged = new GridLocation();
+
         Game.getInstance().initializeBoard();
         Game.getInstance().fillWithWords();
         Game.getInstance().fillWithLetters();
 
         wordsList.setItems(FXCollections.observableArrayList(Game.getInstance().getWords()));
-        wordsList.setMouseTransparent(true);
-        wordsList.setFocusTraversable(false);
         wordsList.setCellFactory(lc -> createWordCell());
 
         category.setText(Game.getInstance().getCategory());
@@ -76,8 +76,6 @@ public class GameController implements Initializable {
                 label.pseudoClassStateChanged(selected, false);
             }
         });
-
-        dialoguePane.setVisible(false);
     }
 
     private ListCell<String> createWordCell() {
@@ -125,13 +123,12 @@ public class GameController implements Initializable {
         Set<Label> horizontalSelection = new HashSet<>();
         Set<Label> diagonalSelection = new HashSet<>();
 
-        loop:
         for (int j = dragged.y; j <= y; j++) {
             for (int i = dragged.x; i <= x; i++) {
-                Label label = (Label) table.getChildren().get(i * BOARD_SIZE+1 + j);
+                Label label = (Label) table.getChildren().get(i * BOARD_SIZE + 1 + j);
 
                 if (Game.getInstance().getCell(j, i).getState() == CellState.MARKED) {
-                    break loop;
+                    break;
                 }
 
                 if (j == dragged.y) {
@@ -177,21 +174,21 @@ public class GameController implements Initializable {
     }
 
     private void finishGame() {
-        dialoguePane.setVisible(true);
+        stackPane.setVisible(true);
 
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("You won!"));
         content.setBody(new Text("You have successfully completed the level!"));
 
         JFXButton button = new JFXButton("OK");
-        JFXDialog dialogue = new JFXDialog(dialoguePane, content, JFXDialog.DialogTransition.CENTER);
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
 
-        button.setOnAction(event -> dialogue.close());
+        button.setOnAction(event -> dialog.close());
         button.setButtonType(JFXButton.ButtonType.RAISED);
 
         content.setActions(button);
 
-        dialogue.show();
+        dialog.show();
     }
 
     private static class GridLocation {
