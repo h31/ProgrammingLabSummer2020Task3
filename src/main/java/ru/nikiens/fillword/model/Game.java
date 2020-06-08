@@ -120,65 +120,54 @@ public class Game {
         }
     }
 
-    private static boolean checkVertical(int x, int y, int length) {
+    private PlacementDirection checkDirection(int x, int y, int length, PlacementDirection pd) {
         for (int i = 0; i < length; i++) {
-            if (x + i < Game.getInstance().getBoardSize().value() && x >= 0 &&
-                    y < Game.getInstance().getBoardSize().value() && y >= 0) {
-                Cell cell = Game.getInstance().getCell(x + i, y);
+            int x1 = -1;
+            int y1 = -1;
+
+            switch (pd) {
+                case VERTICAL:
+                    x1 = x + i;
+                    y1 = y;
+                    break;
+                case HORIZONTAL:
+                    x1 = x;
+                    y1 = y + i;
+                    break;
+                case DIAGONAL:
+                    x1 = x + i;
+                    y1 = y + i;
+                    break;
+            }
+
+            if (x1 < Game.getInstance().getBoardSize().value() && x >= 0 &&
+                    y1 < Game.getInstance().getBoardSize().value() && y >= 0) {
+                Cell cell = Game.getInstance().getCell(x1, y1);
 
                 if (cell.getLetter() != 0) {
-                    return false;
+                    return null;
                 }
             } else {
-                return false;
+                return null;
             }
         }
-        return true;
+        return pd;
     }
 
-    private static boolean checkHorizontal(int x, int y, int length) {
-        for (int i = 0; i < length; i++) {
-            if (y + i < Game.getInstance().getBoardSize().value() && y >= 0 &&
-                    x < Game.getInstance().getBoardSize().value() && x >= 0) {
-                Cell cell = Game.getInstance().getCell(x, y + i);
+    private List<PlacementDirection> getAvailableDirections(int x, int y, int length) {
+        List<PlacementDirection> pds = new ArrayList<>();
 
-                if (cell.getLetter() != 0) {
-                    return false;
-                }
-            } else {
-                return false;
+        for (PlacementDirection value : PlacementDirection.values()) {
+            PlacementDirection pd = checkDirection(x, y, length, value);
+            if (pd != null) {
+                pds.add(pd);
             }
         }
-        return true;
+
+        return pds;
     }
 
-    private static boolean checkDiagonal(int x, int y, int length) {
-        for (int i = 0; i < length; i++) {
-            if (x + i < Game.getInstance().getBoardSize().value() && x >= 0 &&
-                    y + i < Game.getInstance().getBoardSize().value() && y >= 0) {
-                Cell cell = Game.getInstance().getCell(x + i, y + i);
-
-                if (cell.getLetter() != 0) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static List<PlacementDirection> getAvailableDirections(int x, int y, int length) {
-        List<PlacementDirection> list = new ArrayList<>();
-
-        if (checkHorizontal(x, y, length)) list.add(PlacementDirection.HORIZONTAL);
-        if (checkVertical(x, y, length)) list.add(PlacementDirection.VERTICAL);
-        if (checkDiagonal(x, y, length)) list.add(PlacementDirection.DIAGONAL);
-
-        return list;
-    }
-
-    public static void placeWord(int x, int y, String word, PlacementDirection pd) {
+    private void placeWord(int x, int y, String word, PlacementDirection pd) {
         for (int i = 0; i < word.length(); i++) {
             Cell cell = null;
             switch (pd) {
