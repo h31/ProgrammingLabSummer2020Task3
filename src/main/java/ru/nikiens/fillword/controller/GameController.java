@@ -128,7 +128,7 @@ public class GameController implements Initializable {
                 Label label = (Label) table.getChildren().get(i * BOARD_SIZE + 1 + j);
 
                 if (Game.getInstance().getCell(j, i).getState() == CellState.MARKED) {
-                    break;
+                    return;
                 }
 
                 if (j == dragged.y) {
