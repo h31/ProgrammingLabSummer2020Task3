@@ -1,12 +1,13 @@
-Foods and drinks
-meat
-juice
-cream
-chips
-cola
-sprite
-glass
-cake
-melon
-rett
-oppe
+Food and drinks
+beef
+chicken
+lamb
+pork
+sausages
+turkey
+calamari
+crab
+fish
+lobster
+octopus
+prawns

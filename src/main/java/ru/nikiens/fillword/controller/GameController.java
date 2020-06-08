@@ -1,5 +1,8 @@
 package ru.nikiens.fillword.controller;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.*;
 import javafx.css.PseudoClass;
@@ -9,10 +12,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import ru.nikiens.fillword.model.Cell;
 import ru.nikiens.fillword.model.CellState;
 import ru.nikiens.fillword.model.Game;
@@ -27,9 +30,6 @@ import java.util.stream.Collectors;
 public class GameController implements Initializable {
 
     @FXML
-    private AnchorPane anchorPane;
-
-    @FXML
     private Label timer;
 
     @FXML
@@ -42,7 +42,7 @@ public class GameController implements Initializable {
     private JFXListView<String> wordsList;
 
     @FXML
-    private StackPane stackPane;
+    private StackPane dialoguePane;
 
     private ObservableSet<Cell> selectedCells = FXCollections.observableSet(new LinkedHashSet<>());
     private PseudoClass selected = PseudoClass.getPseudoClass("selected");
@@ -55,7 +55,7 @@ public class GameController implements Initializable {
         GridLocation dragged = new GridLocation();
         Game.getInstance().initializeBoard();
         Game.getInstance().fillWithWords();
-        //Game.getInstance().fillWithLetters();
+        Game.getInstance().fillWithLetters();
 
         wordsList.setItems(FXCollections.observableArrayList(Game.getInstance().getWords()));
         wordsList.setMouseTransparent(true);
@@ -79,6 +79,8 @@ public class GameController implements Initializable {
                 label.pseudoClassStateChanged(selected, false);
             }
         });
+
+        dialoguePane.setVisible(false);
     }
 
     private ListCell<String> createWordCell() {
@@ -169,7 +171,20 @@ public class GameController implements Initializable {
     }
 
     private void finishGame() {
+        dialoguePane.setVisible(true);
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("You won!"));
+        content.setBody(new Text("You have successfully completed the level!"));
 
+        JFXButton button = new JFXButton("OK");
+        JFXDialog dialogue = new JFXDialog(dialoguePane, content, JFXDialog.DialogTransition.CENTER);
+
+        button.setOnAction(event -> dialogue.close());
+        button.setButtonType(JFXButton.ButtonType.RAISED);
+
+        content.setActions(button);
+
+        dialogue.show();
     }
 
     private static class GridLocation {

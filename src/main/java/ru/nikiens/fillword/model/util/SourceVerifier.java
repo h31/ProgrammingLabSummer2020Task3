@@ -45,26 +45,18 @@ public class SourceVerifier {
                 }
 
                 if (!matcher.matches() || line.length() > boardSize.value()) {
-                    throw new IllegalSourceFormatException("Неверный формат слова: " + line);
+                    throw new IllegalSourceFormatException("Incorrect word format" + line);
                 }
                 ++count;
             }
         }
 
         if (!duplicates.isEmpty()) {
-            throw new IllegalSourceFormatException("Повторяющиеся слова недопустимы");
+            throw new IllegalSourceFormatException("Repeated words are not allowed");
         }
 
         if (count < boardSize.value() / 2) {
-            throw new IllegalSourceFormatException("Слишком мало слов");
+            throw new IllegalSourceFormatException("Too few letters");
         }
-    }
-
-    public Path getSource() {
-        return source;
-    }
-
-    public void setSource(Path source) {
-        this.source = source;
     }
 }

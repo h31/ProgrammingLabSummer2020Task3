@@ -73,7 +73,7 @@ public class LevelsController implements Initializable {
         try {
             new SourceVerifier(source).verify(Game.getInstance().getBoardSize());
             Game.getInstance().setSource(source);
-            Game.getInstance().initCategory();
+            Game.getInstance().initializeCategory();
 
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/game.fxml"));
 

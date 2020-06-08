@@ -47,10 +47,6 @@ public class Game {
         return words;
     }
 
-    public void setWords(Set<String> words) {
-        this.words = words;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -63,14 +59,14 @@ public class Game {
         return board[x][y];
     }
 
-    public void initCategory() throws IOException {
+    public void initializeCategory() throws IOException {
         String category = Files.newBufferedReader(getSource()).readLine();
         RandomizedReader rr = new RandomizedReader(getSource());
 
         while (words.size() < boardSize.value() / 2) {
             String line = rr.readLine();
             if (line != null && !line.equals(category)) {
-                words.add(line);
+                words.add(line.toUpperCase());
             }
         }
         setCategory(category);
@@ -87,7 +83,11 @@ public class Game {
 
     public void fillWithLetters() {
         Random random = new Random();
-        char[] alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".toCharArray();
+
+        char[] alphabet = new char[26];
+        for (char c = 'A'; c <= 'Z'; c++) {
+            alphabet[c - 'A'] = c;
+        }
 
         for (int i = 0; i < getBoardSize().value(); i++) {
             for (int j = 0; j < getBoardSize().value(); j++) {

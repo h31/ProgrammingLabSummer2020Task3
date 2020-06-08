@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXListView?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="633.0" prefWidth="880.0" styleClass="root" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nikiens.fillword.controller.GameController">
+<AnchorPane prefHeight="633.0" prefWidth="880.0" styleClass="root" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nikiens.fillword.controller.GameController">
    <Region prefHeight="51.0" prefWidth="809.0" styleClass="game" stylesheets="@../css/style.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    <Label fx:id="timer" layoutX="568.0" layoutY="-9.0" prefHeight="64.0" prefWidth="105.0" text="Label" textFill="#eee3e3" AnchorPane.rightAnchor="14.0">
       <font>
@@ -23,4 +21,5 @@
       </font>
    </Label>
    <JFXListView fx:id="wordsList" focusTraversable="false" layoutX="14.0" layoutY="86.0" prefHeight="517.0" prefWidth="272.0" style="-fx-font-size: 16; -fx-background-color: transparent;" styleClass="game" stylesheets="@../css/style.css" />
+   <StackPane fx:id="dialoguePane" prefHeight="633.0" prefWidth="880.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>
