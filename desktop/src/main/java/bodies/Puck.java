@@ -1,18 +1,20 @@
-package com.mygdx.game.desktop;
+package main.java.bodies;
 
-import com.badlogic.gdx.Gdx;
+
+import main.java.resources.Load;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import main.java.screens.GameScreen;
+
 
 public class Puck extends Actor {
     World world;
-    Body body;
+    public Body body;
     Sprite sprite;
-    Texture texture;
     float max = 1f;
     float min = -1f;
     Vector2 vec;
@@ -33,12 +35,11 @@ public class Puck extends Actor {
         shape.setRadius(0.07f);
         fDef.shape = shape;
         fDef.density = 0.2f;
-        fDef.restitution = 0.5f;
+        fDef.restitution = 1f;
         fDef.friction = 0.4f;
         body.createFixture(fDef);
-        texture = new Texture(Gdx.files.internal("puck.png"));
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        sprite = new Sprite(texture);
+        Load.puckg.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        sprite = new Sprite(Load.puckg);
         sprite.setBounds(-0.07f, -0.07f, 0.14f, 0.14f);
         veccopy = new Vector2(10,10);
     }

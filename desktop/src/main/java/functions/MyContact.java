@@ -1,10 +1,9 @@
-package com.mygdx.game.desktop;
+package main.java.functions;
 
+import main.java.resources.Load;
 import com.badlogic.gdx.physics.box2d.*;
+import main.java.stages.StageMenu;
 
-import static com.mygdx.game.desktop.GameScreen.hip;
-import static com.mygdx.game.desktop.GameScreen.hit;
-import static com.mygdx.game.desktop.MainMenuScreen.click;
 
 public class MyContact implements ContactListener {
     @Override
@@ -16,11 +15,11 @@ public class MyContact implements ContactListener {
                     || fixB.getUserData().equals("puck") && fixA.getUserData().equals("player")
                     || fixA.getUserData().equals("puck") && fixB.getUserData().equals("bot")
                     || fixB.getUserData().equals("puck") && fixA.getUserData().equals("bot")) {
-                if (MainMenuScreen.s) hit.play();
+                if (StageMenu.s) Load.hit.play();
             }
             if (fixA.getUserData().equals("puck") && fixB.getUserData().equals("wall")
                     || fixB.getUserData().equals("puck") && fixA.getUserData().equals("wall")) {
-                if (MainMenuScreen.s) hip.play();
+                if (StageMenu.s) Load.hip.play();
             }
         }
 
