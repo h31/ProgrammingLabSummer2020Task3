@@ -13,17 +13,6 @@ import javafx.stage.StageStyle;
 
 
 public class Controller {
-    @FXML
-    private Button newGame;
-
-    @FXML
-    void newGame() {
-        try {
-            restart(newGame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private Button tryAgain;
@@ -70,7 +59,7 @@ public class Controller {
         boolean lose = true;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (FieldDrawer.a[i][j] == 0 || FieldDrawer.possible()) lose = false;
+                if (FieldDrawer.a[i][j] == 0 || FieldDrawer.possible(FieldDrawer.a)) lose = false;
             }
         }
         if (lose) {

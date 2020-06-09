@@ -13,7 +13,7 @@ public class FieldDrawer {
     public static int score = 0;
 
     public static void shift(String direction) {
-        int rotates = 4;
+        int rotates = 0;
         switch (direction) {
             case "RIGHT" : break;
             case "DOWN": a = rotate(a); rotates = 3;
@@ -137,7 +137,7 @@ public class FieldDrawer {
         l.setFont(Font.font("Arial Rounded MT Bold", fs));
     }
 
-    public static boolean possible () {
+    public static boolean possible (int[][] a) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
                 if (a[i][j] == a[i][j + 1] || a[i][j] == 0 || a[j][i] == a[j + 1][i]) return true;
