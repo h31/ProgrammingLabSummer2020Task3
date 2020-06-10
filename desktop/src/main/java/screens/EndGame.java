@@ -3,16 +3,14 @@ package main.java.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import main.java.start.Aero;
 import main.java.functions.Score;
+import main.java.start.Aero;
 
 public class EndGame implements Screen {
     final Aero game;
     SpriteBatch batch;
-    OrthographicCamera camera;
     Texture end;
 
 
@@ -25,7 +23,6 @@ public class EndGame implements Screen {
         Score.b=0;
         Score.c=0;
         end = new Texture(Gdx.files.internal(a));
-        camera = new OrthographicCamera();
     }
 
     @Override
@@ -42,13 +39,9 @@ public class EndGame implements Screen {
             game.setScreen(new MainMenuScreen(game));
             dispose();
         }
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
-        game.batch.begin();
         batch.begin();
         batch.draw(end, 0, 0);
         batch.end();
-        game.batch.end();
     }
 
     @Override
