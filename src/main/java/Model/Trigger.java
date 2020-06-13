@@ -1,6 +1,5 @@
 package Model;
 
-import javafx.animation.FadeTransition;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
@@ -11,6 +10,7 @@ public class Trigger {
     private final Effect EFFECT;
     private final COLLISION_TYPE TYPE;
     private final Pair<ImageView, Rectangle> interactedObject;
+    private boolean used;
 
 
     Trigger(String name, Rectangle rect, Effect effect, COLLISION_TYPE type, ImageView interactedObject) {
@@ -21,12 +21,21 @@ public class Trigger {
         this.interactedObject = new Pair<>(interactedObject, SpriteData.spriteToCollision(interactedObject));
     }
 
+    Trigger(Trigger trigger) {
+        this.NAME = trigger.getNAME();
+        this.RECT = trigger.getRECT();
+        this.EFFECT = trigger.getEFFECT();
+        this.TYPE = trigger.getTYPE();
+        this.interactedObject = trigger.getInteractedObject();
+        this.used = false;
+    }
+
     Trigger(String name, Rectangle rect, Effect effect, COLLISION_TYPE type) {
         this.NAME = name;
         this.RECT = rect;
         this.EFFECT = effect;
         this.TYPE = type;
-        this.interactedObject = new Pair<>(null, null);
+        this.interactedObject = new Pair<>(new ImageView(), null);
     }
 
     public void setObjectPosition(int x, int y) {
@@ -62,6 +71,13 @@ public class Trigger {
 
     private ImageView getIntObjectImg() {
         return getInteractedObject().getKey();
+    }
+
+    public void setUsed(boolean state) {
+        used = state;
+    }
+    public boolean getUsed() {
+        return used;
     }
 }
 

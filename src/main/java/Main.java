@@ -1,4 +1,5 @@
 import Model.FirstLevel;
+import Model.Level;
 import Model.Player;
 import Model.SecondLevel;
 import View.View;
@@ -16,7 +17,7 @@ public class Main extends Application {
         stage.setTitle("Game");
         stage.setResizable(false);
         View view = new View(stage, debugMode);
-        SecondLevel level = new SecondLevel();
+        Level level = new SecondLevel();
         Player player = new Player(view, level);
         view.setLEVEL(level);
         view.setPlayer(player);

@@ -136,7 +136,6 @@ public class Player extends Animated {
     public boolean isWallCollision() {
         for (Rectangle colShape : level.getCOLLISION()) {
             if (getCOLLISION().intersects(colShape.getBoundsInLocal())) {
-                System.out.println("Collision");
                 return true;
             }
         }
@@ -146,7 +145,6 @@ public class Player extends Animated {
     public boolean isObjectCollision() {
         for (LevelObject object : level.getOBJECTS()) {
             if (getCOLLISION().intersects(object.getCurrentCollision().getBoundsInLocal())) {
-                System.out.println("YEAH");
                 return true;
             }
         }
@@ -154,21 +152,19 @@ public class Player extends Animated {
     }
 
     public boolean isTriggerCollision() {
-        for (Iterator<Trigger> iterator = level.getTRIGGERS().iterator(); iterator.hasNext();) {
+        for (Trigger value : level.getTRIGGERS()) {
             if (this.isFreezed()) return false;
-            Trigger trigger = iterator.next();
+            Trigger trigger = value;
             Rectangle rect = trigger.getRECT();
             if (getCOLLISION().intersects(rect.getBoundsInLocal())) {
-                if (trigger != level.getTRIGGERS().element()) return false; // делаем игру линейной (триггеры идут поочереди)
+                if (trigger.getUsed()) return false;
                 if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
                     changingLocation();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
                     level.interact(trigger);
                     setFreezed(true);
-                    iterator.remove();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.COLIDED) {
                     level.interact(trigger);
-                    iterator.remove();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.DEATH) {
                     System.out.println("You are dead");
                     die();
@@ -191,9 +187,9 @@ public class Player extends Animated {
     private void onChangeLocationFinish(FadeTransition fadeTransition) {
         fadeTransition.setOnFinished(actionEvent -> {
             if (level.getLocation().equals("First")) {
-                level = new SecondLevel();
+                level.reload();
             } else if (level.getLocation().equals("Second")) {
-                level = new FirstLevel();
+                level.reload();
             } else {
                 throw new IllegalArgumentException("Error");
             }
@@ -203,13 +199,12 @@ public class Player extends Animated {
             VIEW.showScene();
             this.setFreezed(false);
             this.getImgView().setOpacity(1);
-            System.out.println("Trigger");
         });
     }
 
     public void die() {
         this.setFreezed(true);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000), this.getImgView());
+        FadeTransition ft = new FadeTransition(Duration.millis(100), this.getImgView());
         ft.setFromValue(1.0);
         ft.setToValue(0);
         ft.setCycleCount(1);
@@ -220,9 +215,9 @@ public class Player extends Animated {
     private void onDieFinish(FadeTransition fadeTransition) {
         fadeTransition.setOnFinished(actionEvent -> {
             if (level.getLocation().equals("First")) {
-                level = new FirstLevel();
+                level.reload();
             } else if (level.getLocation().equals("Second")) {
-                level = new SecondLevel();
+                level.reload();
             } else {
                 throw new IllegalArgumentException("Error");
             }

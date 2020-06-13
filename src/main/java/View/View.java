@@ -87,6 +87,7 @@ public class View {
                 general.getChildren().add(interactedObject.getValue()); // Коллизия
                 checkDebugMode(interactedObject.getValue(), DEBUG_MODE);
                 general.getChildren().add(interactedObject.getKey());
+                interactedObject.getKey().setOpacity(1); // Видимость пропадет, если игрок умрет
             }
             general.getChildren().add(rect);
             checkDebugMode(rect, DEBUG_MODE);
@@ -112,7 +113,6 @@ public class View {
     }
 
     public static void showEffect(Effect effect) {
-        System.out.println("Now in View");
         effect.runAnimation();
     }
 

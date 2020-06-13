@@ -1,6 +1,8 @@
 package Model;
 
 import javafx.animation.Animation;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -23,6 +25,7 @@ public class Effect extends Animated {
         super.setImgView(effect[0]);
         setPosition(x, y);
         COLLISION = SpriteData.spriteToCollision(super.getImgView());
+        moveCollision();
     }
 
     Effect() {
@@ -60,6 +63,13 @@ public class Effect extends Animated {
         );
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
+    }
+
+    private void moveCollision() {
+        DoubleProperty xValue = new SimpleDoubleProperty();
+        xValue.bind(getImgView().translateXProperty());
+        final double defaultX = getCOLLISION().getX();
+        xValue.addListener((ov, t, t1) -> getCOLLISION().setX(defaultX + (double) t1));
     }
 
     public ImageView getImgView() {
