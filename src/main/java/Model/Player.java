@@ -152,9 +152,8 @@ public class Player extends Animated {
     }
 
     public boolean isTriggerCollision() {
-        for (Trigger value : level.getTRIGGERS()) {
+        for (Trigger trigger : level.getTRIGGERS()) {
             if (this.isFreezed()) return false;
-            Trigger trigger = value;
             Rectangle rect = trigger.getRECT();
             if (getCOLLISION().intersects(rect.getBoundsInLocal())) {
                 if (trigger.getUsed()) return false;

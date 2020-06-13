@@ -73,6 +73,15 @@ public final class LEVEL_CONTANTS {
     ));
 
     static {
+        SECOND_TRIGGERS.add(new Trigger(
+                "DEATH",
+                SECOND_TRIGGERS.get(1).getEFFECT().getCOLLISION(),
+                new Effect(),
+                COLLISION_TYPE.DEATH
+        ));
+    }
+
+    static {
         SECOND_TRIGGERS.get(0).setObjectPosition(479, 530);
     }
 

@@ -54,12 +54,12 @@ public class SecondLevel extends Level {
         if (trigger.getUsed()) return;
         trigger.setUsed(true);
         Effect effect = trigger.getEFFECT();
-        super.getTRIGGERS().add(new Trigger(
-                "DEATH",
-                effect.getCOLLISION(),
-                new Effect(),
-                COLLISION_TYPE.DEATH
-        ));
+//        super.getTRIGGERS().add(new Trigger(
+//                "DEATH",
+//                effect.getCOLLISION(),
+//                new Effect(),
+//                COLLISION_TYPE.DEATH
+//        ));
         View.showEffect(effect);
         Path path = new Path();
         path.getElements().add(new MoveTo(950, 640));
