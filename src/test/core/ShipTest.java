@@ -5,42 +5,38 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShipTest {
-    private Board board = new Board();
-    private Ship ship1 = new Ship(4, true, board);
-    private Ship ship2 = new Ship(3, false, board);
+    Board board = new Board();
+    Ship ship= new Ship(3,true,board);
 
     @Test
-    void canPlaceShip() {
-        ship1.canPlaceShip(2, 2);
-        for (Cell cell : ship1.cells) {
-            cell.ship = ship1;
-        }
-        assertTrue(ship2.canPlaceShip(5, 5));
-        assertFalse(ship2.canPlaceShip(2, 2));
+    void canPlaceShip(){
+        assertFalse(ship.canPlaceShip(9,10));
+        assertTrue(ship.canPlaceShip(2,2));
     }
 
     @Test
-    void shipsNeighbours() {
-        ship2.canPlaceShip(3, 3);
-        for (Cell cell : ship2.cells) {
-            cell.ship = ship1;
-        }
-        assertEquals(12, ship2.shipsNeighbours().size());
-
+    void canPlaceShipToCell() {
+        board.boardsCells[3][3].ship = new Ship(4,true, board);
+        assertFalse(ship.canPlaceShip(3,3));
+        assertTrue(ship.canPlaceShip(5,5));
     }
 
+    @Test
+    void cellsAroundShip() {
+        ship.canPlaceShip(3, 3);
+        ship.cells.forEach(x -> board.boardsCells[x.x][x.y].wasHit = true);
+        assertEquals(12,ship.cellsAroundShip().size());
+    }
     @Test
     void injured() {
-        ship1.injured();
-        ship2.injured();
-        assertEquals(3, ship1.length);
-        assertEquals(2, ship2.length);
+        ship.injured();
+        assertEquals(2,ship.length);
     }
 
     @Test
     void isDead() {
-        Ship e = new Ship(1, true, board);
-        e.injured();
-        assertTrue(e.isDead());
+        Ship example = new Ship(1,true,board);
+        example.injured();
+        assertTrue(example.isDead());
     }
 }

@@ -1,56 +1,64 @@
 package core;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.Objects;
-
-
-public class Board extends Pane {
-    private VBox box = new VBox();
+public class Board {
+    public Cell[][] boardsCells = new Cell[10][10];
+    public int counter_ships = 10;
+    public final int[] shipLength = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
 
     public Board() {
-        for (int y = 0; y < 10; y++) {
-            HBox row = new HBox();
-            for (int x = 0; x < 10; x++) {
-                Cell cell = new Cell(x, y, this);
-                row.getChildren().add(cell);
-            }
-            box.getChildren().add(row);
-        }
-        getChildren().add(box);
-    }
-
-    public Cell getCell(int x, int y) {
-        return (Cell) ((HBox) box.getChildren().get(y)).getChildren().get(x);
-    }
-
-    public void cellSetAction(EventHandler<MouseEvent> handler) {//передаю клетке обработчика события
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                Cell cell = getCell(i, j);
-                cell.setOnMouseClicked(handler);
+                boardsCells[i][j] = new Cell(i, j);
             }
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Board board = (Board) o;
-        return Objects.equals(box, board.box);
+    public class Cell {
+        public boolean wasHit = false;
+        public Ship ship;
+        public int x;
+        public int y;
+
+        public Cell(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public List<Board.Cell> cellNeighbours() {// список соседних клеток
+            List<Board.Cell> neighboursCell = new ArrayList<Cell>() {{
+                if (isPoint(x + 1, y)) add(new Cell(x + 1, y));
+                if (isPoint(x - 1, y)) add(new Cell(x - 1, y));
+                if (isPoint(x, y + 1)) add(new Cell(x, y + 1));
+                if (isPoint(x, y - 1)) add(new Cell(x, y - 1));
+                if (isPoint(x + 1, y + 1)) add(new Cell(x + 1, y + 1));
+                if (isPoint(x - 1, y + 1)) add(new Cell(x - 1, y + 1));
+                if (isPoint(x + 1, y - 1)) add(new Cell(x + 1, y - 1));
+                if (isPoint(x - 1, y - 1)) add(new Cell(x - 1, y - 1));
+            }};
+            return neighboursCell;
+        }
+
+        public boolean hasNeighbours() {//есть ли в соседних клетках корабли
+            List<Board.Cell> neighboursCell = cellNeighbours();
+            for (Board.Cell element : neighboursCell) {
+                if (boardsCells[element.x][element.y].ship != null) return true;
+            }
+            return false;
+        }
+
+        public boolean isEmptyCell() {
+            if (!Board.isPoint(x, y)) return false;
+            Board.Cell cell = boardsCells[x][y];
+            if (cell.ship != null || cell.hasNeighbours()) return false;
+            return true;
+        }
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(box);
+    public static boolean isPoint(int x, int y) {
+        return x >= 0 && x < 10 && y >= 0 && y < 10;
     }
+
 }
-
-
-
-
