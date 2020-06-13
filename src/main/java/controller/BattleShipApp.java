@@ -4,7 +4,6 @@ import core.*;
 
 import java.io.IOException;
 import java.util.Random;
-
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;

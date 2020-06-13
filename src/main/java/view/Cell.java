@@ -2,7 +2,6 @@ package view;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
-
 import java.util.Objects;
 
 public class Cell extends Rectangle {

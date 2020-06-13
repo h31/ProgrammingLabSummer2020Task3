@@ -1,15 +1,11 @@
 package view;
 
-import controller.BattleShipApp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
