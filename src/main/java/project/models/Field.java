@@ -1,27 +1,27 @@
-package project;
-
-import javafx.scene.paint.Color;
+package project.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
+public class Field {
     private int rowNumber;
     private int tilesInRow;
     private int bombs;
-    private int bombsLeft = bombs;
-    private int flagsLeft = bombs;
+    private int bombsLeft;
+    private int flagsLeft;
     private boolean gameOver = false;
     private boolean lost = false;
 
     private Tile[][] grid;
 
-    public Board(int rows, int tiles, int bombs) {
+    public Field(int rows, int tiles, int bombs) {
         this.rowNumber = rows;
         this.tilesInRow = tiles;
         this.bombs = bombs;
+        this.bombsLeft = bombs;
+        this.flagsLeft = bombs;
 
-        this.grid = new Tile[rowNumber][tilesInRow];
+        this.grid = new Tile[tiles][rows];
 
         for (int y = 0; y < rowNumber; y++) {
             for (int x = 0; x < tilesInRow; x++) {
@@ -53,6 +53,14 @@ public class Board {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isLost() {
+        return lost;
+    }
+
+    public Tile[][] getGrid() {
+        return grid;
     }
 
     public void setRowNumber(int rowNumber) {
@@ -91,8 +99,8 @@ public class Board {
         int i = bombs;
 
         while (i > 0) {
-            int x = 0 + (int) Math.random() * tilesInRow;
-            int y = 0 + (int) Math.random() * rowNumber;
+            int x = 0 + (int) (Math.random() * tilesInRow);
+            int y = 0 + (int) (Math.random() * rowNumber);
 
             if (!grid[x][y].hasBomb()) {
                 grid[x][y].setBomb(true);
@@ -136,29 +144,32 @@ public class Board {
             if (tile.getBombsAround() == 0) {
                 getNeighbours(tile).forEach(this::openTile);
             }
-        } else {
+        }
+    }
+
+    public void markTile(Tile tile) {
+        if (isGameOver() || flagsLeft == 0)
+            return;
+
+        if (!tile.isOpened()) {
+            if (tile.isMarked()) {
+                tile.setFlag(false);
+                flagsLeft++;
+            } else {
+                tile.setFlag(true);
+                flagsLeft--;
+                if (tile.hasBomb()) {
+                    bombsLeft--;
+                }
+            }
+        }
+
+        if (tile.isOpened()) {
             List<Tile> neighbours = getNeighbours(tile);
             long marks = neighbours.stream().filter(Tile::isMarked).count();
 
             if (marks == tile.getBombsAround()) {
                 neighbours.forEach(this::openTile);
-            }
-
-        }
-    }
-
-    public void markTile(Tile tile) {
-        if (tile.isOpened() || isGameOver() || flagsLeft == 0)
-            return;
-
-        if (tile.isMarked()) {
-            tile.setFlag(false);
-            flagsLeft++;
-        } else {
-            tile.setFlag(true);
-            flagsLeft--;
-            if (tile.hasBomb()) {
-                bombsLeft--;
             }
         }
     }
@@ -193,7 +204,7 @@ public class Board {
                     : tile.getY() + pointsEvenRow[++i];
 
             if (x >= 0 && x < this.tilesInRow && y >= 0 && y < this.rowNumber) {
-                neighbours.add(tile);
+                neighbours.add(grid[x][y]);
             }
         }
 

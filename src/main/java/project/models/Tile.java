@@ -1,4 +1,4 @@
-package project;
+package project.models;
 
 import javafx.scene.layout.StackPane;
 
