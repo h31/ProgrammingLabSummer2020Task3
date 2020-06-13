@@ -9,8 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.util.Objects;
-
 
 public class Player extends Animated {
 
@@ -158,11 +156,17 @@ public class Player extends Animated {
             if (this.isFreezed()) return false;
             Rectangle rect = trigger.getRECT();
             if (getCOLLISION().intersects(rect.getBoundsInLocal())) {
+                if (trigger != level.getTRIGGERS().element()) return false; // делаем игру линейной (триггеры идут поочереди)
                 if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
                     changingLocation();
+                    level.getTRIGGERS().remove();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
-                    level.interact(Objects.requireNonNull(level.getTRIGGERS().element()));
+                    level.interact(trigger);
                     setFreezed(true);
+                    level.getTRIGGERS().remove();
+                } else if (trigger.getTYPE() == COLLISION_TYPE.COLIDED) {
+                    level.interact(trigger);
+                    level.getTRIGGERS().remove();
                 }
             }
         }
@@ -183,7 +187,7 @@ public class Player extends Animated {
         fadeTransition.setOnFinished(actionEvent -> {
             if (level.getLocation().equals("First")) {
                 level = new SecondLevel();
-            } else if (level.getLocation().equals("Start")) {
+            } else if (level.getLocation().equals("Second")) {
                 level = new FirstLevel();
             } else {
                 throw new IllegalArgumentException("Error");

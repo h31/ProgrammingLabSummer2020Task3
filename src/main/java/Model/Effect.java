@@ -5,13 +5,15 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public class Effect extends Animated {
+    private EFFECT_TYPE TYPE;
 
     Effect(EFFECT_TYPE type, int x, int y) {
+        this.TYPE = type;
         ImageView[] effect;
-        if (type == EFFECT_TYPE.MAGIC) {
+        if (TYPE == EFFECT_TYPE.MAGIC) {
             effect = SpriteData.getSprites("vortexmagic");
-        } else if (type == EFFECT_TYPE.EXPLOSION) {
-            effect = SpriteData.getSprites("X_plosion");
+        } else if (TYPE == EFFECT_TYPE.MAGIC_BALL) {
+            effect = SpriteData.getSprites("vortexmagic");
         } else {
             throw new IllegalArgumentException();
         }
@@ -25,8 +27,16 @@ public class Effect extends Animated {
     }
 
     public void runAnimation() {
-        System.out.println("Run Animation");
         this.getImgView().setVisible(true);
+        if (TYPE == EFFECT_TYPE.MAGIC) {
+            runMagicAnim();
+        }
+        if (TYPE == EFFECT_TYPE.MAGIC_BALL) {
+            runMagicBallAnim();
+        }
+    }
+
+    private void runMagicAnim() {
         final Animation animation = new SpriteAnimation(
                 Duration.millis(1500),
                 this
@@ -36,6 +46,15 @@ public class Effect extends Animated {
             this.getImgView().setVisible(false);
         });
         animation.setCycleCount(1);
+        animation.play();
+    }
+
+    private void runMagicBallAnim() {
+        final Animation animation = new SpriteAnimation(
+                Duration.millis(1500),
+                this
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
     }
 

@@ -30,7 +30,7 @@ public class FirstLevel extends Level {
         OBJECTS[0].setLocation(480, 520);
         OBJECTS[1].setLocation(755, 525);
         OBJECTS[2].setLocation(385, 586);
-        OBJECTS[3].setLocation(570, 520);
+        OBJECTS[3].setLocation(385, 450);
     }
 
     static final int[] pCOORD = {

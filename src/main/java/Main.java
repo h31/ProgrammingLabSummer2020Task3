@@ -1,12 +1,13 @@
 import Model.FirstLevel;
 import Model.Player;
+import Model.SecondLevel;
 import View.View;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    private static final boolean debugMode = false;
+    private static final boolean debugMode = true;
 
     @Override
     public void start(Stage stage) {
@@ -15,10 +16,10 @@ public class Main extends Application {
         stage.setTitle("Game");
         stage.setResizable(false);
         View view = new View(stage, debugMode);
-        FirstLevel level = new FirstLevel();
+        SecondLevel level = new SecondLevel();
         Player player = new Player(view, level);
-        view.setPLAYER(player);
         view.setLEVEL(level);
+        view.setPlayer(player);
         view.showScene();
     }
 

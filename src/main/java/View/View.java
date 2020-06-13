@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 public class View {
-    private final Stage STAGE;
-    private Player PLAYER;
+    private final Stage Stage;
+    private Player Player;
     private Level LEVEL;
     private Scene scene;
     private Controller controller;
@@ -21,7 +21,7 @@ public class View {
     private final double DEBUG_OPACITY = 0.25;
 
     public View(Stage stage, boolean debugMode) {
-        this.STAGE = stage;
+        this.Stage = stage;
         this.DEBUG_MODE = debugMode;
     }
 
@@ -31,8 +31,8 @@ public class View {
 
     public void showScene() {
         scene = createScene();
-        STAGE.setScene(scene);
-        STAGE.show();
+        Stage.setScene(scene);
+        Stage.show();
     }
 
     /*
@@ -49,7 +49,7 @@ public class View {
 
         Scene newScene = new Scene(general, 1024, 768);
         if (controller == null) {
-            this.controller = new Controller(newScene, PLAYER);
+            this.controller = new Controller(newScene, Player);
         } else {
             controller.changeScene(newScene);
         }
@@ -62,9 +62,9 @@ public class View {
         LEVEL.getLEVEL_IMG().setViewOrder(3);
     }
     private void loadPlayer(Group general) {
-        general.getChildren().addAll(PLAYER.getImgView(), PLAYER.getCOLLISION()); // Загрузка персонажа
-        PLAYER.getImgView().setViewOrder(1);
-        checkDebugMode(PLAYER.getCOLLISION(), DEBUG_MODE);
+        general.getChildren().addAll(Player.getImgView(), Player.getCOLLISION()); // Загрузка персонажа
+        Player.getImgView().setViewOrder(1);
+        checkDebugMode(Player.getCOLLISION(), DEBUG_MODE);
     }
 
     private void loadCollision(Group general) {
@@ -124,8 +124,8 @@ public class View {
         this.scene = scene;
     }
 
-    public void setPLAYER(Player PLAYER) {
-        this.PLAYER = PLAYER;
+    public void setPlayer(Player player) {
+        this.Player = player;
     }
 
     public void setLEVEL(Level LEVEL) {
