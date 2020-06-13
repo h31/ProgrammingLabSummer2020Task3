@@ -2,12 +2,15 @@ package Model;
 import View.View;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
+import javafx.util.Pair;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -25,11 +28,14 @@ public class SecondLevel extends Level {
                 SpriteData.getSprite("wall.png")
         ));
 
+
         add(new Trigger("MagicBall",
                 new Rectangle(100, 600, 20, 20),
-                new Effect(EFFECT_TYPE.MAGIC_BALL,30,325),
+                new Effect(EFFECT_TYPE.MAGIC_BALL,950,640),
                 COLLISION_TYPE.COLIDED
         ));
+
+
 
         add(new Trigger(
                 "Enter",
@@ -67,8 +73,8 @@ public class SecondLevel extends Level {
             new Rectangle(340, 130, 4, 280), // Стена левая в проходе
             new Rectangle(0, 130, 340, 4), // Стена нижняя последний проход
             new Rectangle(0, 5, 35, 15), // Стена верхняя (левая часть) от прохода
-            new Rectangle(35, 0, 38, 5), // Стена вехрняя над проходом
-            new Rectangle(73, 5, 460, 15), // Стена вехрняя (правая часть) от прохода
+            new Rectangle(35, 0, 38, 5), // Стена верхняя над проходом
+            new Rectangle(73, 5, 460, 15), // Стена верхняя (правая часть) от прохода
             new Rectangle(479, 530, 4, 240) // Коллизия исчезающей стены (всегда последняя)
     ));
 
@@ -107,20 +113,30 @@ public class SecondLevel extends Level {
     private void launchMagicBall() {
         Trigger trigger = TRIGGERS.element();
         Effect effect = trigger.getEFFECT();
+        TRIGGERS.add(new Trigger(
+                "DEATH",
+                effect.getCOLLISION(),
+                new Effect(),
+                COLLISION_TYPE.DEATH
+        ));
         View.showEffect(effect);
         Path path = new Path();
-        MoveTo moveTo = new MoveTo(100, 150);
-        //Creating the Cubic curve path element
-        CubicCurveTo cubicCurveTo = new CubicCurveTo(400, 40, 175, 250, 500, 150);
-        path.getElements().add(moveTo);
-        path.getElements().add(cubicCurveTo);
+        path.getElements().add(new MoveTo(950, 640));
+        path.getElements().add(new LineTo(550, 640));
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(2000));
+        pathTransition.setDuration(Duration.millis(5000));
         pathTransition.setNode(effect.getImgView());
         pathTransition.setPath(path);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setCycleCount(PathTransition.INDEFINITE);
         pathTransition.setAutoReverse(true);
+        moveCollision(effect);
         pathTransition.play();
+    }
+    private void moveCollision(Effect effect) {
+        DoubleProperty xValue = new SimpleDoubleProperty();
+        xValue.bind(effect.getImgView().translateXProperty());
+        final double defaultX = effect.getCOLLISION().getX();
+        xValue.addListener((ov, t, t1) -> effect.getCOLLISION().setX(defaultX + (double) t1));
     }
 }

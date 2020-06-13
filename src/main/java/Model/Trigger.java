@@ -68,5 +68,6 @@ public class Trigger {
 enum COLLISION_TYPE {
     ENTER,
     INTERACT,
-    COLIDED
+    COLIDED,
+    DEATH
 }

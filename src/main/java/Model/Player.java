@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.util.Iterator;
+
 
 public class Player extends Animated {
 
@@ -152,21 +154,24 @@ public class Player extends Animated {
     }
 
     public boolean isTriggerCollision() {
-        for (Trigger trigger : level.getTRIGGERS()) {
+        for (Iterator<Trigger> iterator = level.getTRIGGERS().iterator(); iterator.hasNext();) {
             if (this.isFreezed()) return false;
+            Trigger trigger = iterator.next();
             Rectangle rect = trigger.getRECT();
             if (getCOLLISION().intersects(rect.getBoundsInLocal())) {
                 if (trigger != level.getTRIGGERS().element()) return false; // делаем игру линейной (триггеры идут поочереди)
                 if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
                     changingLocation();
-                    level.getTRIGGERS().remove();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
                     level.interact(trigger);
                     setFreezed(true);
-                    level.getTRIGGERS().remove();
+                    iterator.remove();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.COLIDED) {
                     level.interact(trigger);
-                    level.getTRIGGERS().remove();
+                    iterator.remove();
+                } else if (trigger.getTYPE() == COLLISION_TYPE.DEATH) {
+                    System.out.println("You are dead");
+                    die();
                 }
             }
         }
@@ -179,11 +184,11 @@ public class Player extends Animated {
         ft.setFromValue(1.0);
         ft.setToValue(0);
         ft.setCycleCount(1);
-        onFtFinish(ft);
+        onChangeLocationFinish(ft);
         ft.play();
     }
 
-    public void onFtFinish(FadeTransition fadeTransition) {
+    private void onChangeLocationFinish(FadeTransition fadeTransition) {
         fadeTransition.setOnFinished(actionEvent -> {
             if (level.getLocation().equals("First")) {
                 level = new SecondLevel();
@@ -199,6 +204,34 @@ public class Player extends Animated {
             this.setFreezed(false);
             this.getImgView().setOpacity(1);
             System.out.println("Trigger");
+        });
+    }
+
+    public void die() {
+        this.setFreezed(true);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), this.getImgView());
+        ft.setFromValue(1.0);
+        ft.setToValue(0);
+        ft.setCycleCount(1);
+        onDieFinish(ft);
+        ft.play();
+    }
+
+    private void onDieFinish(FadeTransition fadeTransition) {
+        fadeTransition.setOnFinished(actionEvent -> {
+            if (level.getLocation().equals("First")) {
+                level = new FirstLevel();
+            } else if (level.getLocation().equals("Second")) {
+                level = new SecondLevel();
+            } else {
+                throw new IllegalArgumentException("Error");
+            }
+            int[] newCoord = level.getpCoord();
+            this.setPosition(newCoord[0], newCoord[1]);
+            VIEW.setLEVEL(level);
+            VIEW.showScene();
+            this.setFreezed(false);
+            this.getImgView().setOpacity(1);
         });
     }
 

@@ -2,10 +2,12 @@ package Model;
 
 import javafx.animation.Animation;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Effect extends Animated {
     private EFFECT_TYPE TYPE;
+    private Rectangle COLLISION;
 
     Effect(EFFECT_TYPE type, int x, int y) {
         this.TYPE = type;
@@ -13,18 +15,20 @@ public class Effect extends Animated {
         if (TYPE == EFFECT_TYPE.MAGIC) {
             effect = SpriteData.getSprites("vortexmagic");
         } else if (TYPE == EFFECT_TYPE.MAGIC_BALL) {
-            effect = SpriteData.getSprites("vortexmagic");
+            effect = SpriteData.getSprites("MagicBall");
         } else {
             throw new IllegalArgumentException();
         }
         super.setImgArray(effect);
         super.setImgView(effect[0]);
         setPosition(x, y);
+        COLLISION = SpriteData.spriteToCollision(super.getImgView());
     }
 
     Effect() {
 
     }
+
 
     public void runAnimation() {
         this.getImgView().setVisible(true);
@@ -78,6 +82,10 @@ public class Effect extends Animated {
     private void setPosition(int x, int y) {
         super.getImgView().setX(x);
         super.getImgView().setY(y);
+    }
+
+    public Rectangle getCOLLISION() {
+        return COLLISION;
     }
 }
 
