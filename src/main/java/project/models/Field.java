@@ -7,10 +7,10 @@ public class Field {
     private int rowNumber;
     private int tilesInRow;
     private int bombs;
-    private int bombsLeft;
     private int flagsLeft;
     private boolean gameOver = false;
     private boolean lost = false;
+    private boolean fieldInitialized = false;
 
     private Tile[][] grid;
 
@@ -18,7 +18,6 @@ public class Field {
         this.rowNumber = rows;
         this.tilesInRow = tiles;
         this.bombs = bombs;
-        this.bombsLeft = bombs;
         this.flagsLeft = bombs;
 
         this.grid = new Tile[tiles][rows];
@@ -43,10 +42,6 @@ public class Field {
         return bombs;
     }
 
-    public int getBombsLeft() {
-        return bombsLeft;
-    }
-
     public int getFlagsLeft() {
         return flagsLeft;
     }
@@ -59,28 +54,12 @@ public class Field {
         return lost;
     }
 
+    public boolean isFieldInitialized() {
+        return fieldInitialized;
+    }
+
     public Tile[][] getGrid() {
         return grid;
-    }
-
-    public void setRowNumber(int rowNumber) {
-        this.rowNumber = rowNumber;
-    }
-
-    public void setTilesInRow(int tilesInRow) {
-        this.tilesInRow = tilesInRow;
-    }
-
-    public void setBombs(int bombs) {
-        this.bombs = bombs;
-    }
-
-    public void setBombsLeft(int left) {
-        this.bombsLeft = left;
-    }
-
-    public void setFlagsLeft(int flags) {
-        this.flagsLeft = flags;
     }
 
     public void setGameOver(boolean gameOver) {
@@ -92,17 +71,24 @@ public class Field {
     }
 
     public boolean winCheck() {
-        return bombsLeft == 0;
+        for (Tile[] row: grid) {
+            for (Tile tile: row) {
+                if (!tile.isOpened() && !tile.hasBomb())
+                    return false;
+            }
+        }
+
+        return true;
     }
 
-    public void initialiseField() {
+    public void initialiseField(Tile tile) {
         int i = bombs;
 
         while (i > 0) {
             int x = 0 + (int) (Math.random() * tilesInRow);
             int y = 0 + (int) (Math.random() * rowNumber);
 
-            if (!grid[x][y].hasBomb()) {
+            if (!grid[x][y].hasBomb() && !(x == tile.getX() && y == tile.getY())) {
                 grid[x][y].setBomb(true);
                 i--;
             }
@@ -110,20 +96,25 @@ public class Field {
 
         for (int y = 0; y < rowNumber; y++) {
             for (int x = 0; x < tilesInRow; x++) {
-                Tile tile = grid[x][y];
+                Tile emptyTile = grid[x][y];
 
-                if (!tile.hasBomb()) {
-                    long bombs = getNeighbours(tile)
+                if (!emptyTile.hasBomb()) {
+                    long bombs = getNeighbours(emptyTile)
                             .stream()
                             .filter(Tile::hasBomb)
                             .count();
-                    tile.setBombsAround((int) bombs);
+                    emptyTile.setBombsAround((int) bombs);
                 }
             }
         }
     }
 
     public void openTile(Tile tile) {
+        if (!fieldInitialized) {
+            initialiseField(tile);
+            fieldInitialized = true;
+        }
+
         if (tile.isMarked() || isGameOver())
             return;
 
@@ -132,7 +123,6 @@ public class Field {
 
             if (winCheck()) {
                 setGameOver(true);
-                return;
             }
 
             if (tile.hasBomb()) {
@@ -148,7 +138,7 @@ public class Field {
     }
 
     public void markTile(Tile tile) {
-        if (isGameOver() || flagsLeft == 0)
+        if (isGameOver() || !fieldInitialized)
             return;
 
         if (!tile.isOpened()) {
@@ -156,15 +146,22 @@ public class Field {
                 tile.setFlag(false);
                 flagsLeft++;
             } else {
+                if (flagsLeft == 0)
+                    return;
                 tile.setFlag(true);
                 flagsLeft--;
-                if (tile.hasBomb()) {
-                    bombsLeft--;
-                }
             }
         }
+    }
+
+    public void openNearTiles(Tile tile) {
+        if (isGameOver() || !fieldInitialized)
+            return;
 
         if (tile.isOpened()) {
+            if (tile.getBombsAround() == 0)
+                return;
+
             List<Tile> neighbours = getNeighbours(tile);
             long marks = neighbours.stream().filter(Tile::isMarked).count();
 

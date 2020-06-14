@@ -1,12 +1,12 @@
 package project.models;
 
-import javafx.scene.layout.StackPane;
 
+import javafx.scene.layout.StackPane;
 
 public class Tile extends StackPane {
     private int x, y;
     private int bombsAround = 0;
-    private boolean hasBomb;
+    private boolean hasBomb = false;
     private boolean isOpened = false;
     private boolean hasFlag = false;
 
