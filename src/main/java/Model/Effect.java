@@ -25,6 +25,8 @@ public class Effect extends Animated {
         super.setImgView(effect[0]);
         setPosition(x, y);
         COLLISION = SpriteData.spriteToCollision(super.getImgView());
+        System.out.println(COLLISION.getX());
+        System.out.println(COLLISION.getY());
         moveCollision();
     }
 
@@ -67,9 +69,13 @@ public class Effect extends Animated {
 
     private void moveCollision() {
         DoubleProperty xValue = new SimpleDoubleProperty();
+        DoubleProperty yValue = new SimpleDoubleProperty();
         xValue.bind(getImgView().translateXProperty());
         final double defaultX = getCOLLISION().getX();
+        yValue.bind(getImgView().translateYProperty());
+        final double defaultY = getCOLLISION().getY();
         xValue.addListener((ov, t, t1) -> getCOLLISION().setX(defaultX + (double) t1));
+        yValue.addListener((ov, t, t1) -> getCOLLISION().setY(defaultY + (double) t1));
     }
 
     public ImageView getImgView() {

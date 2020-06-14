@@ -61,7 +61,7 @@ public final class LEVEL_CONTANTS {
             ),
             new Trigger("MagicBall",
                     new Rectangle(495, 535, 20, 230),
-                    new Effect(EFFECT_TYPE.MAGIC_BALL, 950, 640),
+                    new Effect(EFFECT_TYPE.MAGIC_BALL, 950, 630),
                     COLLISION_TYPE.COLIDED
             ),
             new Trigger(

@@ -64,6 +64,8 @@ final class SpriteData {
     static Rectangle spriteToCollision(ImageView img) {
         return new Rectangle(img.getX(), img.getY(), img.getImage().getWidth(), img.getImage().getHeight());
     }
-
+    static Rectangle spriteToCollision(ImageView img, double offsetPosX, double offsetPosY, double offsetWidth, double offsetHeight) {
+        return new Rectangle(img.getX() + offsetPosX, img.getY() + offsetPosY, img.getImage().getWidth() + offsetWidth, img.getImage().getHeight() + offsetPosY);
+    }
 }
 
