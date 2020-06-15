@@ -25,6 +25,23 @@ public class View {
         this.DEBUG_MODE = debugMode;
     }
 
+    public View(Stage stage, boolean debugMode, Level level) {
+        this.Stage = stage;
+        this.DEBUG_MODE = debugMode;
+        this.LEVEL = level;
+    }
+
+    private void runDefaultAnim() {
+        if (LEVEL.getLocation().equals("Second")) {
+            SecondLevel level = (SecondLevel) LEVEL;
+            level.launchTeslaOrb();
+            level.launchMagicBall(level.getTRIGGERS().get(1), 570, 608, 3400);
+            level.launchMagicBall(level.getTRIGGERS().get(2), 950, 670, 3400);
+            level.setdMagicBallAnim1(level.launchMagicBall(level.getTRIGGERS().get(3), 480, 270, 300));
+            level.setdMagicBallAnim2(level.launchMagicBall(level.getTRIGGERS().get(4), 380, 160, 300));
+        }
+    }
+
     public static void movePlayer(Player player, double posX, double posY) {
         player.setPosition(posX, posY);
     }
@@ -32,6 +49,7 @@ public class View {
     public void showScene() {
         scene = createScene();
         Stage.setScene(scene);
+        runDefaultAnim();
         Stage.show();
     }
 
@@ -82,6 +100,7 @@ public class View {
             if (effect != null) {
                 general.getChildren().add(effect);
                 effect.setVisible(false);
+                effect.setViewOrder(2);
             }
             if (interactedObject.getValue() != null && interactedObject.getKey() != null) {
                 general.getChildren().add(interactedObject.getValue()); // Коллизия

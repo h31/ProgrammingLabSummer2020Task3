@@ -11,30 +11,49 @@ public class Effect extends Animated {
     private EFFECT_TYPE TYPE;
     private Rectangle COLLISION;
 
+    /**
+     * Конструктор - создание нового объекта эффект
+     * @param type - тип эффекта
+     * @see COLLISION_TYPE
+     * @param x
+     * @param y - начальные координаты для эффекта
+     *
+     **/
     Effect(EFFECT_TYPE type, int x, int y) {
         this.TYPE = type;
         ImageView[] effect;
+        double offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0;
         if (TYPE == EFFECT_TYPE.MAGIC) {
             effect = SpriteData.getSprites("vortexmagic");
         } else if (TYPE == EFFECT_TYPE.MAGIC_BALL) {
             effect = SpriteData.getSprites("MagicBall");
-        } else {
+            offsetX = 7;
+            offsetY = 7;
+            offsetHeight = -15;
+            offsetWidth = -15;
+        } else if (TYPE == EFFECT_TYPE.MAGIC_ITEM) {
+            effect = SpriteData.getSprites("Tesla_Orb");
+        }
+        else {
             throw new IllegalArgumentException();
         }
         super.setImgArray(effect);
         super.setImgView(effect[0]);
         setPosition(x, y);
-        COLLISION = SpriteData.spriteToCollision(super.getImgView());
-        System.out.println(COLLISION.getX());
-        System.out.println(COLLISION.getY());
+        COLLISION = SpriteData.spriteToCollision(super.getImgView(), offsetX, offsetY, offsetWidth, offsetHeight);
         moveCollision();
     }
 
+    /**
+     * Пустой конструктор, используется при создании триггера, который не создает эффектов
+     */
     Effect() {
 
     }
 
-
+    /**
+     * Запускает анимацию в зависимости от ее типа
+     */
     public void runAnimation() {
         this.getImgView().setVisible(true);
         if (TYPE == EFFECT_TYPE.MAGIC) {
@@ -43,8 +62,22 @@ public class Effect extends Animated {
         if (TYPE == EFFECT_TYPE.MAGIC_BALL) {
             runMagicBallAnim();
         }
+        if (TYPE == EFFECT_TYPE.MAGIC_ITEM) {
+            runTeslaOrbAnim();
+        }
     }
 
+    public void stopAnimation() {
+        if (TYPE == EFFECT_TYPE.MAGIC_ITEM) {
+            LEVEL_CONTANTS.teslaOrbAnim.stop();
+            setImg(LEVEL_CONTANTS.teslaOrbBroken);
+            System.out.println(LEVEL_CONTANTS.teslaOrbAnim.getStatus());
+        }
+    }
+
+    /**
+     * Запускает спрайтовую анимацию магических частиц
+     */
     private void runMagicAnim() {
         final Animation animation = new SpriteAnimation(
                 Duration.millis(1500),
@@ -58,6 +91,9 @@ public class Effect extends Animated {
         animation.play();
     }
 
+    /**
+     * Запускает спрайтовую анимацию магического шара
+     */
     private void runMagicBallAnim() {
         final Animation animation = new SpriteAnimation(
                 Duration.millis(1500),
@@ -67,6 +103,23 @@ public class Effect extends Animated {
         animation.play();
     }
 
+    private void runTeslaOrbAnim() {
+        if (LEVEL_CONTANTS.teslaOrbAnim != null) {
+            LEVEL_CONTANTS.teslaOrbAnim.play();
+            return;
+        }
+        LEVEL_CONTANTS.teslaOrbAnim = new SpriteAnimation(
+                Duration.millis(1500),
+                this
+        );
+        LEVEL_CONTANTS.teslaOrbAnim.setCycleCount(Animation.INDEFINITE);
+        LEVEL_CONTANTS.teslaOrbAnim.play();
+    }
+
+    /**
+     * Метод запускающий слушателей, реагирующих на изменение координат ImageView.
+     * Позволяет синхронно передвигать картинку и триггер за ней
+     */
     private void moveCollision() {
         DoubleProperty xValue = new SimpleDoubleProperty();
         DoubleProperty yValue = new SimpleDoubleProperty();

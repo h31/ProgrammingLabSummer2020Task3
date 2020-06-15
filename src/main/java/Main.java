@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    private static final boolean debugMode = true;
+    private static final boolean debugMode = false;
 
     @Override
     public void start(Stage stage) {
@@ -16,10 +16,9 @@ public class Main extends Application {
         stage.setHeight(768);
         stage.setTitle("Game");
         stage.setResizable(false);
-        View view = new View(stage, debugMode);
-        Level level = new SecondLevel();
+        Level level = new FirstLevel();
+        View view = new View(stage, debugMode, level);
         Player player = new Player(view, level);
-        view.setLEVEL(level);
         view.setPlayer(player);
         view.showScene();
     }

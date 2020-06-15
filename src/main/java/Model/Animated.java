@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 abstract class Animated {
@@ -20,5 +21,8 @@ abstract class Animated {
 
     public void setImgView(ImageView imgView) {
         this.imgView = imgView;
+    }
+    public void setImg(Image img) {
+        this.imgView.setImage(img);
     }
 }

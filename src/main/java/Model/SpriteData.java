@@ -57,6 +57,7 @@ final class SpriteData {
         ImageView image;
         if (directory.isFile()) {
             image = new ImageView(new Image(directory.toURI().toString()));
+            image.setViewOrder(3);
             return image;
         } else return null;
     }
@@ -64,8 +65,8 @@ final class SpriteData {
     static Rectangle spriteToCollision(ImageView img) {
         return new Rectangle(img.getX(), img.getY(), img.getImage().getWidth(), img.getImage().getHeight());
     }
-    static Rectangle spriteToCollision(ImageView img, double offsetPosX, double offsetPosY, double offsetWidth, double offsetHeight) {
-        return new Rectangle(img.getX() + offsetPosX, img.getY() + offsetPosY, img.getImage().getWidth() + offsetWidth, img.getImage().getHeight() + offsetPosY);
+    static Rectangle spriteToCollision(ImageView img, double offsetX, double offsetY, double offsetWidth, double offsetHeight) {
+        return new Rectangle(img.getX() + offsetX, img.getY() + offsetY, img.getImage().getWidth() + offsetWidth, img.getImage().getHeight() + offsetHeight);
     }
 }
 

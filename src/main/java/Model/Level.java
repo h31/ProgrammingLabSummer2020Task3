@@ -17,7 +17,16 @@ public abstract class Level {
     private List<Trigger> TRIGGERS;
     private LevelObject[] OBJECTS;
 
-    public Level(String location, Image image, LinkedList<Rectangle> COLLISION, List<Trigger> TRIGGERS, LevelObject[] OBJECTS, int[] pCoord) {
+    /**
+     * Конструктор - абстрактного класса, позволяет содержать всю информацию об уровнях.
+     * @param location - название уровня
+     * @param image - изображение уровня
+     * @param COLLISION - массив коллизий
+     * @param TRIGGERS - массив триггеров {@link Trigger}
+     * @param OBJECTS
+     * @param pCoord
+     */
+    Level(String location, Image image, LinkedList<Rectangle> COLLISION, List<Trigger> TRIGGERS, LevelObject[] OBJECTS, int[] pCoord) {
         LEVEL_IMG.setImage(image);
         this.location = location;
         this.COLLISION = createCollisionList(COLLISION);
@@ -59,7 +68,7 @@ public abstract class Level {
         return pCoord;
     }
 
-    String getLocation() {
+    public String getLocation() {
         return location;
     }
 

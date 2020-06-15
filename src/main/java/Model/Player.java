@@ -28,7 +28,7 @@ public class Player extends Animated {
 
     private double velY = 0;
     private double velX = 0;
-    public final double SPEED = 1.2;
+    public final double SPEED = 1.25;
     static boolean freezed = false;
 
     private final View VIEW;
@@ -160,8 +160,9 @@ public class Player extends Animated {
                 if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
                     changingLocation();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
-                    level.interact(trigger);
                     setFreezed(true);
+                    level.interact(trigger);
+                    setFreezed(false);
                 } else if (trigger.getTYPE() == COLLISION_TYPE.COLIDED) {
                     level.interact(trigger);
                 } else if (trigger.getTYPE() == COLLISION_TYPE.DEATH) {
@@ -186,9 +187,9 @@ public class Player extends Animated {
     private void onChangeLocationFinish(FadeTransition fadeTransition) {
         fadeTransition.setOnFinished(actionEvent -> {
             if (level.getLocation().equals("First")) {
-                level.reload();
+                level = new SecondLevel();
             } else if (level.getLocation().equals("Second")) {
-                level.reload();
+                level = new FirstLevel();
             } else {
                 throw new IllegalArgumentException("Error");
             }

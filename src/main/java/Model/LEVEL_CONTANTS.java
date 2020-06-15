@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.animation.Animation;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
@@ -12,7 +13,6 @@ public final class LEVEL_CONTANTS {
     /*
      *  Константы для первого уровня
      */
-
     public static final Image FIRST_IMG = SpriteData.getBackgroundImg("background.png");
     public static final String FIRST_LOCATION = "First";
 
@@ -55,27 +55,68 @@ public final class LEVEL_CONTANTS {
             new Trigger(
                     "OpenWall",
                     new Rectangle(70, 345, 40, 40),
-                    new Effect(EFFECT_TYPE.MAGIC, 50, 325),
+                    new Effect(EFFECT_TYPE.MAGIC, 445, 560),
                     COLLISION_TYPE.INTERACT,
                     SpriteData.getSprite("wall.png")
             ),
-            new Trigger("MagicBall",
+            new Trigger("MagicBall_UPPER",
                     new Rectangle(495, 535, 20, 230),
-                    new Effect(EFFECT_TYPE.MAGIC_BALL, 950, 630),
+                    new Effect(EFFECT_TYPE.MAGIC_BALL, 950, 608),
+                    COLLISION_TYPE.COLIDED
+            ),
+            new Trigger("MagicBall_BOTTOM",
+                    new Rectangle(495, 535, 20, 230),
+                    new Effect(EFFECT_TYPE.MAGIC_BALL, 570, 670),
+                    COLLISION_TYPE.COLIDED
+            ),
+            new Trigger("MagicBall_NEXT_DOWN",
+                    new Rectangle(0, 0, 0, 0),
+                    new Effect(EFFECT_TYPE.MAGIC_BALL, 380, 270),
+                    COLLISION_TYPE.COLIDED
+            ),
+            new Trigger("MagicBall_NEXT_UP",
+                    new Rectangle(0, 0, 0, 0),
+                    new Effect(EFFECT_TYPE.MAGIC_BALL, 480, 160),
                     COLLISION_TYPE.COLIDED
             ),
             new Trigger(
                     "Enter",
-                    new Rectangle(35, 5, 45, 25),
+                    new Rectangle(35, 10, 45, 25),
                     new Effect(),
                     COLLISION_TYPE.ENTER
-            )
+            ),
+            new Trigger(
+                    "TeslaOrb",
+                    new Rectangle(965, 302, 20,35),
+                    new Effect(EFFECT_TYPE.MAGIC_ITEM, 950,290),
+                    COLLISION_TYPE.INTERACT
+                    )
     ));
-
+    /*
+        Зависимые триггеры смерти
+     */
     static {
         SECOND_TRIGGERS.add(new Trigger(
                 "DEATH",
                 SECOND_TRIGGERS.get(1).getEFFECT().getCOLLISION(),
+                new Effect(),
+                COLLISION_TYPE.DEATH
+        ));
+        SECOND_TRIGGERS.add(new Trigger(
+                "DEATH",
+                SECOND_TRIGGERS.get(2).getEFFECT().getCOLLISION(),
+                new Effect(),
+                COLLISION_TYPE.DEATH
+        ));
+        SECOND_TRIGGERS.add(new Trigger(
+                "DEATH",
+                SECOND_TRIGGERS.get(3).getEFFECT().getCOLLISION(),
+                new Effect(),
+                COLLISION_TYPE.DEATH
+        ));
+        SECOND_TRIGGERS.add(new Trigger(
+                "DEATH",
+                SECOND_TRIGGERS.get(4).getEFFECT().getCOLLISION(),
                 new Effect(),
                 COLLISION_TYPE.DEATH
         ));
@@ -118,4 +159,7 @@ public final class LEVEL_CONTANTS {
             100,
             650
     };
+
+    public static final Image teslaOrbBroken = SpriteData.getSprite("TeslaOrbBroken.png").getImage();
+    public static Animation teslaOrbAnim;
 }
