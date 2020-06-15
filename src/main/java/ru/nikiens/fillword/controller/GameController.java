@@ -4,23 +4,28 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
+
 import javafx.collections.*;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
-
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import ru.nikiens.fillword.model.CellState;
 import ru.nikiens.fillword.model.Game;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,7 +48,6 @@ public class GameController implements Initializable {
     private PseudoClass marked = PseudoClass.getPseudoClass("marked");
 
     private ObservableSet<Label> selectedCells = FXCollections.observableSet(new LinkedHashSet<>());
-    private Set<String> words = Game.getInstance().getWords();
 
     private final int BOARD_SIZE = Game.getInstance().getBoardSize().value();
 
@@ -148,8 +152,8 @@ public class GameController implements Initializable {
     private void processSelection() {
         String word = selectedCells.stream().map(Labeled::getText).collect(Collectors.joining());
 
-        if (words.contains(word)) {
-            words.remove(word);
+        if (Game.getInstance().getWords().contains(word)) {
+            Game.getInstance().getWords().remove(word);
             wordsList.lookup("#wordCell-" + word).pseudoClassStateChanged(selected, true);
 
             selectedCells.forEach(it -> {
@@ -163,7 +167,7 @@ public class GameController implements Initializable {
 
         selectedCells.clear();
 
-        if (words.isEmpty()) {
+        if (Game.getInstance().getWords().isEmpty()) {
             finishGame();
         }
     }
@@ -175,16 +179,39 @@ public class GameController implements Initializable {
         content.setHeading(new Text("You won!"));
         content.setBody(new Text("You have successfully completed the level!"));
 
-        JFXButton button = new JFXButton("OK");
+        JFXButton button = new JFXButton("Return to menu");
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
 
-        button.setOnAction(event -> dialog.close());
+        button.setOnAction(event -> {
+            try {
+                returnToMenu();
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                alert.setTitle("Cannot return to main menu");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage());
+                alert.show();
+            }
+        });
         button.setButtonType(JFXButton.ButtonType.RAISED);
 
         content.setActions(button);
 
         dialog.setId("endingDialog");
         dialog.show();
+    }
+
+    private void returnToMenu() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/menu.fxml"));
+
+        Stage stage = new Stage();
+        stage.setTitle("Fillword");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
+
+        stackPane.getScene().getWindow().hide();
     }
 
     private static class GridLocation {

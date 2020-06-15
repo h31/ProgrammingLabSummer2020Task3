@@ -6,7 +6,6 @@ matrix:
   include:
     - os: linux
       dist: xenial
-      dk: openjdk11
       services:
         - xvfb
 

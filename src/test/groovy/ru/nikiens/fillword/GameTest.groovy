@@ -4,7 +4,6 @@ import javafx.css.PseudoClass
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
-
 import javafx.stage.Stage
 
 import org.testfx.framework.spock.ApplicationSpec
@@ -66,6 +65,7 @@ class GameTest extends ApplicationSpec {
             drag(cell).dropBy(50.0, 1.0)
         then:
             wordCell.getPseudoClassStates().contains(PseudoClass.getPseudoClass("selected"))
+
     }
 
     def 'Ending dialog spawns after finishing the game'() {
