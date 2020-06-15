@@ -1,15 +1,15 @@
 language: java
 install: true
 
-os: linux
-dist: xenial
-jdk: openjdk11
-
-services:
-  - xvfb
-
-env:
-  - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
+matrix:
+  include:
+    - os: linux
+    - dist: xenial
+    - dk: openjdk11
+    - services:
+      - xvfb
+    -env:
+      - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
 
 script:
   - ./gradlew build
