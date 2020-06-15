@@ -14,7 +14,9 @@ class SourceVerifierTest extends Specification {
     static def BOARD_SIZE = BoardSize.SMALL
 
     def cleanupSpec() {
-        Files.list(SOURCES_DIR).forEach({ it -> Files.delete(it) })
+        Files.list(SOURCES_DIR)
+                .filter {it != SOURCES_DIR.resolve("testing.txt")}
+                .forEach { Files.delete(it) }
     }
 
     def 'Throws exception when a source contains repeated words'() {
