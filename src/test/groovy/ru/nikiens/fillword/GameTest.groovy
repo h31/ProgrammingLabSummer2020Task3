@@ -58,7 +58,7 @@ class GameTest extends ApplicationSpec {
             Game.getInstance().getCell(0,0).getState() == CellState.MARKED
     }
 
-    def 'Cell with a found word changes its color'() {
+    def 'ListCell with a found word changes its color'() {
         given:
             def cell = lookup('A').query()
             def wordCell = lookup('#wordCell-A').query()
