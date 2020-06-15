@@ -32,7 +32,8 @@ public class LevelsController implements Initializable {
     private JFXComboBox<BoardSize> sizeChooser;
 
     public void initialize(URL location, ResourceBundle resources) {
-        sizeChooser.setItems(FXCollections.observableArrayList(BoardSize.values()));
+        sizeChooser.setItems(FXCollections.observableArrayList(BoardSize.values())
+                .filtered(it -> it != BoardSize.TESTING));
         sizeChooser.setCellFactory(sc -> createSizeCell());
         sizeChooser.setButtonCell(createSizeCell());
 

@@ -212,6 +212,41 @@ public class GameController implements Initializable {
         stage.show();
 
         stackPane.getScene().getWindow().hide();
+        Game.getInstance().getWords().clear();
+    }
+
+    @FXML
+    void onMenuButton() {
+        stackPane.setVisible(true);
+
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("Are you sure?"));
+        content.setBody(new Text("Do you really want to quit?"));
+
+        JFXButton yesButton = new JFXButton("Yes");
+        JFXButton noButton = new JFXButton("No");
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+
+        yesButton.setOnAction(event -> {
+            try {
+                returnToMenu();
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                alert.setTitle("Cannot return to main menu");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage());
+                alert.show();
+            }
+        });
+
+        noButton.setOnAction(event -> dialog.close());
+
+        content.setActions(yesButton, noButton);
+
+        dialog.setId("confirmationDialog");
+        dialog.setOnDialogClosed(event -> stackPane.setVisible(false));
+        dialog.show();
     }
 
     private static class GridLocation {
