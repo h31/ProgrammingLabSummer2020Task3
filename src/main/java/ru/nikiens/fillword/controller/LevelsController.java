@@ -45,7 +45,7 @@ public class LevelsController implements Initializable {
             protected void updateItem(BoardSize item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (item != null) {
+                if (item != null && item != BoardSize.TESTING) {
                     String num = Integer.toString(item.value());
                     setText(num + "x" + num);
                 } else {

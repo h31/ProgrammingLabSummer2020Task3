@@ -9,6 +9,7 @@ import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListCell;
@@ -21,10 +22,7 @@ import ru.nikiens.fillword.model.CellState;
 import ru.nikiens.fillword.model.Game;
 
 import java.net.URL;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameController implements Initializable {
@@ -85,10 +83,7 @@ public class GameController implements Initializable {
 
                 if (item != null) {
                     setText(item);
-
-                    if (!words.contains(item)) {
-                        pseudoClassStateChanged(selected, true);
-                    }
+                    setId("wordCell-" + item);
                 } else {
                     setText(null);
                 }
@@ -155,7 +150,7 @@ public class GameController implements Initializable {
 
         if (words.contains(word)) {
             words.remove(word);
-            wordsList.refresh();
+            wordsList.lookup("#wordCell-" + word).pseudoClassStateChanged(selected, true);
 
             selectedCells.forEach(it -> {
                 int x = GridPane.getRowIndex(it);
@@ -188,6 +183,7 @@ public class GameController implements Initializable {
 
         content.setActions(button);
 
+        dialog.setId("endingDialog");
         dialog.show();
     }
 

@@ -63,7 +63,7 @@ public class Game {
         String category = Files.newBufferedReader(getSource()).readLine();
         RandomizedReader rr = new RandomizedReader(getSource());
 
-        while (words.size() < boardSize.value() / 2) {
+        while (words.size() <= boardSize.value() / 2) {
             String line = rr.readLine();
             if (line != null && !line.equals(category)) {
                 words.add(line.toUpperCase());

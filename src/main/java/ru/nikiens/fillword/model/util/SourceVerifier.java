@@ -19,8 +19,7 @@ public class SourceVerifier {
     }
 
     public void verify(BoardSize boardSize) throws IllegalSourceFormatException, IOException {
-        Map<Integer, Integer> hashes = new HashMap<> ();
-        Map<Integer, Integer> duplicates = new HashMap<>();
+        Map<Integer, Integer> hashes = new HashMap<>();
 
         Pattern pattern = Pattern.compile("(?i:[a-z]+)");
         Matcher matcher;
@@ -39,24 +38,20 @@ public class SourceVerifier {
                 prevHash = hashes.get(hash);
 
                 if (prevHash != null) {
-                    duplicates.put(count, prevHash);
+                    throw new IllegalSourceFormatException("Repeated words are not allowed");
                 } else {
                     hashes.put(hash, count);
                 }
 
                 if (!matcher.matches() || line.length() > boardSize.value()) {
-                    throw new IllegalSourceFormatException("Incorrect word format" + line);
+                    throw new IllegalSourceFormatException("Incorrect word format:" + line);
                 }
                 ++count;
             }
         }
 
-        if (!duplicates.isEmpty()) {
-            throw new IllegalSourceFormatException("Repeated words are not allowed");
-        }
-
         if (count < boardSize.value() / 2) {
-            throw new IllegalSourceFormatException("Too few letters");
+            throw new IllegalSourceFormatException("Too few words");
         }
     }
 }

@@ -3,7 +3,9 @@ package ru.nikiens.fillword.model;
 public enum BoardSize {
     SMALL(12),
     MEDIUM(16),
-    LARGE(20);
+    LARGE(20),
+
+    TESTING(1);
 
     private int size;
 
