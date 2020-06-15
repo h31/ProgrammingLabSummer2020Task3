@@ -1,6 +1,6 @@
 package ru.nikiens.fillword.model.util;
 
-public class IllegalSourceFormatException extends Exception {
+public class IllegalSourceFormatException extends RuntimeException {
     public IllegalSourceFormatException() {
         super();
     }

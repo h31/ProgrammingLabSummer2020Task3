@@ -12,7 +12,8 @@ import org.testfx.api.FxAssert
 import org.testfx.api.FxToolkit
 
 import ru.nikiens.fillword.model.BoardSize
-import ru.nikiens.fillword.model.CellState
+import ru.nikiens.fillword.model.Cell
+
 import ru.nikiens.fillword.model.Game
 
 import java.nio.file.Paths
@@ -49,12 +50,12 @@ class GameTest extends ApplicationSpec {
             drag(cell).moveTo(0.0,0.0)
         then:
             cell.getPseudoClassStates().contains(PseudoClass.getPseudoClass("selected"))
-            Game.getInstance().getCell(0,0).getState() == CellState.UNMARKED
+            Game.getInstance().getCell(0,0).getState() == Cell.State.UNMARKED
         when: 'drop'
             drag(cell).dropTo(cell)
         then:
             cell.getPseudoClassStates().contains(PseudoClass.getPseudoClass("marked"))
-            Game.getInstance().getCell(0,0).getState() == CellState.MARKED
+            Game.getInstance().getCell(0,0).getState() == Cell.State.MARKED
     }
 
     def 'ListCell with a found word changes its color'() {

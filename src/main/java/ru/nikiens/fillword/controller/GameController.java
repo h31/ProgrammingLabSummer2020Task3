@@ -22,7 +22,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import ru.nikiens.fillword.model.CellState;
+import ru.nikiens.fillword.model.Cell;
 import ru.nikiens.fillword.model.Game;
 
 import java.io.IOException;
@@ -126,7 +126,7 @@ public class GameController implements Initializable {
             for (int i = dragged.x; i <= x; i++) {
                 Label label = (Label) table.getChildren().get(i * BOARD_SIZE + 1 + j);
 
-                if (Game.getInstance().getCell(j, i).getState() == CellState.MARKED) {
+                if (Game.getInstance().getCell(j, i).getState() == Cell.State.MARKED) {
                     return;
                 }
 
@@ -160,7 +160,7 @@ public class GameController implements Initializable {
                 int x = GridPane.getRowIndex(it);
                 int y = GridPane.getColumnIndex(it);
 
-                Game.getInstance().getCell(x, y).setState(CellState.MARKED);
+                Game.getInstance().getCell(x, y).setState(Cell.State.MARKED);
                 it.pseudoClassStateChanged(marked, true);
             });
         }

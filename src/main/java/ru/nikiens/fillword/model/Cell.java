@@ -3,18 +3,23 @@ package ru.nikiens.fillword.model;
 import java.util.Objects;
 
 public class Cell {
-    private CellState state;
+    public enum State {
+        MARKED,
+        UNMARKED
+    }
+
+    private State state;
     private char letter;
 
     public Cell() {
-        this.state = CellState.UNMARKED;
+        this.state = State.UNMARKED;
     }
 
-    public CellState getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(CellState state) {
+    public void setState(State state) {
         this.state = state;
     }
 

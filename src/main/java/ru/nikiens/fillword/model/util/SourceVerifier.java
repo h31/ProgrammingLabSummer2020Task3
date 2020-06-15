@@ -18,7 +18,7 @@ public class SourceVerifier {
         this.source = source;
     }
 
-    public void verify(BoardSize boardSize) throws IllegalSourceFormatException, IOException {
+    public void verify(BoardSize boardSize) throws IOException {
         Map<Integer, Integer> hashes = new HashMap<>();
 
         Pattern pattern = Pattern.compile("(?i:[a-z]+)");
