@@ -1,5 +1,10 @@
 package project.views;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -11,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import project.controllers.Controller;
 import project.models.Field;
 import project.models.Tile;
@@ -21,18 +27,20 @@ public class View {
     private Field field;
     private Controller controller;
     private AnchorPane root;
+    private Label flagsLeft;
+    private Timeline timeline;
+    private StackPane face;
 
-    private final double r = 20;
+    private final double r = 18;
     private final double n = r * Math.sqrt(0.75);
     private final double tileHeight = 2 * r;
     private final double tileWidth = 2 * n;
-    private int windowHeight;
-    private int windowWidth;
 
     private final int xStartOffset = 40;
     private final int yStartOffset = 60;
 
-    private boolean difficultySet = false;
+    private boolean difficultySet;
+    private boolean timeStarted;
 
     private int rows, tiles, bombs;
 
@@ -45,31 +53,78 @@ public class View {
         difficultySet = true;
     }
 
+    public boolean isDifficultySet() {
+        return difficultySet;
+    }
+
     public Parent createContent() {
         root = new AnchorPane();
 
         field = new Field(rows, tiles, bombs);
         controller = new Controller(field, this);
 
+        int windowHeight = (int) (2 * yStartOffset + field.getRowNumber() / 2 * (tileHeight + r));
+        int windowWidth = (int) (2.5 * xStartOffset + field.getTilesInRow() * tileWidth);
+        root.setPrefSize(windowWidth, windowHeight);
+
+        timeStarted = false;
+
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        final Integer[] time = {0};
+        Label timer = new Label(Integer.toString(time[0]));
+        timer.setFont(Font.font(24));
+        AnchorPane.setTopAnchor(timer, 15d);
+        AnchorPane.setRightAnchor(timer, 30d);
+
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1),
+                        actionEvent -> {
+                            time[0]++;
+                            timer.setText(Integer.toString(time[0]));
+                        })
+        );
+
+        root.getChildren().add(timer);
+
+        face = new StackPane();
+        Hexagon hex = new Hexagon(r, n);
+        hex.setStroke(Color.BLACK);
+        hex.setFill(Color.ANTIQUEWHITE);
+        hex.setStrokeWidth(0.5);
+        Text smile = new Text("UwU");
+        smile.setFont(Font.font(14));
+        face.getChildren().addAll(hex, smile);
+
+        AnchorPane.setTopAnchor(face, 15d);
+        face.setTranslateX((double) (windowWidth / 2) - 1.55 * n);
+        root.getChildren().add(face);
+
+        flagsLeft = new Label("Flags: " + field.getFlagsLeft());
+        flagsLeft.setFont(Font.font(24));
+        AnchorPane.setTopAnchor(flagsLeft, 15d);
+        AnchorPane.setLeftAnchor(flagsLeft, 30d);
+        root.getChildren().add(flagsLeft);
+
         Button exit = new Button("Exit");
         exit.setPrefSize(80, 20);
         AnchorPane.setBottomAnchor(exit, 15d);
         AnchorPane.setRightAnchor(exit, 15d);
-        exit.setOnMouseClicked(event -> controller.exit());
+        exit.setOnAction(actionEvent -> controller.exit());
         root.getChildren().add(exit);
 
         Button reset = new Button("Reset");
         reset.setPrefSize(80, 20);
         AnchorPane.setBottomAnchor(reset, 15d);
-        AnchorPane.setLeftAnchor(reset, 15d);
-        reset.setOnMouseClicked(event -> controller.reset());
+        reset.setTranslateX((double) (windowWidth / 2) - 40);
+        reset.setOnAction(actionEvent -> controller.reset());
         root.getChildren().add(reset);
 
         Button returnToMenu = new Button("Main Menu");
         returnToMenu.setPrefSize(80, 20);
-        AnchorPane.setTopAnchor(returnToMenu, 15d);
+        AnchorPane.setBottomAnchor(returnToMenu, 15d);
         AnchorPane.setLeftAnchor(returnToMenu, 15d);
-        returnToMenu.setOnMouseClicked(event -> {
+        returnToMenu.setOnAction(actionEvent -> {
             try {
                 controller.returnToMenu();
             } catch (IOException e) {
@@ -77,10 +132,6 @@ public class View {
             }
         });
         root.getChildren().add(returnToMenu);
-
-        windowHeight = (int) (2 * yStartOffset + field.getRowNumber() / 2 * (tileHeight + r));
-        windowWidth = (int) (2.5 * xStartOffset + field.getTilesInRow() * tileWidth);
-        root.setPrefSize(windowWidth, windowHeight);
 
         for (Tile[] rows : field.getGrid()) {
             for (Tile tile : rows) {
@@ -93,6 +144,30 @@ public class View {
     }
 
     public void redraw() {
+        root.getChildren().remove(flagsLeft);
+        flagsLeft.setText("Flags: " + field.getFlagsLeft());
+        root.getChildren().add(flagsLeft);
+
+        if (field.isGameOver()) {
+            root.getChildren().remove(face);
+            face.getChildren().remove(1);
+            Text smile = new Text(field.isLost()
+                    ? "XwX"
+                    : "UзU");
+            smile.setFont(Font.font(14));
+
+            face.getChildren().add(smile);
+            root.getChildren().add(face);
+        }
+
+        if (!timeStarted) {
+            timeline.playFromStart();
+            timeStarted = true;
+        }
+
+        if (field.isGameOver())
+            timeline.stop();
+
         for (Tile[] rows : field.getGrid()) {
             for (Tile tile : rows) {
                 root.getChildren().remove(tile);
@@ -174,10 +249,6 @@ public class View {
         });
 
         return tile;
-    }
-
-    public boolean isDifficultySet() {
-        return difficultySet;
     }
 
     private static class Hexagon extends Polygon {

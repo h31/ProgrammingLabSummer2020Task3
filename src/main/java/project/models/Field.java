@@ -174,31 +174,31 @@ public class Field {
     private List<Tile> getNeighbours(Tile tile) {
         List<Tile> neighbours = new ArrayList<>();
 
-        int[] pointsOddRow = new int[]{
-                -1, -1,
-                -1, 0,
-                -1, 1,
-                0, -1,
-                1, 0,
-                0, 1
+        int[][] pointsOddRow = new int[][]{
+                {-1, -1},
+                {-1, 0},
+                {-1, 1},
+                {0, -1},
+                {1, 0},
+                {0, 1}
         };
 
-        int[] pointsEvenRow = new int[]{
-                0, -1,
-                -1, 0,
-                0, 1,
-                1, -1,
-                1, 0,
-                1, 1
+        int[][] pointsEvenRow = new int[][]{
+                {0, -1},
+                {-1, 0},
+                {0, 1},
+                {1, -1},
+                {1, 0},
+                {1, 1}
         };
 
         for (int i = 0; i < pointsOddRow.length; i++) {
             int x = tile.getY() % 2 == 0
-                    ? tile.getX() + pointsOddRow[i]
-                    : tile.getX() + pointsEvenRow[i];
+                    ? tile.getX() + pointsOddRow[i][0]
+                    : tile.getX() + pointsEvenRow[i][0];
             int y = tile.getY() % 2 == 0
-                    ? tile.getY() + pointsOddRow[++i]
-                    : tile.getY() + pointsEvenRow[++i];
+                    ? tile.getY() + pointsOddRow[i][1]
+                    : tile.getY() + pointsEvenRow[i][1];
 
             if (x >= 0 && x < this.tilesInRow && y >= 0 && y < this.rowNumber) {
                 neighbours.add(grid[x][y]);

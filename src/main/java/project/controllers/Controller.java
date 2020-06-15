@@ -53,11 +53,11 @@ public class Controller {
     }
 
     public void setNormal() {
-        view.setDifficulty(18, 20, 45);
+        view.setDifficulty(16, 18, 56);
     }
 
     public void setHard() {
-        view.setDifficulty(20, 24, 80);
+        view.setDifficulty(20, 24, 99);
     }
 
     public void mouseClickLeft(Tile tile) {
