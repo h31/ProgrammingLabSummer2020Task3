@@ -1,6 +1,6 @@
 package model.com.example.project;
 
-import javafx.scene.Node;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -14,7 +14,6 @@ import static java.lang.Math.abs;
 public class Board {
     private final int width;
     private final int height;
-    //public static final int INVALID = -1;
 
     private final Map<Cell, Chip> chips = new HashMap<>();
     public Board(int width, int height) {
@@ -25,8 +24,6 @@ public class Board {
                 if (i < 3)  {
                     if (((i % 2 == 0) && (j % 2 != 0)) || ((i % 2 != 0) && (j % 2 == 0))) {
                         chips.put(new Cell(i, j), Chip.BLACK);
-                    //} else if ((i % 2 != 0) && (j % 2 != 0)) {
-                        //chips.put(new Cell(i, j), Chip.BLACK);
                     } else {
                         chips.put(new Cell(i, j), Chip.BLANK);
                     }
@@ -37,8 +34,6 @@ public class Board {
                 if (i > height - 4) {
                     if (((i % 2 == 0) && (j % 2 != 0)) || ((i % 2 != 0) && (j % 2 == 0))) {
                         chips.put(new Cell(i, j), Chip.WHITE);
-                    //} else if ((i % 2 != 0) && (j % 2 != 0)) {
-                        //chips.put(new Cell(i, j), Chip.WHITE);
                     } else {
                         chips.put(new Cell(i, j), Chip.BLANK);
                     }
@@ -68,9 +63,6 @@ public class Board {
         return chips.get(new Cell(x, y));
     }
     public void selectCellGraphics(int rowIndex, int colIndex, GridPane gridPane) {
-        //Node source = e.getPickResult().getIntersectedNode();
-        //Integer colIndex = gridPane.getColumnIndex(source);
-        //Integer rowIndex = gridPane.getRowIndex(source);
         Rectangle rectangle = new Rectangle(48, 48);
         rectangle.setStroke(Color.YELLOW);
         rectangle.setFill(Color.TRANSPARENT);

@@ -36,7 +36,6 @@ public final class Cell {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
-        //if (!super.equals(object)) return false;
         Cell cell = (Cell) object;
         return x == cell.x &&
                 y == cell.y;
