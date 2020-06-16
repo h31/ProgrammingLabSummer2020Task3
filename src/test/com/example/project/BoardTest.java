@@ -1,5 +1,7 @@
 package com.example.project;
 
+import model.com.example.project.Board;
+import model.com.example.project.Chip;
 import org.junit.jupiter.api.Test;
 
 import java.awt.Point;

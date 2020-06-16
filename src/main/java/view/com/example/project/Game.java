@@ -1,9 +1,8 @@
-package com.example.project;
+package view.com.example.project;
 
-import com.example.project.Board;
-import com.example.project.Chip;
-import com.example.project.Game_checkers;
-import com.example.project.MoveGenerator;
+import model.com.example.project.Board;
+import model.com.example.project.Chip;
+import model.com.example.project.Game_checkers;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +21,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.awt.*;
-import java.util.List;
 
 
 public class Game extends Application {
@@ -70,20 +68,20 @@ public class Game extends Application {
                 gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     if (e.getClickCount() == 2) {
                         Node source = e.getPickResult().getIntersectedNode();
-                        Integer colIndex = gridPane.getColumnIndex(source);
-                        Integer rowIndex = gridPane.getRowIndex(source);
+                        Integer colIndex = GridPane.getColumnIndex(source);
+                        Integer rowIndex = GridPane.getRowIndex(source);
                         Game_checkers copy = game.copy();
                         Point sel = new Point(rowIndex, colIndex);
                         if (Board.isValidPoint(sel) && Board.isValidPoint(selected)){
                             boolean change = copy.isP1Turn();
-                            if (change) {
+                            String expected = copy.getGameState();
+                            boolean move = copy.move(selected, sel);
+                            if (copy.isP1Turn()) {
                                 primaryStage.setTitle("Russian Checkers Turn Blue");
                             }
                             else {
                                 primaryStage.setTitle("Russian Checkers Turn Red");
                             }
-                            String expected = copy.getGameState();
-                            boolean move = copy.move(selected, sel);
                             boolean updated = (move?
                                     setGameState(true, copy.getGameState(), expected) : false);
                             change = (copy.isP1Turn() != change);
@@ -91,9 +89,6 @@ public class Game extends Application {
                         }else {
                             selected = sel;
                         }
-                        // Проверяем, если выбор валидный
-                        selectionValid = isValidSelection(
-                                copy.getBoard(), copy.isP1Turn(), selected);
 
                         Board b = game.getBoard();
                         drawCheckers(b, gridPane);
@@ -170,47 +165,6 @@ public class Game extends Application {
                 }
             }
         }
-    }
-
-    /**
-     * Проверяет, если выбранноя точка валидна игрока, которому принадлежит ход
-     * @param b			текущее поле.
-     * @param isP1Turn	флаг, показывающий, что ход первого игрока
-     * @param selected	тестируемая точка
-     * @return возращает истину, если только выбранная точка - шашка, которой можно сделать ход в текущем ходе.
-     */
-    private boolean isValidSelection(Board b, boolean isP1Turn, Point selected) {
-
-        // Простые случаи
-        int i = Board.toIndex(selected);
-        Chip id = b.get(i);
-        if (id == Chip.BLANK || id == Chip.INVALID) { // нет шашек здесь
-            return false;
-        } else if(isP1Turn ^ (id == Chip.BLACK ||
-                id == Chip.BLACK_KING)) { // неверная шашка
-            return false;
-        } else if (!MoveGenerator.getSkips(b, i).isEmpty()) { // возможно пропустить(skip)
-            return true;
-        } else if (MoveGenerator.getMoves(b, i).isEmpty()) { // нет ходов
-            return false;
-        }
-
-        // Описывает, если доступен пропуск(skip) для другой шашки
-        List<Point> points = b.find(
-                isP1Turn? Chip.BLACK : Chip.WHITE);
-        points.addAll(b.find(
-                isP1Turn? Chip.BLACK_KING : Chip.WHITE_KING));
-        for (Point p : points) {
-            int checker = Board.toIndex(p);
-            if (checker == i) {
-                continue;
-            }
-            if (!MoveGenerator.getSkips(b, checker).isEmpty()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public synchronized boolean setGameState(boolean testValue,

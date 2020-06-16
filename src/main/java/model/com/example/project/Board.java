@@ -1,4 +1,4 @@
-package com.example.project;
+package model.com.example.project;
 
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
