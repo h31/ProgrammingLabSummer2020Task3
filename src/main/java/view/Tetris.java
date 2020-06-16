@@ -25,9 +25,6 @@ public class Tetris extends Application {
     public Canvas getCanvas() {
         return canvas;
     }
-    public Tetris(){
-        canvas.getGraphicsContext2D();
-    }
 
     @Override
     public void start(final Stage primaryStage) throws FileNotFoundException {

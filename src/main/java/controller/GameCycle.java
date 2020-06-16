@@ -4,73 +4,71 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Lighting;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import model.*;
-import view.Tetris;
-
 
 public class GameCycle extends GameField {
-    Figure shape = new Figure();
-    private int keyPressedCount = 0;//отсчет нажатий клавиши
-
+    Figure figure = new Figure();
     Button startButton = new Button("START");
-    Button pauseButton = new Button("PAUSE");
 
     public GameCycle() {
-
-        Tetris tetris = new Tetris();
-
+        //стиль кнопки
         startButton.setStyle("-fx-background-color: #00ff00");
         startButton.setFont(new Font(20));
         startButton.setLayoutY(150);
         startButton.setLayoutX(450);
 
-        pauseButton.setStyle("-fx-background-color: #ffa500");
-        pauseButton.setFont(new Font(20));
-        pauseButton.setLayoutY(300);
-        pauseButton.setLayoutX(450);
+        buttonController();
 
-        //эффекты для кнопок
-        DropShadow shadow = new DropShadow();
-
-        startButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> startButton.setEffect(shadow));
-
-        startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
-
-        shape.setShape();
-        keyController();
-        getChildren().addAll(shape, tetris.getCanvas(), startButton);
+        getChildren().addAll(figure, startButton);
     }
 
+    /**
+     * Взаимодействие пользователя с кнопкой
+     */
+    public void buttonController() {
+        //эффекты для кнопки
+        Lighting lighting = new Lighting();
+        DropShadow shadow = new DropShadow();
+        startButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> startButton.setEffect(shadow));
+        startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
+
+        //запуск игры по нажатию на кнпку START
+        startButton.setOnAction(actionEvent -> {
+            startButton.setEffect(lighting);
+            figure.setShape();
+            keyController();
+        });
+
+        startButton.isPressed();
+    }
+
+    /**
+     * Взаимодействие пользователя с клавиатурой
+     */
     public void keyController() {
-        /**  Lighting lighting = new Lighting();
-
-         startButton.setOnAction(actionEvent -> {
-         startButton.setEffect(lighting);
-
-         });*/
-
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(180), t -> {
-            shape.moveDown();
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(500), t -> {
+            figure.moveDown();
 
             //обработка нажатий с клаввиатуры
             startButton.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.LEFT) {
-                    shape.moveLeft();
+                    figure.moveLeft();
                 } else if (event.getCode() == KeyCode.RIGHT) {
-                    shape.moveRight();
-                }
-                else if (event.getCode() == KeyCode.UP) {
-                    shape.turningShape();
+                    figure.moveRight();
+                } else if (event.getCode() == KeyCode.UP) {
+                    figure.turningShape();
+                } else if (event.getCode() == KeyCode.DOWN) {
+                    figure.moveDown();
                 }
             });
 
-            if (shape.stop()) {
-                shape.setShape();
-
+            if (figure.stop()) {
+                figure.setShape();
             } else {
                 clearRow();
                 drawField();
@@ -80,21 +78,9 @@ public class GameCycle extends GameField {
             if (endGame()) {
                 getEndGame().setVisible(true);
             }
-            //проверка на окончание игры
-            /**     if (!endGame()) {
-             clearRow();
-             drawFigure();
-             } else {
-             getEndGame().setVisible(true);
-             if (startButton.isPressed()) {
-             repaintField();
-             getEndGame().setVisible(false);
-             getScore().setText("0");
-             }
-             }*/
+
         }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
     }
-
 }

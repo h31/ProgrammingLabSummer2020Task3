@@ -13,31 +13,26 @@ import view.Tetris;
 public class GameField extends Pane {
     private final int cellSize = 25;//размер клетки
 
-    public enum Elements {
+    public enum Elements {//элементы игрового поля
         FigureS, FigureJ, FigureI, FigureZ, FigureL, FigureO, FigureT, EmptyCell
     }
-
     private static final int columnSize = 24;//количество клеток по вертикали
     private final static int rowSize = 16;//количество клеток по горизонтали
+    private final Tetris tetris = new Tetris();
+    private int countScore = 0;//счет
+    private final Label score = new Label();
+    private final Label endGame = new Label("GAME OVER");
+    private static final Elements[][] gameField = new Elements[columnSize][rowSize];//игровое поле в виде двумерного массива
 
     public static int getRowSize() {
         return rowSize;
     }
-
     public Label getEndGame() {
         return endGame;
     }
-
-    private static final Elements[][] gameField = new Elements[columnSize][rowSize];//игровое поле в виде двумерного массива
-
     public Elements[][] getGameField() {
         return gameField;
     }
-
-    private final Tetris tetris = new Tetris();
-    private int countScore = 0;
-    private final Label score = new Label();
-    private final Label endGame = new Label("GAME OVER");
 
     /**
      * Перерисовка поля
@@ -73,7 +68,6 @@ public class GameField extends Pane {
         endGame.setTextFill(Color.WHITE);
         endGame.setFont(new Font(35.3));
         endGame.setVisible(false);
-
         endGame.setLayoutX(128);
         endGame.setLayoutY(150);
 

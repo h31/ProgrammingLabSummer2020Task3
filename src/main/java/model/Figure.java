@@ -1,17 +1,14 @@
 package model;
 
-import view.Tetris;
 import java.util.Random;
 
 /**
  * Класс "фигура". Отвечает на описание и поведение фигур.
  */
 public class Figure extends GameField {
-    public Figure() {
-        //добавление в граф сцены
-        Tetris tetris = new Tetris();
-        getChildren().addAll(tetris.getCanvas());
-    }
+    static Elements elements;
+    private final Random randomShape = new Random();
+    static int[][] shape;
 
     /**
      * Движение фигуры вниз
@@ -22,10 +19,9 @@ public class Figure extends GameField {
         }
     }
 
-    static Elements elements;
-    Random randomShape = new Random();
-    static int[][] shape;
-
+    /**
+     * Установка случайной фигуры на игровое поле
+     */
     public void setShape() {
         switch (randomShape.nextInt(7)) {
             case 0:
@@ -60,13 +56,13 @@ public class Figure extends GameField {
     }
 
     /**
-     * Проверка возможности движения влево
-     * и само движение
+     * Движение фигурки влево
      */
     public void moveLeft() {
         for (int i = 0; i < 4; i++) {
             shape[0][i]--;
         }
+        //если нашлись препятствие, вернуть фигурку обратно
         if (findIntersect()) {
             for (int j = 0; j < 4; j++) {
                 shape[0][j]++;
@@ -75,13 +71,13 @@ public class Figure extends GameField {
     }
 
     /**
-     * Проверка возможности движения вправо
-     * и само движение
+     * Движение фигурки вправо
      */
     public void moveRight() {
         for (int i = 0; i < 4; i++) {
             shape[0][i]++;
         }
+        //если нашлись препятствие, вернуть фигурку обратно
         if (findIntersect()) {
             for (int j = 0; j < 4; j++) {
                 shape[0][j]--;
@@ -90,7 +86,30 @@ public class Figure extends GameField {
     }
 
     /**
-     * Поиск каких либо пересечений. С краями поля или с другой фигурой
+     * Поворот фигурки
+     */
+    public void turningShape() {
+        int maxY = 0;
+        int maxX = 0;
+
+        for (int i = 0; i < 4; i++) {
+            if (shape[0][i] > maxY) {
+                maxY = shape[0][i];
+            }
+            if (shape[1][i] > maxX) {
+                maxX = shape[1][i];
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int temp = shape[0][i];
+            shape[0][i] = maxY - (maxX - shape[1][i]) - 1;
+            shape[1][i] = maxX - (3 - (maxY - temp)) + 1;
+        }
+    }
+
+    /**
+     * Поиск пересечений. С краями поля или с другой фигурой
      */
     public boolean findIntersect() {
         boolean intersect = false;
@@ -103,29 +122,10 @@ public class Figure extends GameField {
         return intersect;
     }
 
-    public void turningShape() {
-        int maxX = 0;
-        int maxY = 0;
-
-        for (int i = 0; i < 4; i++) {
-            if (shape[0][i] > maxY) {
-                maxY = shape[0][i];
-            }
-            if (shape[1][i] > maxX) {
-                maxX = shape[1][i];
-            }
-        }
-        for (int i = 0; i < 4; i++) {
-            int temp = shape[0][i];
-            shape[0][i] = maxY - (maxX - shape[1][i]);//- 1;
-            shape[1][i] = maxX - ((maxY - temp)+ 1) ;
-        }
-    }
-
     /**
-     * ^обьединить
+     * Остановка фигуры и заполнение игрового поля
      *
-     * @return
+     * @return остановилась ли фигура
      */
     public boolean stop() {
         if (findIntersect()) {
