@@ -26,6 +26,11 @@
 			<artifactId>javafx-controls</artifactId>
 			<version>11.0.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>15-ea+6</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -48,5 +53,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>
