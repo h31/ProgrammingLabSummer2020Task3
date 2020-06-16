@@ -42,4 +42,12 @@ public class Cell {
     public int hashCode() {
         return Objects.hash(getState(), getLetter());
     }
+
+    public String toString() {
+        return "Cell{" +
+                "state=" + state +
+                ", letter=" + letter +
+                '}';
+    }
 }
+

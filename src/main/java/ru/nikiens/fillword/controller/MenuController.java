@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class MenuController {
 
@@ -56,7 +57,8 @@ public class MenuController {
         LevelsController lc = new LevelsController();
 
         Path[] sources = Files.list(LevelsController.getGlossary()).toArray(Path[]::new);
-        BoardSize[] sizes = BoardSize.values();
+        BoardSize[] sizes = Stream.of(BoardSize.values())
+                .filter(it -> it != BoardSize.TESTING).toArray(BoardSize[]::new);
 
         Game.getInstance().setBoardSize(sizes[random.nextInt(sizes.length)]);
         lc.switchToGame(sources[random.nextInt(sources.length)], anchorPane);

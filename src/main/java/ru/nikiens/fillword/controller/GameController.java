@@ -118,15 +118,15 @@ public class GameController implements Initializable {
     }
 
     private void recomputeSelection(GridLocation dragged, int x, int y) {
-        Set<Label> selection = new HashSet<>();
-        Set<Label> horizontalSelection = new HashSet<>();
-        Set<Label> diagonalSelection = new HashSet<>();
+        Set<Label> selection = new LinkedHashSet<>();
+        Set<Label> horizontalSelection = new LinkedHashSet<>();
+        Set<Label> diagonalSelection = new LinkedHashSet<>();
 
         for (int j = dragged.y; j <= y; j++) {
             for (int i = dragged.x; i <= x; i++) {
                 Label label = (Label) table.getChildren().get(i * BOARD_SIZE + 1 + j);
 
-                if (Game.getInstance().getCell(j, i).getState() == Cell.State.MARKED) {
+                if (Game.getInstance().getCell(i, j).getState() == Cell.State.MARKED) {
                     return;
                 }
 
@@ -157,8 +157,8 @@ public class GameController implements Initializable {
             wordsList.lookup("#wordCell-" + word).pseudoClassStateChanged(selected, true);
 
             selectedCells.forEach(it -> {
-                int x = GridPane.getRowIndex(it);
-                int y = GridPane.getColumnIndex(it);
+                int y = GridPane.getRowIndex(it);
+                int x = GridPane.getColumnIndex(it);
 
                 Game.getInstance().getCell(x, y).setState(Cell.State.MARKED);
                 it.pseudoClassStateChanged(marked, true);
