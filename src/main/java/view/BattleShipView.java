@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class BattleShipView extends Application {
-    public static Stage primaryStage;
-    Properties properties = new Properties();
-    public File file = new File("C:\\Users\\Admin\\ProgrammingLabSummer2020Task3\\src\\main\\resources\\message.properties");
+    static Stage primaryStage;
+    private Properties properties = new Properties();
+    private File file = new File("C:/Users/Admin/ProgrammingLabSummer2020Task3/src/main/resources/message.properties");
 
     @Override
     public void start(Stage primaryStage) throws IOException {

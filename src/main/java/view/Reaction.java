@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class Reaction {
-    BattleShipApp controller;
-    public File file = new File("C:\\Users\\Admin\\ProgrammingLabSummer2020Task3\\src\\main\\resources\\message.properties");
+    private BattleShipApp controller;
+    private File file = new File("C:/Users/Admin/ProgrammingLabSummer2020Task3/src/main/resources/message.properties");
     public Properties properties = new Properties();
 
     public Reaction(BattleShipApp battleShipApp) throws IOException {
@@ -25,7 +25,7 @@ public class Reaction {
         properties.load(new FileReader(file));
     }
 
-    public void concludingPhrase(boolean isEnemyMove) throws IOException {
+    private void concludingPhrase(boolean isEnemyMove) throws IOException {
         Text text;
         if (isEnemyMove) text = new Text(properties.getProperty("youLose"));
         else text = new Text(properties.getProperty("youWin"));
@@ -65,11 +65,12 @@ public class Reaction {
         else controller.hitTheShip();
     }
 
-    public void showDialog() throws IOException {
+    private void showDialog() throws IOException {
         Alert newGame = new Alert(Alert.AlertType.CONFIRMATION);
         newGame.setTitle(properties.getProperty("restartGame"));
         newGame.setHeaderText(properties.getProperty("newGame"));
         Optional<ButtonType> option = newGame.showAndWait();
+
         if (option.get() == ButtonType.OK) {
             BattleShipView.primaryStage.close();
             BattleShipView restart = new BattleShipView();
