@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import view.Board_view?>
+
+<AnchorPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BattleShipApp">
+    <children>
+        <BorderPane prefHeight="700.0" prefWidth="800.0">
+            <center>
+                <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #fafafa;" BorderPane.alignment="CENTER">
+                    <children>
+                      <Text fx:id="name" fill="#1140da" strokeType="OUTSIDE" strokeWidth="0.0" text="Морской бой" textAlignment="CENTER" wrappingWidth="295.91094970703125">
+                          <font>
+                              <Font name="Century Gothic Bold" size="40.0" />
+                          </font>
+                     <VBox.margin>
+                        <Insets left="265.0" />
+                     </VBox.margin>
+                      </Text>
+                  <ImageView fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="365.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@якорь.jpg" />
+                     </image>
+                  </ImageView>
+                        <HBox alignment="CENTER" prefHeight="320.0" prefWidth="800.0" spacing="50.0">
+                     <children>
+                        <Board_view fx:id="playerBoard" onMouseClicked="#placePlayerShips" />
+                        <Board_view fx:id="enemyBoard" />
+                     </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="16.0" prefWidth="800.0" spacing="220.0">
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Поле игрока" wrappingWidth="158.55285692214966">
+                                    <font>
+                                        <Font name="Georgia" size="25.0" />
+                                    </font>
+                                </Text>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Поле врага">
+                                    <font>
+                                        <Font name="Georgia" size="25.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="50.0" right="50.0" />
+                            </padding>
+                        </HBox>
+                  <VBox fx:id="message" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" />
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
