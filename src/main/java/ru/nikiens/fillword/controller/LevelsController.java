@@ -1,6 +1,7 @@
 package ru.nikiens.fillword.controller;
 
 import com.jfoenix.controls.JFXComboBox;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +18,12 @@ import ru.nikiens.fillword.model.BoardSize;
 import ru.nikiens.fillword.model.Game;
 import ru.nikiens.fillword.model.util.SourceVerifier;
 
+import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class LevelsController implements Initializable {
@@ -78,7 +81,8 @@ public class LevelsController implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
-            alert.show();
+            e.printStackTrace();
+            alert.showAndWait();
         }
     }
 
@@ -96,17 +100,17 @@ public class LevelsController implements Initializable {
     }
 
     @FXML
-    void onFoodsGameButton() throws URISyntaxException {
+    void onFoodsGameButton() throws URISyntaxException, IOException {
         switchToGame(getGlossary().resolve("foods.txt"));
     }
 
     @FXML
-    void onMusicGameButton() throws URISyntaxException {
+    void onMusicGameButton() throws URISyntaxException, IOException {
         switchToGame(getGlossary().resolve("music.txt"));
     }
 
     @FXML
-    void onSportsGameButton() throws URISyntaxException {
+    void onSportsGameButton() throws URISyntaxException, IOException {
         switchToGame(getGlossary().resolve("sports.txt"));
     }
 
@@ -115,7 +119,15 @@ public class LevelsController implements Initializable {
         Game.getInstance().setBoardSize(sizeChooser.getSelectionModel().getSelectedItem());
     }
 
-    static Path getGlossary() throws URISyntaxException {
-        return Paths.get(LevelsController.class.getResource("/glossary").toURI());
+    static Path getGlossary() throws URISyntaxException, IOException {
+        URI uri = LevelsController.class.getResource("/glossary").toURI();
+
+        try {
+            return Paths.get(uri);
+        } catch (FileSystemNotFoundException e) {
+            FileSystem fs = FileSystems.newFileSystem(uri, Collections.singletonMap("create", "true"));
+
+            return fs.provider().getPath(uri);
+        }
     }
 }

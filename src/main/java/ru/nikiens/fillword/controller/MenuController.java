@@ -1,6 +1,7 @@
 package ru.nikiens.fillword.controller;
 
 import com.jfoenix.controls.JFXButton;
+
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
+
 import ru.nikiens.fillword.model.BoardSize;
 import ru.nikiens.fillword.model.Game;
 

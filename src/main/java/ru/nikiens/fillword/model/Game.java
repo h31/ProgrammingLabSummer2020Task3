@@ -1,11 +1,11 @@
 package ru.nikiens.fillword.model;
 
-import ru.nikiens.fillword.model.util.RandomizedReader;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Game {
     private static Game inst;
@@ -60,16 +60,27 @@ public class Game {
     }
 
     public void initializeCategory() throws IOException {
-        String category = Files.newBufferedReader(getSource()).readLine();
-        RandomizedReader rr = new RandomizedReader(getSource());
+        Random random = new Random();
+
+        try (Stream<String> lines = Files.lines(source)) {
+            lines.findFirst().ifPresent(this::setCategory);
+        }
 
         while (words.size() <= boardSize.value() / 2) {
-            String line = rr.readLine();
-            if (line != null && !line.equals(category)) {
-                words.add(line.toUpperCase());
+            try (Stream<String> lines = Files.lines(source)) {
+                Set<String> wds = lines.skip(1)
+                        .filter(it -> random.nextInt(3) == 0)
+                        .limit(boardSize.value() / 2)
+                        .map(String::toUpperCase)
+                        .collect(Collectors.toSet());
+
+                words.addAll(wds);
             }
         }
-        setCategory(category);
+
+        words = words.stream()
+                .sorted()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public void initializeBoard() {
