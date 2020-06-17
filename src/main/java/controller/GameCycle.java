@@ -11,6 +11,8 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import model.*;
 
+import java.util.Objects;
+
 public class GameCycle extends GameField {
     Figure figure = new Figure();
     Button startButton = new Button("START");
@@ -51,7 +53,7 @@ public class GameCycle extends GameField {
      * Взаимодействие пользователя с клавиатурой
      */
     public void keyController() {
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(500), t -> {
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(420), t -> {
             figure.moveDown();
 
             //обработка нажатий с клаввиатуры
@@ -82,5 +84,20 @@ public class GameCycle extends GameField {
         }));
         loop.setCycleCount(Timeline.INDEFINITE);
         loop.play();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GameCycle gameCycle = (GameCycle) o;
+        return Objects.equals(figure, gameCycle.figure) &&
+                Objects.equals(startButton, gameCycle.startButton);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), figure, startButton);
     }
 }

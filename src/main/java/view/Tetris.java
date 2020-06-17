@@ -19,8 +19,8 @@ import java.io.FileNotFoundException;
 public class Tetris extends Application {
     private final Canvas canvas = new Canvas(400, 600);
     private final Pane gameRoot = new Pane();
-    private final Label scoreLabel = new Label("Score");
     Scene scene = new Scene(gameRoot, 600, 600);
+    private final Label scoreLabel = new Label("Score");
 
     public Canvas getCanvas() {
         return canvas;

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -9,6 +11,10 @@ public class Figure extends GameField {
     static Elements elements;
     private final Random randomShape = new Random();
     static int[][] shape;
+
+    public static int[][] getShapeTetris() {
+        return shape;
+    }
 
     /**
      * Движение фигуры вниз
@@ -158,8 +164,28 @@ public class Figure extends GameField {
                     getGameField()[shape[1][i] - 1][shape[0][i]] = Elements.FigureZ;
                 }
             }
-
         }
         return findIntersect();
+    }
+
+    @Override
+    public String toString() {
+        return "Figure{" +
+                "randomShape=" + randomShape +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Figure figure = (Figure) o;
+        return Objects.equals(randomShape, figure.randomShape) && Arrays.deepEquals(shape, shape);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), randomShape, shape);
     }
 }

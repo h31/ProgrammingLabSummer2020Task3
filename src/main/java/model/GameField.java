@@ -6,6 +6,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import view.Tetris;
 
+import java.util.Objects;
+
 /**
  * Класс "игровое поле"
  * Отвечает за заполнение клеток, отрисовку фигур, очистку заполненных клеток
@@ -71,7 +73,7 @@ public class GameField extends Pane {
         endGame.setLayoutX(128);
         endGame.setLayoutY(150);
 
-        //добавление поля в граф сцены
+        //добавление в граф сцены
         getChildren().addAll(tetris.getCanvas(), score, endGame);
     }
 
@@ -127,7 +129,7 @@ public class GameField extends Pane {
         for (int i = 0; i < columnSize; i++) {
             for (int j = 0; j < rowSize; j++) {
                 if (getGameField()[i][j] == Elements.EmptyCell) {
-                    tetris.getCanvas().getGraphicsContext2D().clearRect(j * cellSize, i * cellSize, cellSize, cellSize);//переделать через игровое поле
+                    tetris.getCanvas().getGraphicsContext2D().clearRect(j * cellSize, i * cellSize, cellSize, cellSize);
                 }
             }
         }
@@ -183,5 +185,32 @@ public class GameField extends Pane {
                 tetris.getCanvas().getGraphicsContext2D().fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameField gameField = (GameField) o;
+        return countScore == gameField.countScore &&
+                Objects.equals(tetris, gameField.tetris) &&
+                Objects.equals(score, gameField.score) &&
+                Objects.equals(endGame, gameField.endGame);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tetris, countScore, score, endGame);
+    }
+
+    @Override
+    public String toString() {
+        return "GameField{" +
+                "cellSize=" + cellSize +
+                ", tetris=" + tetris +
+                ", countScore=" + countScore +
+                ", score=" + score +
+                ", endGame=" + endGame +
+                '}';
     }
 }
