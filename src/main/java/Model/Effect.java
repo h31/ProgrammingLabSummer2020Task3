@@ -131,6 +131,10 @@ public class Effect extends Animated {
         yValue.addListener((ov, t, t1) -> getCOLLISION().setY(defaultY + (double) t1));
     }
 
+    public boolean isEmpty() {
+        return TYPE == null && COLLISION == null;
+    }
+
     public ImageView getImgView() {
         return super.getImgView();
     }

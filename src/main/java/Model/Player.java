@@ -29,7 +29,8 @@ public class Player extends Animated {
     private double velY = 0;
     private double velX = 0;
     public final double SPEED = 1.25;
-    static boolean freezed = false;
+    static boolean freezed;
+    static ImageView reading;
 
     private final View VIEW;
 
@@ -172,6 +173,11 @@ public class Player extends Animated {
             }
         }
         return false;
+    }
+
+    public void closeNote() {
+        if (reading == null) return;
+        reading.setOpacity(0);
     }
 
     private void changingLocation() {

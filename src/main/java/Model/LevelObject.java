@@ -51,7 +51,7 @@ public class LevelObject {
             TOP_COLLISION.setVisible(true);
             BOTTOM_COLLISION.setVisible(false);
         } else {
-            getIMG_VIEW().setViewOrder(0);
+            getIMG_VIEW().setViewOrder(1);
             currentCollision = BOTTOM_COLLISION;
             TOP_COLLISION.setVisible(false);
             BOTTOM_COLLISION.setVisible(true);

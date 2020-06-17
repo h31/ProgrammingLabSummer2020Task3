@@ -1,15 +1,15 @@
 package Model;
 
+import Main.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-final class SpriteData {
+public final class SpriteData {
     static ImageView[] getSprites(String folder) {
         List<ImageView> imgList = new ArrayList<>();
         ImageView[] imgView = new ImageView[0];
@@ -52,7 +52,7 @@ final class SpriteData {
         return image;
     }
 
-    static ImageView getSprite(String path) {
+    public static ImageView getSprite(String path) {
         File directory = new File("src/main/resources/" + path);
         ImageView image;
         if (directory.isFile()) {
@@ -67,6 +67,11 @@ final class SpriteData {
     }
     static Rectangle spriteToCollision(ImageView img, double offsetX, double offsetY, double offsetWidth, double offsetHeight) {
         return new Rectangle(img.getX() + offsetX, img.getY() + offsetY, img.getImage().getWidth() + offsetWidth, img.getImage().getHeight() + offsetHeight);
+    }
+
+    public static void toCenter(ImageView img) {
+        img.setX(Main.WIDTH / 2 - img.getImage().getWidth() / 2);
+        img.setY(Main.HEIGHT / 2 - img.getImage().getHeight() / 2);
     }
 }
 

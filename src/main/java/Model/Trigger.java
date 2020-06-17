@@ -8,6 +8,7 @@ public class Trigger {
     private final String NAME;
     private final Rectangle RECT;
     private final Effect EFFECT;
+    private final ImageView IMAGE;
     private final COLLISION_TYPE TYPE;
     private final Pair<ImageView, Rectangle> interactedObject;
     private boolean used;
@@ -17,6 +18,7 @@ public class Trigger {
         this.NAME = name;
         this.RECT = rect;
         this.EFFECT = effect;
+        this.IMAGE = null;
         this.TYPE = type;
         this.interactedObject = new Pair<>(interactedObject, SpriteData.spriteToCollision(interactedObject));
     }
@@ -25,6 +27,7 @@ public class Trigger {
         this.NAME = trigger.getNAME();
         this.RECT = trigger.getRECT();
         this.EFFECT = trigger.getEFFECT();
+        this.IMAGE = trigger.getIMAGE();
         this.TYPE = trigger.getTYPE();
         this.interactedObject = trigger.getInteractedObject();
         this.used = false;
@@ -34,6 +37,16 @@ public class Trigger {
         this.NAME = name;
         this.RECT = rect;
         this.EFFECT = effect;
+        this.IMAGE = null;
+        this.TYPE = type;
+        this.interactedObject = new Pair<>(new ImageView(), null);
+    }
+
+    Trigger(String name, Rectangle rect, ImageView image, COLLISION_TYPE type) {
+        this.NAME = name;
+        this.RECT = rect;
+        this.EFFECT = new Effect();
+        this.IMAGE = image;
         this.TYPE = type;
         this.interactedObject = new Pair<>(new ImageView(), null);
     }
@@ -71,6 +84,10 @@ public class Trigger {
 
     private ImageView getIntObjectImg() {
         return getInteractedObject().getKey();
+    }
+
+    public ImageView getIMAGE() {
+        return IMAGE;
     }
 
     public void setUsed(boolean state) {

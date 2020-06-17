@@ -1,3 +1,5 @@
+package Main;
+
 import Model.FirstLevel;
 import Model.Level;
 import Model.Player;
@@ -10,10 +12,13 @@ import javafx.stage.Stage;
 public class Main extends Application {
     private static final boolean debugMode = false;
 
+    public static final int WIDTH = 1024;
+    public static final int HEIGHT = 768;
+
     @Override
     public void start(Stage stage) {
-        stage.setWidth(1024);
-        stage.setHeight(768);
+        stage.setWidth(WIDTH);
+        stage.setHeight(HEIGHT);
         stage.setTitle("Game");
         stage.setResizable(false);
         Level level = new FirstLevel();

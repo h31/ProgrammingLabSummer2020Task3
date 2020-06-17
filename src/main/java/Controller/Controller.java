@@ -9,8 +9,9 @@ public final class Controller {
     private final Player PLAYER;
 
 
-    // 0 - up, 1 - down, 2 - left, 3 - right, 4 - E
+    // 0 - up, 1 - down, 2 - left, 3 - right, 4 - E, 5 - ESC
     public final static Boolean[] keyState = {
+            false,
             false,
             false,
             false,
@@ -60,6 +61,10 @@ public final class Controller {
                 case E:
                     keyState[4] = true;
                     break;
+                case ESCAPE:
+                    keyState[5] = true;
+                    PLAYER.closeNote();
+                    break;
             }
         });
         primaryScene.setOnKeyReleased(e -> {
@@ -94,6 +99,9 @@ public final class Controller {
                     break;
                 case E:
                     keyState[4] = false;
+                    break;
+                case ESCAPE:
+                    keyState[5] = false;
                     break;
             }
         });

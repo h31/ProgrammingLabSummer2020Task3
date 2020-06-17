@@ -3,7 +3,6 @@ package Model;
 import javafx.animation.Animation;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -13,11 +12,12 @@ public final class LEVEL_CONTANTS {
     /*
      *  Константы для первого уровня
      */
-    public static final Image FIRST_IMG = SpriteData.getBackgroundImg("background.png");
+    public static final Image FIRST_IMG = SpriteData.getBackgroundImg("backgroundTest.png");
     public static final String FIRST_LOCATION = "First";
 
     public static final List<Trigger> FIRST_TRIGGERS = new ArrayList<>() {{
         add(new Trigger("Enter", new Rectangle(425, 381, 30, 30), new Effect(), COLLISION_TYPE.ENTER));
+        add(new Trigger("ReadNote", new Rectangle(595, 425, 25 , 25), SpriteData.getSprite("note1.png"), COLLISION_TYPE.INTERACT));
     }};
 
     public static final LinkedList<Rectangle> FIRST_COLLISION = new LinkedList<>(Arrays.asList(

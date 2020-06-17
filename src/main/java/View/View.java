@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import Main.Main;
 import Model.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -76,7 +77,8 @@ public class View {
 
 
     private void loadLevelIMG(Group general) {
-        general.getChildren().add(LEVEL.getLEVEL_IMG()); 
+        general.getChildren().add(LEVEL.getLEVEL_IMG());
+        if (LEVEL.getLocation().equals("First")) general.getChildren().add(SpriteData.getSprite("Intro.png"));
         LEVEL.getLEVEL_IMG().setViewOrder(3);
     }
     private void loadPlayer(Group general) {
@@ -95,12 +97,20 @@ public class View {
     private void loadTriggers(Group general) {
         for (Trigger trigger : LEVEL.getTRIGGERS()) {
             Rectangle rect = trigger.getRECT();
-            ImageView effect = trigger.getEFFECT().getImgView();
             Pair<ImageView, Rectangle> interactedObject = trigger.getInteractedObject();
-            if (effect != null) {
-                general.getChildren().add(effect);
-                effect.setVisible(false);
-                effect.setViewOrder(2);
+            Effect triggerEffect = trigger.getEFFECT();
+            if (!triggerEffect.isEmpty()) {
+                ImageView triggerEffectImg = triggerEffect.getImgView();
+                general.getChildren().add(triggerEffectImg);
+                triggerEffectImg.setVisible(false);
+                triggerEffectImg.setViewOrder(2);
+            }
+            ImageView triggerImage = trigger.getIMAGE();
+            if (triggerImage != null) {
+                general.getChildren().add(triggerImage);
+                triggerImage.setOpacity(0);
+                triggerImage.setViewOrder(0);
+                SpriteData.toCenter(triggerImage);
             }
             if (interactedObject.getValue() != null && interactedObject.getKey() != null) {
                 general.getChildren().add(interactedObject.getValue()); // Коллизия
@@ -119,6 +129,7 @@ public class View {
             general.getChildren().addAll(object.getTOP_COLLISION(), object.getBOTTOM_COLLISION());
             checkDebugMode(object.getTOP_COLLISION(), DEBUG_MODE);
             checkDebugMode(object.getBOTTOM_COLLISION(), DEBUG_MODE);
+            object.getIMG_VIEW().setViewOrder(1);
         }
     }
 

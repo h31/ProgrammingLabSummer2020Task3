@@ -1,9 +1,13 @@
 package Model;
 
+import Controller.Controller;
+import javafx.scene.image.ImageView;
+
 public class FirstLevel extends Level {
     /**
      * Конструктор - создание объекта первого уровня.
      * Передает все данные уровня в родительский (абстрактный) класс
+     *
      * @see Level
      */
     public FirstLevel() {
@@ -18,14 +22,17 @@ public class FirstLevel extends Level {
 
     @Override
     void interact(Trigger trigger) {
-
+        if (trigger.getNAME().equals("ReadNote")) {
+            readNote();
+        }
     }
 
     /**
      * Метод отслеживающий расположение игрока относительно объектов на карте
+     *
+     * @param player - объект игрока
      * @see LevelObject
      * Позволяет игроку находиться перед и за объектом.
-     * @param player - объект игрока
      */
     public void checkObjectView(Player player) {
         double playerCol = player.getBOTTOM_COLLISION();
@@ -36,6 +43,11 @@ public class FirstLevel extends Level {
                 colShape.setView(OBJECT_VIEW.FRONT);
             }
         }
+    }
+
+    private void readNote() {
+        Player.reading = getTRIGGERS().get(1).getIMAGE();
+        Player.reading.setOpacity(1);
     }
 
     @Override
