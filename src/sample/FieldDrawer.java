@@ -13,7 +13,7 @@ public class FieldDrawer {
     public static int score = 0;
 
     public static void shift(String direction) {
-        int rotates = 0;
+        int rotates = 4;
         switch (direction) {
             case "RIGHT" : break;
             case "DOWN": a = rotate(a); rotates = 3;
@@ -55,11 +55,12 @@ public class FieldDrawer {
                 }
         for (int i = 0; i < rotates; i++) a = rotate(a);
 
-        if (moved) spawn();
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                colours(a[i][j], Main.labels[i][j]);
+        if (moved) {
+            spawn();
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    colours(a[i][j], Main.labels[i][j]);
+                }
             }
         }
     }
