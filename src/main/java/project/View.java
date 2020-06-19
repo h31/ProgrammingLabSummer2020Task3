@@ -35,6 +35,10 @@ public class View extends Application {
         controller.firstPlayerText.setLayoutY(50);
         controller.secondPlayerText.setLayoutX(750);
         controller.secondPlayerText.setLayoutY(50);
+        controller.firstScoreText.setLayoutX(625);
+        controller.firstScoreText.setLayoutY(900);
+        controller.secondScoreText.setLayoutX(725);
+        controller.secondScoreText.setLayoutY(900);
         controller.restart.setLayoutX(900);
         controller.restart.setLayoutY(100);
         controller.skip.setLayoutX(900);

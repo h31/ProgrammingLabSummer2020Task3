@@ -4,13 +4,14 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 
-import java.io.IOException;
+import java.util.Optional;
 
 public class Controller {
     final private Model model = new Model();
@@ -84,17 +85,21 @@ public class Controller {
                             }
                         }
 
-                        /*if (isCellCorrect) {
+                        if (isCellCorrect) {
+                            redrawCell(i, j, '?');
+                        }
 
-                        }*/
-
-                        redrawCell(i, j, '?');
                     }
                 }));
     }
 
     public void confirmWord() {
+        TextInputDialog dialog = new TextInputDialog();
 
+        dialog.setTitle("Confirm the word");
+        dialog.setHeaderText("Enter the letter you want to add");
+
+        Optional<String> result = dialog.showAndWait();
     }
 
 }

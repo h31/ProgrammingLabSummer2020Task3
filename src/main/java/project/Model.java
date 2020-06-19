@@ -13,14 +13,14 @@ public class Model {
     final private static char[][] field = new char[5][5];
 
     //Счёт игроков
-    private static int firstPlayerScore;
-    private static int secondPlayerScore;
+    private int firstPlayerScore;
+    private int secondPlayerScore;
 
     //Чей ход? T - первого, F - второго
-    private static boolean firstToMove;
+    private boolean firstToMove;
 
     //Множество клеток, в которые можно поставить букву
-    private static Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
+    private Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
 
     // ??? Множество занятых клеток
     //private static Set<Pair<Integer, Integer>> filledCells = new HashSet<>();
@@ -55,6 +55,7 @@ public class Model {
         Pair<Integer, Integer> oldCoordinates = new Pair<>(i, j);
         possibleMoves.remove(oldCoordinates);
 
+        //вынести в от
         if (i < 4 && field[i + 1][j] != ' ') {
             field[i + 1][j] = '+';
             possibleMoves.add(new Pair<>(i + 1, j));
@@ -91,11 +92,12 @@ public class Model {
     }
 
     private String getFirstWord()  {
-        String filePath = "src/resources/five_let_words.txt";
+        String filePath = "src/main/resources/five_let_words.txt";
         final BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(filePath));
         } catch (FileNotFoundException e) {
+            //вывести сообщение об ошибке
             return "балда";
         }
         int numOfLines = getNumberOfLines(filePath);
@@ -116,7 +118,7 @@ public class Model {
     }
 
     private boolean isWord(String checking) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("src/resources/dictionary.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/dictionary.txt"));
         try(reader) {
             String string = reader.readLine();
             while (string != null) {
@@ -128,7 +130,7 @@ public class Model {
     }
 
     public boolean addWordToDict(String word) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("src/resources/dictionary.txt", true));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/dictionary.txt", true));
         try (writer) {
             writer.write("\n" + word);
         }
