@@ -1,0 +1,42 @@
+plugins {
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'application'
+    id 'groovy'
+}
+
+group 'ru.nikiens.fillword'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.jfoenix:jfoenix:9.0.8'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.5.12'
+    testCompile platform('org.spockframework:spock-bom:2.0-M3-groovy-2.5')
+    testCompile 'org.spockframework:spock-core'
+    testCompile "org.testfx:testfx-spock:4.0.16-alpha"
+    testCompile 'org.hamcrest:hamcrest:2.2'
+}
+
+javafx {
+    version '11'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+application {
+    mainClassName = 'ru.nikiens.fillword.App'
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}
