@@ -23,8 +23,7 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible
 class GameTest extends ApplicationSpec {
     void setup() {
         Game.getInstance().setBoardSize(BoardSize.TESTING)
-        Game.getInstance().setSource(Paths.get("src", "test", "resources", "testing.txt"))
-        Game.getInstance().initializeCategory()
+        Game.getInstance().initializeCategory(Paths.get("src", "test", "resources", "testing.txt"))
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/game.fxml"))
 

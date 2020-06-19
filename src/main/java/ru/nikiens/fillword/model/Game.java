@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 public class Game {
     private static Game inst;
 
-    private Path source;
     private Cell[][] board;
     private BoardSize boardSize;
 
@@ -25,14 +24,6 @@ public class Game {
             inst = new Game();
         }
         return inst;
-    }
-
-    public Path getSource() {
-        return source;
-    }
-
-    public void setSource(Path source) {
-        this.source = source;
     }
 
     public BoardSize getBoardSize() {
@@ -59,7 +50,7 @@ public class Game {
         return board[x][y];
     }
 
-    public void initializeCategory() throws IOException {
+    public void initializeCategory(Path source) throws IOException {
         Random random = new Random();
 
         try (Stream<String> lines = Files.lines(source)) {
@@ -70,7 +61,7 @@ public class Game {
             try (Stream<String> lines = Files.lines(source)) {
                 Set<String> wds = lines.skip(1)
                         .filter(it -> random.nextInt(3) == 0)
-                        .limit(boardSize.value() / 2)
+                        .limit(boardSize.value() / 2 + 1)
                         .map(String::toUpperCase)
                         .collect(Collectors.toSet());
 
@@ -151,9 +142,9 @@ public class Game {
                     break;
             }
 
-            if (x1 < Game.getInstance().getBoardSize().value() && x >= 0 &&
-                    y1 < Game.getInstance().getBoardSize().value() && y >= 0) {
-                Cell cell = Game.getInstance().getCell(x1, y1);
+            if (x1 < getBoardSize().value() && x >= 0 &&
+                    y1 < getBoardSize().value() && y >= 0) {
+                Cell cell = getCell(x1, y1);
 
                 if (cell.getLetter() != 0) {
                     return null;
@@ -183,13 +174,13 @@ public class Game {
             Cell cell = null;
             switch (pd) {
                 case VERTICAL:
-                    cell = Game.getInstance().getCell(x + i, y);
+                    cell = getCell(x + i, y);
                     break;
                 case HORIZONTAL:
-                    cell = Game.getInstance().getCell(x, y + i);
+                    cell = getCell(x, y + i);
                     break;
                 case DIAGONAL:
-                    cell = Game.getInstance().getCell(x + i, y + i);
+                    cell = getCell(x + i, y + i);
                     break;
             }
             cell.setLetter(word.charAt(i));
