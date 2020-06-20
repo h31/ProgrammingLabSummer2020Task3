@@ -43,6 +43,8 @@ public class GameCycle extends GameField {
         //запуск игры по нажатию на кнпку START
         startButton.setOnAction(actionEvent -> {
             startButton.setEffect(lighting);
+            repaintField();
+            GameFieldView.getEndGame().setVisible(false);
             figure.setShape();
             keyController();
         });
@@ -52,7 +54,7 @@ public class GameCycle extends GameField {
      * Взаимодействие пользователя с клавиатурой
      */
     public void keyController() {
-        Timeline loop = new Timeline(new KeyFrame(Duration.millis(420), t -> {
+        Timeline loop = new Timeline(new KeyFrame(Duration.millis(400), t -> {
             figure.moveDown();
 
             //обработка нажатий с клаввиатуры

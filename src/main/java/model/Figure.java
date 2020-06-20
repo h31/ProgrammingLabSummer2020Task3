@@ -141,7 +141,7 @@ public class Figure extends GameField {
      * @return остановилась ли фигура
      */
     public boolean stop() {
-        if (findIntersect()) {
+        if (findIntersect() && !endGame()) {
             if (elements == Elements.FigureI) {
                 for (int i = 0; i < 4; i++) {
                     getGameField()[shape[1][i] - 1][shape[0][i]] = Elements.FigureI;

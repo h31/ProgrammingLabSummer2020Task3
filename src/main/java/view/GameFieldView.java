@@ -5,19 +5,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.layout.Pane;
 
+/**
+ * Класс GameFieldView отвечает за визуальные элементы на игровом поле
+ */
 public class GameFieldView extends Pane {
-   private static final Label score = new Label();
-   private static final Label endGame = new Label("GAME OVER");
+    private static final Label score = new Label();//виджет - счет
+    private static final Label endGame = new Label("GAME OVER");//виджет сигнализирующий об окончании игры
 
     public static void setScore(String s) {
         score.setText(s);
     }
-
     public static Label getEndGame() {
         return endGame;
     }
-
-    Label scoreLabel = new Label("Score");
 
     public GameFieldView() {
         //настройка виджета отвечающего за счет
@@ -35,6 +35,8 @@ public class GameFieldView extends Pane {
         endGame.setLayoutY(150);
 
         //эффекты для надписи
+
+        Label scoreLabel = new Label("Score");
         scoreLabel.setText("Score");
         scoreLabel.setTextFill(Color.YELLOW);
         scoreLabel.setFont(new Font(23));

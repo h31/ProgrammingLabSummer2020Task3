@@ -2,7 +2,6 @@ package model;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import view.GameFieldView;
 import view.Tetris;
 
 
