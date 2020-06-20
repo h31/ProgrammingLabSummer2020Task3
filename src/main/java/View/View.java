@@ -78,7 +78,7 @@ public class View {
 
     private void loadLevelIMG(Group general) {
         general.getChildren().add(LEVEL.getLEVEL_IMG());
-        if (LEVEL.getLocation().equals("First")) general.getChildren().add(SpriteData.getSprite("Intro.png"));
+        if (LEVEL.getLocation().equals("First")) general.getChildren().add(SpriteData.getSprite("FirstLevel/Intro.png"));
         LEVEL.getLEVEL_IMG().setViewOrder(3);
     }
     private void loadPlayer(Group general) {
@@ -108,7 +108,7 @@ public class View {
             ImageView triggerImage = trigger.getIMAGE();
             if (triggerImage != null) {
                 general.getChildren().add(triggerImage);
-                triggerImage.setOpacity(0);
+                triggerImage.setVisible(false);
                 triggerImage.setViewOrder(0);
                 SpriteData.toCenter(triggerImage);
             }

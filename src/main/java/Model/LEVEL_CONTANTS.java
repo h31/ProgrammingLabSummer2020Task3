@@ -12,12 +12,12 @@ public final class LEVEL_CONTANTS {
     /*
      *  Константы для первого уровня
      */
-    public static final Image FIRST_IMG = SpriteData.getBackgroundImg("backgroundTest.png");
+    public static final Image FIRST_IMG = SpriteData.getBackgroundImg("FirstLevel/FirstLevel.png");
     public static final String FIRST_LOCATION = "First";
 
     public static final List<Trigger> FIRST_TRIGGERS = new ArrayList<>() {{
         add(new Trigger("Enter", new Rectangle(425, 381, 30, 30), new Effect(), COLLISION_TYPE.ENTER));
-        add(new Trigger("ReadNote", new Rectangle(595, 425, 25 , 25), SpriteData.getSprite("note1.png"), COLLISION_TYPE.INTERACT));
+        add(new Trigger("ReadNote", new Rectangle(595, 425, 25 , 25), SpriteData.getSprite("FirstLevel/note.png"), COLLISION_TYPE.INTERACT));
     }};
 
     public static final LinkedList<Rectangle> FIRST_COLLISION = new LinkedList<>(Arrays.asList(
@@ -29,7 +29,7 @@ public final class LEVEL_CONTANTS {
             new Rectangle(400, 370, 80, 10)
     ));
 
-    public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("Objects");
+    public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FirstLevel/Objects");
 
     static {
         FIRST_OBJECTS[0].setLocation(480, 520);
@@ -48,7 +48,7 @@ public final class LEVEL_CONTANTS {
      *  Константы для второго уровня
      */
 
-    public static final Image SECOND_IMG = SpriteData.getBackgroundImg("firstlevel.png");
+    public static final Image SECOND_IMG = SpriteData.getBackgroundImg("SecondLevel/SecondLevel.png");
     public static final String SECOND_LOCATION = "Second";
 
     public static final List<Trigger> SECOND_TRIGGERS = new ArrayList<>(Arrays.asList(
@@ -57,7 +57,7 @@ public final class LEVEL_CONTANTS {
                     new Rectangle(70, 345, 40, 40),
                     new Effect(EFFECT_TYPE.MAGIC, 445, 560),
                     COLLISION_TYPE.INTERACT,
-                    SpriteData.getSprite("wall.png")
+                    SpriteData.getSprite("SecondLevel/wall.png")
             ),
             new Trigger("MagicBall_UPPER",
                     new Rectangle(495, 535, 20, 230),
@@ -153,13 +153,13 @@ public final class LEVEL_CONTANTS {
             new Rectangle(479, 530, 4, 240) // Коллизия исчезающей стены (всегда последняя)
     ));
 
-    public static final LevelObject[] SECOND_OBJECTS = SpriteData.getLevelObjects("FIRST_OBJECTS");
+    public static final LevelObject[] SECOND_OBJECTS = new LevelObject[0];
 
     static final int[] SECOND_pCOORD = {
             100,
             650
     };
 
-    public static final Image teslaOrbBroken = SpriteData.getSprite("TeslaOrbBroken.png").getImage();
+    public static final Image teslaOrbBroken = SpriteData.getSprite("Effects/TeslaOrbBroken.png").getImage();
     public static Animation teslaOrbAnim;
 }

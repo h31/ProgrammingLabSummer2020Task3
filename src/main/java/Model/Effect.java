@@ -24,15 +24,15 @@ public class Effect extends Animated {
         ImageView[] effect;
         double offsetX = 0, offsetY = 0, offsetWidth = 0, offsetHeight = 0;
         if (TYPE == EFFECT_TYPE.MAGIC) {
-            effect = SpriteData.getSprites("vortexmagic");
+            effect = SpriteData.getSprites("Effects/vortexmagic");
         } else if (TYPE == EFFECT_TYPE.MAGIC_BALL) {
-            effect = SpriteData.getSprites("MagicBall");
+            effect = SpriteData.getSprites("Effects/MagicBall");
             offsetX = 7;
             offsetY = 7;
             offsetHeight = -15;
             offsetWidth = -15;
         } else if (TYPE == EFFECT_TYPE.MAGIC_ITEM) {
-            effect = SpriteData.getSprites("Tesla_Orb");
+            effect = SpriteData.getSprites("Effects/Tesla_Orb");
         }
         else {
             throw new IllegalArgumentException();

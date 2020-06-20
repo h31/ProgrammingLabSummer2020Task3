@@ -4,7 +4,12 @@ import Main.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+
+import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +20,7 @@ public final class SpriteData {
         ImageView[] imgView = new ImageView[0];
         File directory;
         try {
-            directory = new File("src/main/resources/" + folder);
+            directory = new File(SpriteData.class.getResource("/" + folder).getFile());
             for (File element : Objects.requireNonNull(directory.listFiles())) {
                 ImageView image = new ImageView(new Image(element.toURI().toString()));
                 imgList.add(image);
@@ -31,7 +36,7 @@ public final class SpriteData {
         LevelObject[] levelObjects = new LevelObject[0];
         File directory;
         try {
-            directory = new File("src/main/resources/" + folder);
+            directory = new File(SpriteData.class.getResource("/" + folder).getFile());
             for (File element : Objects.requireNonNull(directory.listFiles())) {
                 LevelObject object = new LevelObject(new ImageView(new Image(element.toURI().toString())));
                 imgList.add(object);
@@ -45,7 +50,7 @@ public final class SpriteData {
     static Image getBackgroundImg(String name) {
         Image image = null;
         try {
-            image = new Image(name);
+            image = new Image(SpriteData.class.getResource("/" + name).toString());
         } catch (NullPointerException e) {
             System.out.println("Произошла ошибка :" + e.toString());
         }

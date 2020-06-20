@@ -53,10 +53,10 @@ public class Player extends Animated {
     };
 
     public Player(View view, Level level) {
-        SKELETON_IDLE_RIGHT = SpriteData.getSprites("Skeleton_Idle_Right");
-        SKELETON_IDLE_LEFT = SpriteData.getSprites("Skeleton_Idle_Left");
-        SKELETON_WALK_RIGHT = SpriteData.getSprites("Skeleton_Walk_Right");
-        SKELETON_WALK_LEFT = SpriteData.getSprites("Skeleton_Walk_Left");
+        SKELETON_IDLE_RIGHT = SpriteData.getSprites("Player/Skeleton_Idle_Right");
+        SKELETON_IDLE_LEFT = SpriteData.getSprites("Player/Skeleton_Idle_Left");
+        SKELETON_WALK_RIGHT = SpriteData.getSprites("Player/Skeleton_Walk_Right");
+        SKELETON_WALK_LEFT = SpriteData.getSprites("Player/Skeleton_Walk_Left");
         super.setImgArray(SKELETON_IDLE_LEFT);
         super.setImgView(SKELETON_IDLE_LEFT[0]);
         this.VIEW = view;
@@ -177,7 +177,7 @@ public class Player extends Animated {
 
     public void closeNote() {
         if (reading == null) return;
-        reading.setOpacity(0);
+        reading.setVisible(false);
     }
 
     private void changingLocation() {
