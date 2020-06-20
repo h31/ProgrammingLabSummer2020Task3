@@ -12,10 +12,6 @@ public class Figure extends GameField {
     private final Random randomShape = new Random();
     static int[][] shape;
 
-    public static int[][] getShapeTetris() {
-        return shape;
-    }
-
     /**
      * Движение фигуры вниз
      */
@@ -94,6 +90,7 @@ public class Figure extends GameField {
     /**
      * Поворот фигурки
      */
+
     public void turningShape() {
         int maxY = 0;
         int maxX = 0;
@@ -112,6 +109,7 @@ public class Figure extends GameField {
             shape[0][i] = maxY - (maxX - shape[1][i]) - 1;
             shape[1][i] = maxX - (3 - (maxY - temp)) + 1;
         }
+
     }
 
     /**
@@ -168,12 +166,6 @@ public class Figure extends GameField {
         return findIntersect();
     }
 
-    @Override
-    public String toString() {
-        return "Figure{" +
-                "randomShape=" + randomShape +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,40 +1,43 @@
 package model;
 
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import view.GameFieldView;
 import view.Tetris;
 
-import java.util.Objects;
 
 /**
  * Класс "игровое поле"
  * Отвечает за заполнение клеток, отрисовку фигур, очистку заполненных клеток
  */
 public class GameField extends Pane {
+    private static int countScore;
     private final int cellSize = 25;//размер клетки
 
     public enum Elements {//элементы игрового поля
         FigureS, FigureJ, FigureI, FigureZ, FigureL, FigureO, FigureT, EmptyCell
     }
+
     private static final int columnSize = 24;//количество клеток по вертикали
-    private final static int rowSize = 16;//количество клеток по горизонтали
+    private static final int rowSize = 16;//количество клеток по горизонтали
     private final Tetris tetris = new Tetris();
-    private int countScore = 0;//счет
-    private final Label score = new Label();
-    private final Label endGame = new Label("GAME OVER");
+    //private int countScore = 0;//счет
+
+    public static int getCountScore() {
+        return countScore;
+    }
+
     private static final Elements[][] gameField = new Elements[columnSize][rowSize];//игровое поле в виде двумерного массива
 
-    public static int getRowSize() {
+    public int getRowSize() {
         return rowSize;
     }
-    public Label getEndGame() {
-        return endGame;
-    }
-    public Elements[][] getGameField() {
+
+    public static Elements[][] getGameField() {
         return gameField;
     }
+
+ //   GameFieldView gameFieldView = new GameFieldView();
 
     /**
      * Перерисовка поля
@@ -58,23 +61,8 @@ public class GameField extends Pane {
         for (int j = 0; j < gameField.length * cellSize; j += cellSize) {
             tetris.getCanvas().getGraphicsContext2D().strokeLine(0, j, cellSize * gameField.length, j);
         }
-
-        //настройка виджета отвечающего за счет
-        score.setTextFill(Color.RED);
-        score.setFont(new Font(21.5));
-        score.setLayoutX(510);
-        score.setLayoutY(21.5);
-
-        //настройка виджета отвечающего за окончание игры
-        endGame.setStyle("-fx-background-color: #0a0a0a");
-        endGame.setTextFill(Color.WHITE);
-        endGame.setFont(new Font(35.3));
-        endGame.setVisible(false);
-        endGame.setLayoutX(128);
-        endGame.setLayoutY(150);
-
         //добавление в граф сцены
-        getChildren().addAll(tetris.getCanvas(), score, endGame);
+        getChildren().add(tetris.getCanvas());
     }
 
     /**
@@ -97,6 +85,7 @@ public class GameField extends Pane {
      * Очищение заполненных строк
      */
     public void clearRow() {
+       // gameFieldView = new GameFieldView();
         int count = 0;
 
         for (int i = 0; i < getGameField().length; i++) {//счетчик подряд идущих элементов
@@ -116,8 +105,8 @@ public class GameField extends Pane {
                         tetris.getCanvas().getGraphicsContext2D().clearRect(j * cellSize, k * cellSize, cellSize, cellSize);
                     }
                 }
-                countScore += 100;
-                score.setText(String.valueOf(countScore));
+               countScore+=100;
+              //  GameFieldView.setScore(String.valueOf(countScore));
             }
         }
     }
@@ -185,32 +174,5 @@ public class GameField extends Pane {
                 tetris.getCanvas().getGraphicsContext2D().fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
             }
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GameField gameField = (GameField) o;
-        return countScore == gameField.countScore &&
-                Objects.equals(tetris, gameField.tetris) &&
-                Objects.equals(score, gameField.score) &&
-                Objects.equals(endGame, gameField.endGame);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tetris, countScore, score, endGame);
-    }
-
-    @Override
-    public String toString() {
-        return "GameField{" +
-                "cellSize=" + cellSize +
-                ", tetris=" + tetris +
-                ", countScore=" + countScore +
-                ", score=" + score +
-                ", endGame=" + endGame +
-                '}';
     }
 }

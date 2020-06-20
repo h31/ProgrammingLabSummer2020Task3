@@ -10,12 +10,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import model.*;
+import view.GameFieldView;
 
 import java.util.Objects;
 
 public class GameCycle extends GameField {
-    Figure figure = new Figure();
-    Button startButton = new Button("START");
+    private final Figure figure = new Figure();
+    private final Button startButton = new Button("START");
+    GameFieldView gameFieldView = new GameFieldView();
+    GameField gameField = new GameField();
 
     public GameCycle() {
         //стиль кнопки
@@ -23,6 +26,11 @@ public class GameCycle extends GameField {
         startButton.setFont(new Font(20));
         startButton.setLayoutY(150);
         startButton.setLayoutX(450);
+
+        //    Tetris tetris = new Tetris();
+        DropShadow shadow = new DropShadow();
+        startButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> startButton.setEffect(shadow));
+        startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
 
         buttonController();
 
@@ -35,18 +43,12 @@ public class GameCycle extends GameField {
     public void buttonController() {
         //эффекты для кнопки
         Lighting lighting = new Lighting();
-        DropShadow shadow = new DropShadow();
-        startButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> startButton.setEffect(shadow));
-        startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
-
         //запуск игры по нажатию на кнпку START
         startButton.setOnAction(actionEvent -> {
             startButton.setEffect(lighting);
             figure.setShape();
             keyController();
         });
-
-        startButton.isPressed();
     }
 
     /**
@@ -76,10 +78,11 @@ public class GameCycle extends GameField {
                 drawField();
                 drawFigure();
             }
+            GameFieldView.setScore(String.valueOf(GameField.getCountScore()));
 
-            if (endGame()) {
-                getEndGame().setVisible(true);
-            }
+            //   if (endGame()) {
+            //    gameFieldView.getEndGame().setVisible(true);
+            // }
 
         }));
         loop.setCycleCount(Timeline.INDEFINITE);

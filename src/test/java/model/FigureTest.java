@@ -2,16 +2,12 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 class FigureTest {
-    final JFXPanel fxPanel = new JFXPanel();
-    GameField gameField = new GameField();
-
     Figure shapeTest = new Figure();
     int[][] shape = new int[2][4];
 
@@ -44,7 +40,7 @@ class FigureTest {
     @Test
     void findIntersectTest() {
         for (int i = 0; i < 16; i++) {
-            gameField.getGameField()[5][i] = GameField.Elements.FigureL;
+            GameField.getGameField()[5][i] = GameField.Elements.FigureL;
         }
 
         shapeTest.setShape();
@@ -63,15 +59,8 @@ class FigureTest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FigureTest that = (FigureTest) o;
-        return Objects.equals(fxPanel, that.fxPanel) &&
-                Objects.equals(shapeTest, that.shapeTest) &&
+        return Objects.equals(shapeTest, that.shapeTest) &&
                 Arrays.equals(shape, that.shape);
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(fxPanel, shapeTest);
-        result = 31 * result + Arrays.hashCode(shape);
-        return result;
-    }
 }

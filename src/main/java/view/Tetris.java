@@ -19,8 +19,7 @@ import java.io.FileNotFoundException;
 public class Tetris extends Application {
     private final Canvas canvas = new Canvas(400, 600);
     private final Pane gameRoot = new Pane();
-    Scene scene = new Scene(gameRoot, 600, 600);
-    private final Label scoreLabel = new Label("Score");
+    private final Scene scene = new Scene(gameRoot, 600, 600);
 
     public Canvas getCanvas() {
         return canvas;
@@ -30,6 +29,7 @@ public class Tetris extends Application {
     public void start(final Stage primaryStage) throws FileNotFoundException {
         GameField gameField = new GameField();
         GameCycle gameCycle = new GameCycle();
+        GameFieldView gameFieldView = new GameFieldView();
 
         //установка картинки на задний фон
         Image image = new Image(new FileInputStream("src\\main\\resources\\image.jpg"),
@@ -38,20 +38,17 @@ public class Tetris extends Application {
         Background imageBack = new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, backgroundSize));
 
-        //эффекты для надписи
-        scoreLabel.setText("Score");
-        scoreLabel.setTextFill(Color.YELLOW);
-        scoreLabel.setFont(new Font(23));
-        scoreLabel.setLayoutX(420);
-        scoreLabel.setLayoutY(20);
+        //иконка для игры
+        primaryStage.getIcons().add(new Image(new FileInputStream("src\\main\\resources\\icon.png")));
 
+        //настройка подмостков
         primaryStage.setResizable(false);
         primaryStage.setTitle("TETRIS");
         primaryStage.setScene(scene);
         primaryStage.show();
 
         gameRoot.setBackground(imageBack);
-        gameRoot.getChildren().addAll(scoreLabel, gameCycle, gameField);
+        gameRoot.getChildren().addAll(gameCycle, gameField, gameFieldView);
     }
 
     public static void main(String[] args) {
