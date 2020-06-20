@@ -6,12 +6,16 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.Pane;
 
 public class GameFieldView extends Pane {
-    static Label score = new Label();
-    Label endGame = new Label("GAME OVER");
+   private static final Label score = new Label();
+   private static final Label endGame = new Label("GAME OVER");
 
-   public static void setScore(String s){
-       score.setText(s);
-   }
+    public static void setScore(String s) {
+        score.setText(s);
+    }
+
+    public static Label getEndGame() {
+        return endGame;
+    }
 
     Label scoreLabel = new Label("Score");
 

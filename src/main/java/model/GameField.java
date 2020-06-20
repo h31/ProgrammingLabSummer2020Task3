@@ -21,10 +21,13 @@ public class GameField extends Pane {
     private static final int columnSize = 24;//количество клеток по вертикали
     private static final int rowSize = 16;//количество клеток по горизонтали
     private final Tetris tetris = new Tetris();
-    //private int countScore = 0;//счет
 
     public static int getCountScore() {
         return countScore;
+    }
+
+    public static void setCountScore(int countScore) {
+        GameField.countScore = countScore;
     }
 
     private static final Elements[][] gameField = new Elements[columnSize][rowSize];//игровое поле в виде двумерного массива
@@ -36,8 +39,6 @@ public class GameField extends Pane {
     public static Elements[][] getGameField() {
         return gameField;
     }
-
- //   GameFieldView gameFieldView = new GameFieldView();
 
     /**
      * Перерисовка поля
@@ -85,7 +86,6 @@ public class GameField extends Pane {
      * Очищение заполненных строк
      */
     public void clearRow() {
-       // gameFieldView = new GameFieldView();
         int count = 0;
 
         for (int i = 0; i < getGameField().length; i++) {//счетчик подряд идущих элементов
@@ -105,8 +105,7 @@ public class GameField extends Pane {
                         tetris.getCanvas().getGraphicsContext2D().clearRect(j * cellSize, k * cellSize, cellSize, cellSize);
                     }
                 }
-               countScore+=100;
-              //  GameFieldView.setScore(String.valueOf(countScore));
+                countScore += 100;
             }
         }
     }

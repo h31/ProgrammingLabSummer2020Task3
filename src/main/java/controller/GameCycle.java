@@ -17,8 +17,6 @@ import java.util.Objects;
 public class GameCycle extends GameField {
     private final Figure figure = new Figure();
     private final Button startButton = new Button("START");
-    GameFieldView gameFieldView = new GameFieldView();
-    GameField gameField = new GameField();
 
     public GameCycle() {
         //стиль кнопки
@@ -27,7 +25,6 @@ public class GameCycle extends GameField {
         startButton.setLayoutY(150);
         startButton.setLayoutX(450);
 
-        //    Tetris tetris = new Tetris();
         DropShadow shadow = new DropShadow();
         startButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> startButton.setEffect(shadow));
         startButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> startButton.setEffect(null));
@@ -78,11 +75,13 @@ public class GameCycle extends GameField {
                 drawField();
                 drawFigure();
             }
+
             GameFieldView.setScore(String.valueOf(GameField.getCountScore()));
 
-            //   if (endGame()) {
-            //    gameFieldView.getEndGame().setVisible(true);
-            // }
+            if (endGame()) {
+                GameFieldView.getEndGame().setVisible(true);
+                GameField.setCountScore(0);
+            }
 
         }));
         loop.setCycleCount(Timeline.INDEFINITE);

@@ -16,8 +16,10 @@ public class Figure extends GameField {
      * Движение фигуры вниз
      */
     public void moveDown() {
-        for (int i = 0; i < 4; i++) {
-            shape[1][i]++;
+        if (!endGame()) {
+            for (int i = 0; i < 4; i++) {
+                shape[1][i]++;
+            }
         }
     }
 
@@ -39,11 +41,11 @@ public class Figure extends GameField {
                 elements = Elements.FigureL;
                 break;
             case 3:
-                shape = new int[][]{{3, 3, 4, 4}, {1, 2, 2, 3}};
+                shape = new int[][]{{5, 5, 6, 6}, {1, 2, 2, 3}};
                 elements = Elements.FigureS;
                 break;
             case 4:
-                shape = new int[][]{{3, 4, 4, 4}, {2, 1, 2, 3}};
+                shape = new int[][]{{5, 5, 6, 6}, {2, 1, 2, 3}};
                 elements = Elements.FigureT;
                 break;
             case 5:
@@ -51,7 +53,7 @@ public class Figure extends GameField {
                 elements = Elements.FigureJ;
                 break;
             case 6:
-                shape = new int[][]{{4, 4, 3, 3}, {1, 2, 2, 3}};
+                shape = new int[][]{{5, 5, 4, 4}, {1, 2, 2, 3}};
                 elements = Elements.FigureZ;
                 break;
         }
@@ -109,7 +111,13 @@ public class Figure extends GameField {
             shape[0][i] = maxY - (maxX - shape[1][i]) - 1;
             shape[1][i] = maxX - (3 - (maxY - temp)) + 1;
         }
-
+        if (findIntersect()) {//*возможно исправить
+            for (int i = 0; i < 4; i++) {
+                int temp = shape[0][i];
+                shape[0][i] = maxY + (maxX - shape[1][i]) - 2;
+                shape[1][i] = maxX + (1 - (maxY - temp));
+            }
+        }
     }
 
     /**
@@ -121,6 +129,7 @@ public class Figure extends GameField {
             if (shape[1][i] >= 24 || shape[0][i] >= 16 || shape[1][i] < 0 || shape[0][i] < 0 ||
                     getGameField()[shape[1][i]][shape[0][i]] != Elements.EmptyCell) {
                 intersect = true;
+                break;
             }
         }
         return intersect;
