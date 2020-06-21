@@ -46,7 +46,7 @@ public class Controller {
         model.fillField();
         for (int i = 0; i < 5; i++){
             for (int j = 0; j < 5; j++)
-                redrawCell(i, j, model.getCharFromField(i, j));
+                redrawCell(i, j, model.getSymbol(i, j));
         }
 
         whoseMove.setText("1st player");

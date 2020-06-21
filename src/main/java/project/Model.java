@@ -132,19 +132,15 @@ public class Model {
 
     //Геттеры, сеттеры
 
-    public char getCharFromField(int i, int j) {
+    public char getSymbol(int i, int j) {
         return field[i][j];
-    }
-
-    public Set<Pair<Integer, Integer>> getPossibleMoves() {
-        return possibleMoves;
     }
 
     public void setSymbol(int i, int j, char symbol) {
         field[i][j] = symbol;
     }
 
-    public char getSymbol(int i, int j) {
-        return field[i][j];
+    public Set<Pair<Integer, Integer>> getPossibleMoves() {
+        return possibleMoves;
     }
 }
