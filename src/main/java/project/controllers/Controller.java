@@ -18,9 +18,6 @@ import java.io.IOException;
 public class Controller {
     private Field field;
     private View view;
-//    int xSize = 1;
-//    int ySize = 1;
-//    int bombsNum = 1;
     @FXML
     TextField x;
     @FXML
@@ -92,7 +89,6 @@ public class Controller {
             }
         }
 
-//        view.setDifficulty(ySize, xSize, bombsNum);
         if (!view.isDifficultySet())
             return;
 
