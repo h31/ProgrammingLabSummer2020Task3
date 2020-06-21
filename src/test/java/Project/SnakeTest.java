@@ -34,7 +34,8 @@ class SnakeTest {
     }
 
     @Test
-    public void modelTest() {
+    public void classicGameTest() {
+        Model.alternativeGame = false;
         a.createParent();
         b.startGame();
         View.timeline.stop();
@@ -51,7 +52,27 @@ class SnakeTest {
     }
 
     @Test
+    public void alternativeGameTest() {
+        Model.alternativeGame = true;
+        a.createParent();
+        b.startGame();
+        View.timeline.stop();
+        Model.part = a.createSnakePart();
+        Model.alternativeGame();
+        assertEquals(Model.bodySize, Model.snake.get(0).getTranslateX());
+        assertEquals(0, Model.snake.get(0).getTranslateY());
+        assertEquals(6, Model.snake.size());
+
+        Model.barriers.add(View.createBarrier());
+        Model.barriers.get(0).setTranslateX(Model.bodySize * 2);
+        Model.barriers.get(0).setTranslateY(0);
+        Model.alternativeGame();
+        assertEquals(5, Model.snake.size());
+    }
+
+    @Test
     public void gameOverTest() {
+        Model.alternativeGame = false;
         a.createParent();
         Model.snake.add(new Rectangle());
         Model.snake.add(new Rectangle());

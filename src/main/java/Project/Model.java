@@ -11,9 +11,9 @@ public class Model {
         RIGHT
     }
 
-    static int bodySize;
-    static int width;
-    static int height;
+    static final int bodySize = 50;
+    static final int width = bodySize * 17;
+    static final int height = bodySize * 14;
     static int score;
     static Direction direction = Direction.RIGHT;
     static ObservableList<Node> snake;
@@ -34,15 +34,15 @@ public class Model {
         Node body = snake.get(0);
         if (body.getTranslateX() == (meal.getTranslateX() - radius)
                 && body.getTranslateY() == (meal.getTranslateY() - radius)) {
-            boolean flag = true;
-            while (flag) {
-                flag = false;
+            boolean mealPlacedInSnake = true;
+            while (mealPlacedInSnake) {
+                mealPlacedInSnake = false;
                 meal.setTranslateX((int) (Math.random() * (width - bodySize)) / bodySize * bodySize + radius);
                 meal.setTranslateY((int) (Math.random() * (height - bodySize)) / bodySize * bodySize + radius);
                 for (Node rect : snake) {
                     if (rect.getTranslateX() == (meal.getTranslateX() - radius)
                             && rect.getTranslateY() == (meal.getTranslateY() - radius))
-                        flag = true;
+                        mealPlacedInSnake = true;
                 }
             }
             part.setTranslateX(bodyX);

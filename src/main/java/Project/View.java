@@ -18,11 +18,8 @@ public class View {
     private int bodySize = 50;
 
     public Parent createParent() {
-        int width = bodySize * 17;
-        int height = bodySize * 14;
-        Model.bodySize = bodySize;
-        Model.width = width;
-        Model.height = height;
+        final int width = Model.width ;
+        final int height = Model.height;
         Pane root = new Pane();
         root.setPrefSize(width, height);
 

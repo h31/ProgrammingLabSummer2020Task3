@@ -35,8 +35,8 @@ public class Menu {
         });
         Group buttons = new Group();
         buttons.getChildren().addAll(startClassicGame, startAlternativeGame);
-        menu.setMinSize(300, 300);
-        menu.setMaxSize(300, 300);
+        menu.setMinSize(310, 300);
+        menu.setMaxSize(310, 300);
         menu.setTop(topLabel);
         menu.setCenter(buttons);
         return new Scene(menu);
