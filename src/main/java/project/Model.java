@@ -55,7 +55,6 @@ public class Model {
         Pair<Integer, Integer> oldCoordinates = new Pair<>(i, j);
         possibleMoves.remove(oldCoordinates);
 
-        //вынести в от
         if (i < 4 && field[i + 1][j] != ' ') {
             field[i + 1][j] = '+';
             possibleMoves.add(new Pair<>(i + 1, j));
@@ -92,33 +91,27 @@ public class Model {
     }
 
     private String getFirstWord()  {
-        String filePath = "src/main/resources/five_let_words.txt";
-        final BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(filePath));
-        } catch (FileNotFoundException e) {
-            //вывести сообщение об ошибке
-            return "балда";
-        }
-        int numOfLines = getNumberOfLines(filePath);
+        String filePath = "/five_let_words.txt";
+        BufferedReader reader =
+                new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filePath)));
+        int numOfLines = getNumberOfLines("src/main/resources" + filePath);
         int random = (int)(( Math.random() * numOfLines + 1));
         int i = 1;
-        String res;
-        try(reader) {
+        try (reader) {
             String string = reader.readLine();
             while (i != random) {
                 string = reader.readLine();
                 i++;
             }
-            res = string;
+            return string;
         } catch (IOException e) {
             return "балда";
         }
-        return res;
     }
 
     private boolean isWord(String checking) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/dictionary.txt"));
+        BufferedReader reader =
+                new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/dictionary.txt")));
         try(reader) {
             String string = reader.readLine();
             while (string != null) {

@@ -61,10 +61,15 @@ public class Controller {
         if (newLetter == '?') {
             gc.setStroke(Color.ORANGE);
             gc.setLineWidth(2.0);
+            gc.setGlobalAlpha(1.0);
             gc.strokeRoundRect(5, 5, 80, 80, 10, 10);
+        } else if (newLetter == '+') {
+            gc.clearRect(0, 0, cellWidth, cellHeight);
+            gc.setFill(Color.CHARTREUSE);
+            gc.setGlobalAlpha(0.5);
+            gc.fillRect(1, 1, cellWidth - 2, cellHeight - 2);
         } else {
             gc.clearRect(0, 0, cellWidth, cellHeight);
-
             gc.setFont(Font.font(null, 40));
             gc.fillText(String.valueOf(newLetter).toUpperCase(), 30, 55);
             model.setSymbol(i, j, newLetter);
