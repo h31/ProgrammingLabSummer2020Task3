@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 
@@ -17,6 +17,8 @@ public class Controller {
     final private Model model = new Model();
 
     final private static Canvas[][] canvases = new Canvas[5][5];
+    final private static int cellWidth = 90;
+    final private static int cellHeight = 90;
 
     final Text firstPlayerText = new Text(0, 0, "1st player:");
     final Text secondPlayerText = new Text(0, 0, "2nd player:");
@@ -34,7 +36,7 @@ public class Controller {
     public void fillCanvas() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                canvases[i][j] = new Canvas(90, 90);
+                canvases[i][j] = new Canvas(cellWidth, cellHeight);
                 gridField.add(canvases[i][j], j, i);
             }
         }
@@ -56,16 +58,14 @@ public class Controller {
     public static void redrawCell(int i, int j, char newLetter) {
         GraphicsContext gc = canvases[i][j].getGraphicsContext2D();
 
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(1.0);
-        gc.strokeRect(0, 0, 90, 90);
+        /*if (newLetter == '^') {
+            gc.clearRect(0, 0, cellWidth, cellHeight);
+        }*/
 
-        gc.clearRect(0, 0, 90, 90);
-        gc.setGlobalAlpha(1.0);
+        gc.clearRect(0, 0, cellWidth, cellHeight);
 
-        gc.setFill(Color.BLACK);
-        gc.fillText(String.valueOf(newLetter).toUpperCase(), 40, 50);
-
+        gc.setFont(Font.font(null, 40));
+        gc.fillText(String.valueOf(newLetter).toUpperCase(), 30, 55);
     }
 
     public void chooseCell() {
