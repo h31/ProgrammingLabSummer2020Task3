@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="JavaFX_try_4.main">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaFX_try_4_main</output-path>
+    <root id="root">
+      <element id="archive" name="JavaFX_try_4_main.jar">
+        <element id="module-output" name="JavaFX_try_4.main" />
+      </element>
+    </root>
+  </artifact>
+</component>
