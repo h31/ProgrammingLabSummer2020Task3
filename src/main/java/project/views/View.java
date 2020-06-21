@@ -144,12 +144,9 @@ public class View {
     }
 
     public void redraw() {
-        root.getChildren().remove(flagsLeft);
         flagsLeft.setText("Flags: " + field.getFlagsLeft());
-        root.getChildren().add(flagsLeft);
 
         if (field.isGameOver()) {
-            root.getChildren().remove(face);
             face.getChildren().remove(1);
             Text smile = new Text(field.isLost()
                     ? "XwX"
@@ -157,7 +154,6 @@ public class View {
             smile.setFont(Font.font(14));
 
             face.getChildren().add(smile);
-            root.getChildren().add(face);
         }
 
         if (!timeStarted) {
@@ -168,7 +164,6 @@ public class View {
         if (field.isGameOver())
             timeline.stop();
 
-        root.getChildren().remove(grid);
         grid.getChildren().clear();
         for (Tile[] rows : field.getGrid()) {
             for (Tile tile : rows) {
@@ -178,7 +173,6 @@ public class View {
                 grid.getChildren().add(newTile);
             }
         }
-        root.getChildren().add(grid);
     }
 
     public StackPane createClosedTile(Tile tile) {
