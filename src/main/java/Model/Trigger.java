@@ -51,7 +51,7 @@ public class Trigger {
         this.interactedObject = new Pair<>(new ImageView(), null);
     }
 
-    public void setObjectPosition(int x, int y) {
+    void setObjectPosition(int x, int y) {
         getIntObjectCol().setX(x);
         getIntObjectCol().setY(y);
         getIntObjectImg().setX(x);
@@ -66,11 +66,11 @@ public class Trigger {
         return EFFECT;
     }
 
-    public COLLISION_TYPE getTYPE() {
+    COLLISION_TYPE getTYPE() {
         return TYPE;
     }
 
-    public String getNAME() {
+    String getNAME() {
         return NAME;
     }
 
@@ -90,10 +90,11 @@ public class Trigger {
         return IMAGE;
     }
 
-    public void setUsed(boolean state) {
+    void setUsed(boolean state) {
         used = state;
     }
-    public boolean getUsed() {
+
+    boolean getUsed() {
         return used;
     }
 }

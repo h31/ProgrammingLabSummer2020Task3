@@ -19,12 +19,13 @@ public abstract class Level {
 
     /**
      * Конструктор - абстрактного класса, позволяет содержать всю информацию об уровнях.
-     * @param location - название уровня
-     * @param image - изображение уровня
+     *
+     * @param location  - название уровня
+     * @param image     - изображение уровня
      * @param COLLISION - массив коллизий
-     * @param TRIGGERS - массив триггеров {@link Trigger}
-     * @param OBJECTS
-     * @param pCoord
+     * @param TRIGGERS  - массив триггеров {@link Trigger}
+     * @param OBJECTS - массив объектов {@link LevelObject}
+     * @param pCoord - начальные координаты на уровне
      */
     Level(String location, Image image, LinkedList<Rectangle> COLLISION, List<Trigger> TRIGGERS, LevelObject[] OBJECTS, int[] pCoord) {
         LEVEL_IMG.setImage(image);
@@ -56,6 +57,7 @@ public abstract class Level {
     public List<Trigger> getTRIGGERS() {
         return TRIGGERS;
     }
+
     public LinkedList<Rectangle> getCOLLISION() {
         return COLLISION;
     }
@@ -64,7 +66,7 @@ public abstract class Level {
         return LEVEL_IMG;
     }
 
-    public int[] getpCoord() {
+    int[] getPCoord() {
         return pCoord;
     }
 
@@ -72,16 +74,16 @@ public abstract class Level {
         return location;
     }
 
-    public void setCOLLISION(LinkedList<Rectangle> COLLISION) {
+    void setCOLLISION(LinkedList<Rectangle> COLLISION) {
         this.COLLISION = COLLISION;
     }
 
-    public void setTRIGGERS(List<Trigger> TRIGGERS) {
+    void setTRIGGERS(List<Trigger> TRIGGERS) {
         this.TRIGGERS = TRIGGERS;
     }
 
     List<Trigger> createTriggerList(List<Trigger> list) {
-        List resultList = new ArrayList();
+        List<Trigger> resultList = new ArrayList<>();
         for (Trigger trigger : list) {
             resultList.add(new Trigger(trigger));
         }
@@ -89,7 +91,7 @@ public abstract class Level {
     }
 
     LinkedList<Rectangle> createCollisionList(LinkedList<Rectangle> list) {
-        LinkedList resultList = new LinkedList();
+        LinkedList<Rectangle> resultList = new LinkedList<>();
         for (Rectangle col : list) {
             resultList.add(new Rectangle(col.getX(), col.getY(), col.getWidth(), col.getHeight()));
         }

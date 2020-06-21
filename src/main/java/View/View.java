@@ -1,7 +1,6 @@
 package View;
 
 import Controller.Controller;
-import Main.Main;
 import Model.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,11 +19,6 @@ public class View {
 
     private final boolean DEBUG_MODE;
     private final double DEBUG_OPACITY = 0.25;
-
-    public View(Stage stage, boolean debugMode) {
-        this.Stage = stage;
-        this.DEBUG_MODE = debugMode;
-    }
 
     public View(Stage stage, boolean debugMode, Level level) {
         this.Stage = stage;
@@ -55,7 +49,7 @@ public class View {
     }
 
     /*
-        Создание сцены
+     *  Создание сцены
      */
     private Scene createScene() {
         Group general = new Group();
@@ -78,9 +72,11 @@ public class View {
 
     private void loadLevelIMG(Group general) {
         general.getChildren().add(LEVEL.getLEVEL_IMG());
-        if (LEVEL.getLocation().equals("First")) general.getChildren().add(SpriteData.getSprite("FirstLevel/Intro.png"));
+        if (LEVEL.getLocation().equals("First"))
+            general.getChildren().add(SpriteData.getSprite("FirstLevel/Intro.png"));
         LEVEL.getLEVEL_IMG().setViewOrder(3);
     }
+
     private void loadPlayer(Group general) {
         general.getChildren().addAll(Player.getImgView(), Player.getCOLLISION()); // Загрузка персонажа
         Player.getImgView().setViewOrder(1);

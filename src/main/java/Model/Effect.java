@@ -13,11 +13,11 @@ public class Effect extends Animated {
 
     /**
      * Конструктор - создание нового объекта эффект
-     * @param type - тип эффекта
-     * @see COLLISION_TYPE
-     * @param x
-     * @param y - начальные координаты для эффекта
      *
+     * @param type - тип эффекта
+     * @param x    - начальная координата x для эффекта
+     * @param y    - начальная координата y для эффекта
+     * @see COLLISION_TYPE
      **/
     Effect(EFFECT_TYPE type, int x, int y) {
         this.TYPE = type;
@@ -33,8 +33,7 @@ public class Effect extends Animated {
             offsetWidth = -15;
         } else if (TYPE == EFFECT_TYPE.MAGIC_ITEM) {
             effect = SpriteData.getSprites("Effects/Tesla_Orb");
-        }
-        else {
+        } else {
             throw new IllegalArgumentException();
         }
         super.setImgArray(effect);
@@ -67,7 +66,7 @@ public class Effect extends Animated {
         }
     }
 
-    public void stopAnimation() {
+    void stopAnimation() {
         if (TYPE == EFFECT_TYPE.MAGIC_ITEM) {
             LEVEL_CONTANTS.teslaOrbAnim.stop();
             setImg(LEVEL_CONTANTS.teslaOrbBroken);
@@ -157,7 +156,7 @@ public class Effect extends Animated {
         super.getImgView().setY(y);
     }
 
-    public Rectangle getCOLLISION() {
+    Rectangle getCOLLISION() {
         return COLLISION;
     }
 }

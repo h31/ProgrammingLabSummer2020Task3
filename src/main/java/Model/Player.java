@@ -9,8 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.util.Iterator;
-
 
 public class Player extends Animated {
 
@@ -61,8 +59,8 @@ public class Player extends Animated {
         super.setImgView(SKELETON_IDLE_LEFT[0]);
         this.VIEW = view;
         this.level = level;
-        super.getImgView().setX(level.getpCoord()[0]);
-        super.getImgView().setY(level.getpCoord()[1]);
+        super.getImgView().setX(level.getPCoord()[0]);
+        super.getImgView().setY(level.getPCoord()[1]);
         this.COLLISION = new Rectangle(super.getImgView().getX(), super.getImgView().getY(), super.getImgView().getImage().getWidth(), super.getImgView().getImage().getHeight());
         this.BOTTOM_COLLISION = this.COLLISION.getY() + this.COLLISION.getHeight(); // Получаем координаты по Y нижней части коллизии
         runAnimation();
@@ -134,7 +132,7 @@ public class Player extends Animated {
         return isWallCollision() || isObjectCollision() || isTriggerCollision();
     }
 
-    public boolean isWallCollision() {
+    private boolean isWallCollision() {
         for (Rectangle colShape : level.getCOLLISION()) {
             if (getCOLLISION().intersects(colShape.getBoundsInLocal())) {
                 return true;
@@ -143,7 +141,7 @@ public class Player extends Animated {
         return false;
     }
 
-    public boolean isObjectCollision() {
+    private boolean isObjectCollision() {
         for (LevelObject object : level.getOBJECTS()) {
             if (getCOLLISION().intersects(object.getCurrentCollision().getBoundsInLocal())) {
                 return true;
@@ -152,7 +150,7 @@ public class Player extends Animated {
         return false;
     }
 
-    public boolean isTriggerCollision() {
+    private boolean isTriggerCollision() {
         for (Trigger trigger : level.getTRIGGERS()) {
             if (this.isFreezed()) return false;
             Rectangle rect = trigger.getRECT();
@@ -199,7 +197,7 @@ public class Player extends Animated {
             } else {
                 throw new IllegalArgumentException("Error");
             }
-            int[] newCoord = level.getpCoord();
+            int[] newCoord = level.getPCoord();
             this.setPosition(newCoord[0], newCoord[1]);
             VIEW.setLEVEL(level);
             VIEW.showScene();
@@ -208,7 +206,7 @@ public class Player extends Animated {
         });
     }
 
-    public void die() {
+    private void die() {
         this.setFreezed(true);
         FadeTransition ft = new FadeTransition(Duration.millis(100), this.getImgView());
         ft.setFromValue(1.0);
@@ -227,7 +225,7 @@ public class Player extends Animated {
             } else {
                 throw new IllegalArgumentException("Error");
             }
-            int[] newCoord = level.getpCoord();
+            int[] newCoord = level.getPCoord();
             this.setPosition(newCoord[0], newCoord[1]);
             VIEW.setLEVEL(level);
             VIEW.showScene();

@@ -12,11 +12,12 @@ import java.util.List;
 
 
 public class SecondLevel extends Level {
-    public PathTransition dMagicBallAnim1;
-    public PathTransition dMagicBallAnim2;
+    private PathTransition dMagicBallAnim1;
+    private PathTransition dMagicBallAnim2;
 
-    List<PathTransition> pathTransitionList = new ArrayList<>();
-    public SecondLevel() {
+    private List<PathTransition> pathTransitionList = new ArrayList<>();
+
+    SecondLevel() {
         super(LEVEL_CONTANTS.SECOND_LOCATION,
                 LEVEL_CONTANTS.SECOND_IMG,
                 LEVEL_CONTANTS.SECOND_COLLISION,
@@ -90,7 +91,8 @@ public class SecondLevel extends Level {
         Effect effect = trigger.getEFFECT();
         View.showEffect(effect);
     }
-    public void stopTeslaOrb(Trigger trigger) {
+
+    private void stopTeslaOrb(Trigger trigger) {
         if (trigger.getUsed()) return;
         trigger.setUsed(true);
         trigger.getEFFECT().stopAnimation();

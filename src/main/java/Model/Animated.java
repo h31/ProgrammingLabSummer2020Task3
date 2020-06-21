@@ -22,7 +22,8 @@ abstract class Animated {
     public void setImgView(ImageView imgView) {
         this.imgView = imgView;
     }
-    public void setImg(Image img) {
+
+    void setImg(Image img) {
         this.imgView.setImage(img);
     }
 }

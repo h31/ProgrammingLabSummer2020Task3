@@ -11,7 +11,6 @@ public final class SpriteAnimation extends Transition {
         setCycleDuration(duration);
     }
 
-
     @Override
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor((k * animated.getImgArray().length)), animated.getImgArray().length - 1);

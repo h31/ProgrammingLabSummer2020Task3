@@ -72,8 +72,8 @@ public final class SpriteData {
     }
 
     public static void toCenter(ImageView img) {
-        img.setX(Main.WIDTH / 2 - img.getImage().getWidth() / 2);
-        img.setY(Main.HEIGHT / 2 - img.getImage().getHeight() / 2);
+        img.setX(Main.WIDTH / 2.0 - img.getImage().getWidth() / 2);
+        img.setY(Main.HEIGHT / 2.0 - img.getImage().getHeight() / 2);
     }
 }
 

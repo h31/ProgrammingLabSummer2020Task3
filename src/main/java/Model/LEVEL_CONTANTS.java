@@ -3,24 +3,22 @@ package Model;
 import javafx.animation.Animation;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
-public final class LEVEL_CONTANTS {
+import java.util.*;
+
+final class LEVEL_CONTANTS {
     /*
      *  Константы для первого уровня
      */
-    public static final Image FIRST_IMG = SpriteData.getBackgroundImg("FirstLevel/FirstLevel.png");
-    public static final String FIRST_LOCATION = "First";
+    static final Image FIRST_IMG = SpriteData.getBackgroundImg("FirstLevel/FirstLevel.png");
+    static final String FIRST_LOCATION = "First";
 
-    public static final List<Trigger> FIRST_TRIGGERS = new ArrayList<>() {{
+    static final List<Trigger> FIRST_TRIGGERS = new ArrayList<>() {{
         add(new Trigger("Enter", new Rectangle(425, 381, 30, 30), new Effect(), COLLISION_TYPE.ENTER));
-        add(new Trigger("ReadNote", new Rectangle(595, 425, 25 , 25), SpriteData.getSprite("FirstLevel/note.png"), COLLISION_TYPE.INTERACT));
+        add(new Trigger("ReadNote", new Rectangle(595, 425, 25, 25), SpriteData.getSprite("FirstLevel/note.png"), COLLISION_TYPE.INTERACT));
     }};
 
-    public static final LinkedList<Rectangle> FIRST_COLLISION = new LinkedList<>(Arrays.asList(
+    static final LinkedList<Rectangle> FIRST_COLLISION = new LinkedList<>(Arrays.asList(
             new Rectangle(480, 381, 540, 30), //Верхняя стена справа
             new Rectangle(270, 381, 130, 30), // Верхняя стена слева
             new Rectangle(265, 381, 10, 500), // Стена слева
@@ -29,7 +27,7 @@ public final class LEVEL_CONTANTS {
             new Rectangle(400, 370, 80, 10)
     ));
 
-    public static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FirstLevel/Objects");
+    static final LevelObject[] FIRST_OBJECTS = SpriteData.getLevelObjects("FirstLevel/Objects");
 
     static {
         FIRST_OBJECTS[0].setLocation(480, 520);
@@ -38,7 +36,7 @@ public final class LEVEL_CONTANTS {
         FIRST_OBJECTS[3].setLocation(385, 450);
     }
 
-    public static final int[] FIRST_pCOORD = {
+    static final int[] FIRST_pCOORD = {
             800,
             600
     };
@@ -48,10 +46,10 @@ public final class LEVEL_CONTANTS {
      *  Константы для второго уровня
      */
 
-    public static final Image SECOND_IMG = SpriteData.getBackgroundImg("SecondLevel/SecondLevel.png");
-    public static final String SECOND_LOCATION = "Second";
+    static final Image SECOND_IMG = SpriteData.getBackgroundImg("SecondLevel/SecondLevel.png");
+    static final String SECOND_LOCATION = "Second";
 
-    public static final List<Trigger> SECOND_TRIGGERS = new ArrayList<>(Arrays.asList(
+    static final List<Trigger> SECOND_TRIGGERS = new ArrayList<>(Arrays.asList(
             new Trigger(
                     "OpenWall",
                     new Rectangle(70, 345, 40, 40),
@@ -87,11 +85,12 @@ public final class LEVEL_CONTANTS {
             ),
             new Trigger(
                     "TeslaOrb",
-                    new Rectangle(965, 302, 20,35),
-                    new Effect(EFFECT_TYPE.MAGIC_ITEM, 950,290),
+                    new Rectangle(965, 302, 20, 35),
+                    new Effect(EFFECT_TYPE.MAGIC_ITEM, 950, 290),
                     COLLISION_TYPE.INTERACT
-                    )
+            )
     ));
+
     /*
         Зависимые триггеры смерти
      */
@@ -126,7 +125,7 @@ public final class LEVEL_CONTANTS {
         SECOND_TRIGGERS.get(0).setObjectPosition(479, 530);
     }
 
-    public static final LinkedList<Rectangle> SECOND_COLLISION = new LinkedList<>(Arrays.asList(
+    static final LinkedList<Rectangle> SECOND_COLLISION = new LinkedList<>(Arrays.asList(
             new Rectangle(0, 730, 1000, 4), // Вся нижняя стена
             new Rectangle(0, 520, 4, 240), //Первая левая стена
             new Rectangle(0, 520, 251, 20), // Верхняя стена
@@ -153,13 +152,13 @@ public final class LEVEL_CONTANTS {
             new Rectangle(479, 530, 4, 240) // Коллизия исчезающей стены (всегда последняя)
     ));
 
-    public static final LevelObject[] SECOND_OBJECTS = new LevelObject[0];
+    static final LevelObject[] SECOND_OBJECTS = new LevelObject[0];
 
     static final int[] SECOND_pCOORD = {
             100,
             650
     };
 
-    public static final Image teslaOrbBroken = SpriteData.getSprite("Effects/TeslaOrbBroken.png").getImage();
-    public static Animation teslaOrbAnim;
+    static final Image teslaOrbBroken = Objects.requireNonNull(SpriteData.getSprite("Effects/TeslaOrbBroken.png")).getImage();
+    static Animation teslaOrbAnim;
 }
