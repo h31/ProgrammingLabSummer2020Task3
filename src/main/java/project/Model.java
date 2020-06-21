@@ -10,7 +10,7 @@ public class Model {
     //i - вертикальная ось (строки), j - горизонтальная (столбцы)
 
     //Массив для поля
-    final private static char[][] field = new char[5][5];
+    final private char[][] field = new char[5][5];
 
     //Счёт игроков
     private int firstPlayerScore;
@@ -20,7 +20,7 @@ public class Model {
     private boolean firstToMove;
 
     //Множество клеток, в которые можно поставить букву
-    private Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
+    private final Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
 
     // ??? Множество занятых клеток
     //private static Set<Pair<Integer, Integer>> filledCells = new HashSet<>();
@@ -145,5 +145,13 @@ public class Model {
 
     public Set<Pair<Integer, Integer>> getPossibleMoves() {
         return possibleMoves;
+    }
+
+    public void setSymbol(int i, int j, char symbol) {
+        field[i][j] = symbol;
+    }
+
+    public char getSymbol(int i, int j) {
+        return field[i][j];
     }
 }

@@ -7,18 +7,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Pair;
 
 import java.util.Optional;
 
 public class Controller {
     final private Model model = new Model();
 
-    final private static Canvas[][] canvases = new Canvas[5][5];
-    final private static int cellWidth = 90;
-    final private static int cellHeight = 90;
+    final private Canvas[][] canvases = new Canvas[5][5];
+    final private int cellWidth = 90;
+    final private int cellHeight = 90;
 
     final Text firstPlayerText = new Text(0, 0, "1st player:");
     final Text secondPlayerText = new Text(0, 0, "2nd player:");
@@ -55,17 +55,21 @@ public class Controller {
         secondScoreText.setText("0");
     }
 
-    public static void redrawCell(int i, int j, char newLetter) {
+    public void redrawCell(int i, int j, char newLetter) {
         GraphicsContext gc = canvases[i][j].getGraphicsContext2D();
 
-        /*if (newLetter == '^') {
+        if (newLetter == '?') {
+            gc.setStroke(Color.ORANGE);
+            gc.setLineWidth(2.0);
+            gc.strokeRoundRect(5, 5, 80, 80, 10, 10);
+        } else {
             gc.clearRect(0, 0, cellWidth, cellHeight);
-        }*/
 
-        gc.clearRect(0, 0, cellWidth, cellHeight);
+            gc.setFont(Font.font(null, 40));
+            gc.fillText(String.valueOf(newLetter).toUpperCase(), 30, 55);
+            model.setSymbol(i, j, newLetter);
+        }
 
-        gc.setFont(Font.font(null, 40));
-        gc.fillText(String.valueOf(newLetter).toUpperCase(), 30, 55);
     }
 
     public void chooseCell() {
@@ -78,12 +82,7 @@ public class Controller {
                         int j = GridPane.getColumnIndex(cell);
 
                         boolean isCellCorrect = false;
-                        for (Pair<Integer, Integer> coordinate : model.getPossibleMoves()) {
-                            if (coordinate.getKey() == i && coordinate.getValue() == j) {
-                                isCellCorrect = true;
-                                break;
-                            }
-                        }
+                        if (model.getSymbol(i, j) != ' ') isCellCorrect = true;
 
                         if (isCellCorrect) {
                             redrawCell(i, j, '?');
