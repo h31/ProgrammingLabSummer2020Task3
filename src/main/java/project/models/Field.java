@@ -1,7 +1,9 @@
 package project.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Field {
     private int rowNumber;
@@ -62,6 +64,10 @@ public class Field {
         return grid;
     }
 
+    public Tile getTile(int x, int y) {
+        return grid[x][y];
+    }
+
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
@@ -107,12 +113,13 @@ public class Field {
                 }
             }
         }
+
+        fieldInitialized = true;
     }
 
     public void openTile(Tile tile) {
         if (!fieldInitialized) {
             initialiseField(tile);
-            fieldInitialized = true;
         }
 
         if (tile.isMarked() || isGameOver())
@@ -206,5 +213,27 @@ public class Field {
         }
 
         return neighbours;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Field field = (Field) o;
+        return rowNumber == field.rowNumber &&
+                tilesInRow == field.tilesInRow &&
+                bombs == field.bombs &&
+                flagsLeft == field.flagsLeft &&
+                gameOver == field.gameOver &&
+                lost == field.lost &&
+                fieldInitialized == field.fieldInitialized &&
+                Arrays.deepEquals(grid, field.grid);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(rowNumber, tilesInRow, bombs, flagsLeft, gameOver, lost, fieldInitialized);
+        result = 31 * result + Arrays.deepHashCode(grid);
+        return result;
     }
 }

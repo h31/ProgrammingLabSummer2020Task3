@@ -2,10 +2,7 @@ package project.views;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,6 +27,7 @@ public class View {
     private Label flagsLeft;
     private Timeline timeline;
     private StackPane face;
+    private Group grid;
 
     private final double r = 18;
     private final double n = r * Math.sqrt(0.75);
@@ -97,7 +95,7 @@ public class View {
         face.getChildren().addAll(hex, smile);
 
         AnchorPane.setTopAnchor(face, 15d);
-        face.setTranslateX((double) (windowWidth / 2) - 1.55 * n);
+        face.setTranslateX(xStartOffset - n + tileWidth * field.getTilesInRow() / 2);
         root.getChildren().add(face);
 
         flagsLeft = new Label("Flags: " + field.getFlagsLeft());
@@ -133,12 +131,14 @@ public class View {
         });
         root.getChildren().add(returnToMenu);
 
+        grid = new Group();
         for (Tile[] rows : field.getGrid()) {
             for (Tile tile : rows) {
                 StackPane newTile = createClosedTile(tile);
-                root.getChildren().add(newTile);
+                grid.getChildren().add(newTile);
             }
         }
+        root.getChildren().add(grid);
 
         return root;
     }
@@ -168,20 +168,21 @@ public class View {
         if (field.isGameOver())
             timeline.stop();
 
+        root.getChildren().remove(grid);
+        grid.getChildren().clear();
         for (Tile[] rows : field.getGrid()) {
             for (Tile tile : rows) {
-                root.getChildren().remove(tile);
-
                 StackPane newTile = tile.isOpened()
                         ? createOpenedTile(tile)
                         : createClosedTile(tile);
-                root.getChildren().add(newTile);
+                grid.getChildren().add(newTile);
             }
         }
+        root.getChildren().add(grid);
     }
 
     public StackPane createClosedTile(Tile tile) {
-        tile.getChildren().clear();
+        StackPane node = new StackPane();
 
         Hexagon cover = new Hexagon(r, n);
         cover.setFill(Color.DARKBLUE);
@@ -198,16 +199,16 @@ public class View {
         if (!tile.isMarked())
             flag.setVisible(false);
 
-        tile.getChildren().addAll(cover, flag);
+        node.getChildren().addAll(cover, flag);
         if (field.isLost() && tile.hasBomb() && !tile.isMarked()) {
             Text bomb = new Text("X");
             bomb.setFont(Font.font(16));
             bomb.setFill(Color.RED);
 
-            tile.getChildren().add(bomb);
+            node.getChildren().add(bomb);
         }
 
-        tile.setOnMouseClicked(event -> {
+        node.setOnMouseClicked(event -> {
             switch (event.getButton()) {
                 case PRIMARY:
                     controller.mouseClickLeft(tile);
@@ -218,14 +219,14 @@ public class View {
             }
         });
 
-        tile.setTranslateY(tile.getY() * tileHeight * 0.75 + yStartOffset);
-        tile.setTranslateX(tile.getX() * tileWidth + (tile.getY() % 2) * n + xStartOffset);
+        node.setTranslateY(tile.getY() * tileHeight * 0.75 + yStartOffset);
+        node.setTranslateX(tile.getX() * tileWidth + (tile.getY() % 2) * n + xStartOffset);
 
-        return tile;
+        return node;
     }
 
     public StackPane createOpenedTile(Tile tile) {
-        tile.getChildren().clear();
+        StackPane node = new StackPane();
 
         Hexagon hex = new Hexagon(r, n);
         hex.setFill(Color.WHITE);
@@ -239,16 +240,16 @@ public class View {
                     : "");
         bombs.setFont(Font.font(16));
 
-        tile.getChildren().addAll(hex, bombs);
-        tile.setTranslateY(tile.getY() * tileHeight * 0.75 + yStartOffset);
-        tile.setTranslateX(tile.getX() * tileWidth + (tile.getY() % 2) * n + xStartOffset);
+        node.getChildren().addAll(hex, bombs);
+        node.setTranslateY(tile.getY() * tileHeight * 0.75 + yStartOffset);
+        node.setTranslateX(tile.getX() * tileWidth + (tile.getY() % 2) * n + xStartOffset);
 
-        tile.setOnMouseClicked(event -> {
+        node.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.MIDDLE)
                 controller.mouseClickMiddle(tile);
         });
 
-        return tile;
+        return node;
     }
 
     private static class Hexagon extends Polygon {

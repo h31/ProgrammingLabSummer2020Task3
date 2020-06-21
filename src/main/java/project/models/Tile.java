@@ -1,9 +1,9 @@
 package project.models;
 
 
-import javafx.scene.layout.StackPane;
+import java.util.Objects;
 
-public class Tile extends StackPane {
+public class Tile {
     private int x, y;
     private int bombsAround = 0;
     private boolean hasBomb = false;
@@ -53,5 +53,23 @@ public class Tile extends StackPane {
     Tile(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return x == tile.x &&
+                y == tile.y &&
+                bombsAround == tile.bombsAround &&
+                hasBomb == tile.hasBomb &&
+                isOpened == tile.isOpened &&
+                hasFlag == tile.hasFlag;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, bombsAround, hasBomb, isOpened, hasFlag);
     }
 }
