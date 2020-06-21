@@ -36,7 +36,7 @@ public class View {
     }
 
     public void createWin(Group group) {
-        InputStream input = getClass().getResourceAsStream("/Test.jpg");
+        InputStream input = getClass().getResourceAsStream("/Test.png");
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
         StackPane stackPane = new StackPane(imageView);
