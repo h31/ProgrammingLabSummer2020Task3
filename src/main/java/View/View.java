@@ -20,6 +20,12 @@ public class View {
     private final boolean DEBUG_MODE;
     private final double DEBUG_OPACITY = 0.25;
 
+    public View(Level level) {
+        this.Stage = new Stage();
+        this.DEBUG_MODE = false;
+        this.LEVEL = level;
+    }
+
     public View(Stage stage, boolean debugMode, Level level) {
         this.Stage = stage;
         this.DEBUG_MODE = debugMode;

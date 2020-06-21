@@ -17,7 +17,7 @@ public class SecondLevel extends Level {
 
     private List<PathTransition> pathTransitionList = new ArrayList<>();
 
-    SecondLevel() {
+    public SecondLevel() {
         super(LEVEL_CONTANTS.SECOND_LOCATION,
                 LEVEL_CONTANTS.SECOND_IMG,
                 LEVEL_CONTANTS.SECOND_COLLISION,

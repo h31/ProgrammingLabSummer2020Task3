@@ -28,7 +28,7 @@ public class Player extends Animated {
     private double velX = 0;
     public final double SPEED = 1.25;
     static boolean freezed;
-    static ImageView reading;
+    public static ImageView reading;
 
     private final View VIEW;
 
@@ -94,6 +94,8 @@ public class Player extends Animated {
     }
 
     public void setPosition(double x, double y) {
+        getCOLLISION().setX(x);
+        getCOLLISION().setY(y);
         getImgView().setX(x);
         getImgView().setY(y);
     }
@@ -128,11 +130,11 @@ public class Player extends Animated {
         setView(view);
     }
 
-    private boolean isCollision() {
+    public boolean isCollision() {
         return isWallCollision() || isObjectCollision() || isTriggerCollision();
     }
 
-    private boolean isWallCollision() {
+    public boolean isWallCollision() {
         for (Rectangle colShape : level.getCOLLISION()) {
             if (getCOLLISION().intersects(colShape.getBoundsInLocal())) {
                 return true;
@@ -141,7 +143,7 @@ public class Player extends Animated {
         return false;
     }
 
-    private boolean isObjectCollision() {
+    public boolean isObjectCollision() {
         for (LevelObject object : level.getOBJECTS()) {
             if (getCOLLISION().intersects(object.getCurrentCollision().getBoundsInLocal())) {
                 return true;
@@ -150,14 +152,14 @@ public class Player extends Animated {
         return false;
     }
 
-    private boolean isTriggerCollision() {
+    public boolean isTriggerCollision() {
         for (Trigger trigger : level.getTRIGGERS()) {
             if (this.isFreezed()) return false;
             Rectangle rect = trigger.getRECT();
             if (getCOLLISION().intersects(rect.getBoundsInLocal())) {
                 if (trigger.getUsed()) return false;
                 if (trigger.getTYPE() == COLLISION_TYPE.ENTER) {
-                    changingLocation();
+                    changeLocation();
                 } else if (trigger.getTYPE() == COLLISION_TYPE.INTERACT && Controller.keyState[4]) {
                     setFreezed(true);
                     level.interact(trigger);
@@ -168,6 +170,7 @@ public class Player extends Animated {
                     System.out.println("You are dead");
                     die();
                 }
+                return true;
             }
         }
         return false;
@@ -178,7 +181,7 @@ public class Player extends Animated {
         reading.setVisible(false);
     }
 
-    private void changingLocation() {
+    public void changeLocation() {
         this.setFreezed(true);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), this.getImgView());
         ft.setFromValue(1.0);

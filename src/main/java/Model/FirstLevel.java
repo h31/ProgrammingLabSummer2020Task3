@@ -45,7 +45,7 @@ public class FirstLevel extends Level {
         }
     }
 
-    private void readNote() {
+    void readNote() {
         Player.reading = getTRIGGERS().get(1).getIMAGE();
         Player.reading.setVisible(true);
     }
