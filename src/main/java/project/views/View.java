@@ -61,9 +61,14 @@ public class View {
         field = new Field(rows, tiles, bombs);
         controller = new Controller(field, this);
 
-        int windowHeight = (int) (2 * yStartOffset + field.getRowNumber() / 2 * (tileHeight + r));
-        int windowWidth = (int) (2.5 * xStartOffset + field.getTilesInRow() * tileWidth);
-        root.setPrefSize(windowWidth, windowHeight);
+        double windowHeight = 2.0 * yStartOffset + field.getRowNumber() / 2.0 * (tileHeight + r);
+        double windowWidth = 2.5 * xStartOffset + field.getTilesInRow() * tileWidth;
+        root.setPrefHeight(windowHeight < 300
+                ? 300
+                : windowHeight);
+        root.setPrefWidth(windowWidth < 300
+                ? 300
+                :windowWidth);
 
         timeStarted = false;
 
@@ -95,7 +100,7 @@ public class View {
         face.getChildren().addAll(hex, smile);
 
         AnchorPane.setTopAnchor(face, 15d);
-        face.setTranslateX(xStartOffset - n + tileWidth * field.getTilesInRow() / 2);
+        face.setTranslateX(root.getPrefWidth() / 2 - n);
         root.getChildren().add(face);
 
         flagsLeft = new Label("Flags: " + field.getFlagsLeft());
@@ -114,7 +119,7 @@ public class View {
         Button reset = new Button("Reset");
         reset.setPrefSize(80, 20);
         AnchorPane.setBottomAnchor(reset, 15d);
-        reset.setTranslateX((double) (windowWidth / 2) - 40);
+        reset.setTranslateX(root.getPrefWidth() / 2 - 40);
         reset.setOnAction(actionEvent -> controller.reset());
         root.getChildren().add(reset);
 
@@ -202,6 +207,9 @@ public class View {
             node.getChildren().add(bomb);
         }
 
+        node.setTranslateY(tile.getY() * tileHeight * 0.75 + yStartOffset);
+        node.setTranslateX(tile.getX() * tileWidth + (tile.getY() % 2) * n + xStartOffset);
+
         node.setOnMouseClicked(event -> {
             switch (event.getButton()) {
                 case PRIMARY:
@@ -212,9 +220,6 @@ public class View {
                     break;
             }
         });
-
-        node.setTranslateY(tile.getY() * tileHeight * 0.75 + yStartOffset);
-        node.setTranslateX(tile.getX() * tileWidth + (tile.getY() % 2) * n + xStartOffset);
 
         return node;
     }

@@ -1,8 +1,12 @@
 package project.controllers;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import project.Main;
 import project.models.Field;
 import project.models.Tile;
@@ -14,6 +18,19 @@ import java.io.IOException;
 public class Controller {
     private Field field;
     private View view;
+//    int xSize = 1;
+//    int ySize = 1;
+//    int bombsNum = 1;
+    @FXML
+    TextField x;
+    @FXML
+    TextField y;
+    @FXML
+    TextField bombs;
+    @FXML
+    Label wrong;
+    @FXML
+    RadioButton easy, normal, hard, custom;
 
     public Controller(Field field, View view) {
         this.field = field;
@@ -24,7 +41,58 @@ public class Controller {
         this.view = view;
     }
 
+    public void setCustom() {
+        x.setDisable(false);
+        y.setDisable(false);
+        bombs.setDisable(false);
+
+        custom.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) {
+                x.setDisable(false);
+                y.setDisable(false);
+                bombs.setDisable(false);
+            } else {
+                x.setDisable(true);
+                y.setDisable(true);
+                bombs.setDisable(true);
+                wrong.setVisible(false);
+            }
+        });
+    }
+
     public void playNewGame() {
+        if (easy.isSelected())
+            view.setDifficulty(8, 10, 10);
+
+        if (normal.isSelected())
+            view.setDifficulty(16, 18, 56);
+
+        if (hard.isSelected())
+            view.setDifficulty(20, 24, 99);
+
+        if (custom.isSelected()) {
+            try {
+                int xSize = Integer.parseInt(x.getText());
+                int ySize = Integer.parseInt(y.getText());
+                int bombsNum = Integer.parseInt(bombs.getText());
+                if (xSize <= 0
+                        || ySize <= 0
+                        || bombsNum <= 0
+                        || xSize * ySize <= bombsNum
+                        || xSize > 30
+                        || ySize > 30
+                ) {
+                    wrong.setVisible(true);
+                    return;
+                }
+                view.setDifficulty(ySize, xSize, bombsNum);
+            } catch (Exception i) {
+                wrong.setVisible(true);
+                return;
+            }
+        }
+
+//        view.setDifficulty(ySize, xSize, bombsNum);
         if (!view.isDifficultySet())
             return;
 
@@ -46,18 +114,6 @@ public class Controller {
 
     public void exit() {
         System.exit(0);
-    }
-
-    public void setEasy() {
-        view.setDifficulty(8, 10, 10);
-    }
-
-    public void setNormal() {
-        view.setDifficulty(16, 18, 56);
-    }
-
-    public void setHard() {
-        view.setDifficulty(20, 24, 99);
     }
 
     public void mouseClickLeft(Tile tile) {
