@@ -5,11 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
-import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +54,7 @@ public final class SpriteData {
     }
 
     public static ImageView getSprite(String path) {
-        File directory = new File("src/main/resources/" + path);
+        File directory = new File(SpriteData.class.getResource("/" + path).getFile());
         ImageView image;
         if (directory.isFile()) {
             image = new ImageView(new Image(directory.toURI().toString()));
@@ -70,6 +66,7 @@ public final class SpriteData {
     static Rectangle spriteToCollision(ImageView img) {
         return new Rectangle(img.getX(), img.getY(), img.getImage().getWidth(), img.getImage().getHeight());
     }
+
     static Rectangle spriteToCollision(ImageView img, double offsetX, double offsetY, double offsetWidth, double offsetHeight) {
         return new Rectangle(img.getX() + offsetX, img.getY() + offsetY, img.getImage().getWidth() + offsetWidth, img.getImage().getHeight() + offsetHeight);
     }
