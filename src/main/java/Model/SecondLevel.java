@@ -17,7 +17,7 @@ public class SecondLevel extends Level {
 
     private List<PathTransition> pathTransitionList = new ArrayList<>();
 
-    public SecondLevel() {
+    SecondLevel() {
         super(LEVEL_CONTANTS.SECOND_LOCATION,
                 LEVEL_CONTANTS.SECOND_IMG,
                 LEVEL_CONTANTS.SECOND_COLLISION,
@@ -53,7 +53,7 @@ public class SecondLevel extends Level {
     /**
      * Открытие двери при попадании на триггер OpenWall
      */
-    private void openWall(Trigger trigger) {
+    void openWall(Trigger trigger) {
         if (trigger.getUsed()) return;
         trigger.setUsed(true);
         Effect effect = trigger.getEFFECT();
@@ -92,7 +92,7 @@ public class SecondLevel extends Level {
         View.showEffect(effect);
     }
 
-    private void stopTeslaOrb(Trigger trigger) {
+    void stopTeslaOrb(Trigger trigger) {
         if (trigger.getUsed()) return;
         trigger.setUsed(true);
         trigger.getEFFECT().stopAnimation();

@@ -28,7 +28,7 @@ public class Player extends Animated {
     private double velX = 0;
     public final double SPEED = 1.25;
     static boolean freezed;
-    public static ImageView reading;
+    static ImageView reading;
 
     private final View VIEW;
 
@@ -130,11 +130,11 @@ public class Player extends Animated {
         setView(view);
     }
 
-    public boolean isCollision() {
+    boolean isCollision() {
         return isWallCollision() || isObjectCollision() || isTriggerCollision();
     }
 
-    public boolean isWallCollision() {
+    private boolean isWallCollision() {
         for (Rectangle colShape : level.getCOLLISION()) {
             if (getCOLLISION().intersects(colShape.getBoundsInLocal())) {
                 return true;
@@ -143,7 +143,7 @@ public class Player extends Animated {
         return false;
     }
 
-    public boolean isObjectCollision() {
+    boolean isObjectCollision() {
         for (LevelObject object : level.getOBJECTS()) {
             if (getCOLLISION().intersects(object.getCurrentCollision().getBoundsInLocal())) {
                 return true;
@@ -152,7 +152,7 @@ public class Player extends Animated {
         return false;
     }
 
-    public boolean isTriggerCollision() {
+    private boolean isTriggerCollision() {
         for (Trigger trigger : level.getTRIGGERS()) {
             if (this.isFreezed()) return false;
             Rectangle rect = trigger.getRECT();
@@ -170,7 +170,6 @@ public class Player extends Animated {
                     System.out.println("You are dead");
                     die();
                 }
-                return true;
             }
         }
         return false;
@@ -181,7 +180,7 @@ public class Player extends Animated {
         reading.setVisible(false);
     }
 
-    public void changeLocation() {
+    private void changeLocation() {
         this.setFreezed(true);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), this.getImgView());
         ft.setFromValue(1.0);
@@ -300,7 +299,7 @@ public class Player extends Animated {
         return BOTTOM_COLLISION;
     }
 
-    private void setBOTTOM_COLLISION(double BOTTOM_COLLISION) {
+    void setBOTTOM_COLLISION(double BOTTOM_COLLISION) {
         this.BOTTOM_COLLISION = BOTTOM_COLLISION;
     }
 }

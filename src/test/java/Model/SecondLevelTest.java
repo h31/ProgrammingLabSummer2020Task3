@@ -10,15 +10,15 @@ import org.testfx.framework.junit5.Start;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
-class EffectTest {
-    private int magicBallOffset = 7;
+class SecondLevelTest {
+    private SecondLevel level;
 
     @Start
     public void start(Stage stage) {
         stage.setWidth(1024);
         stage.setHeight(768);
         stage.setResizable(false);
-        Level level = new SecondLevel();
+        level = new SecondLevel();
         View view = new View(stage, false, level);
         Player player = new Player(view, level);
         view.setPlayer(player);
@@ -26,13 +26,14 @@ class EffectTest {
     }
 
     @Test
-    void moveCollision() {
-        Effect effect = new Effect(EFFECT_TYPE.MAGIC_BALL, 380, 270);
-        effect.runAnimation();
-        effect.moveCollision();
-        System.out.println(effect.getImgView().getX());
-        System.out.println(effect.getCOLLISION().getX());
-        assertEquals(effect.getImgView().getX() + magicBallOffset, effect.getCOLLISION().getX());
-        assertEquals(effect.getImgView().getY() + magicBallOffset, effect.getCOLLISION().getY());
+    void openWall() {
+        level.openWall(level.getTRIGGERS().get(0));
+        assertTrue(level.getTRIGGERS().get(0).getUsed());
+    }
+
+    @Test
+    void stopTeslaOrb() {
+        level.stopTeslaOrb(level.getTRIGGERS().get(6));
+        assertTrue(level.getTRIGGERS().get(6).getUsed());
     }
 }

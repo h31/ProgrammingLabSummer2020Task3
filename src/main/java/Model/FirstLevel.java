@@ -33,6 +33,7 @@ public class FirstLevel extends Level {
      */
     public void checkObjectView(Player player) {
         double playerCol = player.getBOTTOM_COLLISION();
+
         for (LevelObject colShape : getOBJECTS()) {
             if (playerCol > colShape.getIMG_VIEW().getY() + colShape.getIMG_VIEW().getImage().getHeight()) {
                 colShape.setView(OBJECT_VIEW.BACK);

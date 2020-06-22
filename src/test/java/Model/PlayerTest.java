@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 class PlayerTest {
-    Player player;
-    Level level;
+    private Player player;
+    private Level level;
 
     @Start
     public void start(Stage stage) {
@@ -43,14 +43,6 @@ class PlayerTest {
         assertFalse(player.isCollision());
     }
 
-    @Test
-    void isTriggerCollision() {
-        level = new SecondLevel();
-        player.setPosition(70, 30); // Триггер входа в другую локацию
-        assertTrue(player.isTriggerCollision());
-        player.setPosition(100,650);
-        assertFalse(player.isTriggerCollision());
-    }
 
     @Test
     void isObjectCollision() {
@@ -65,7 +57,7 @@ class PlayerTest {
     void readNote() {
         level = new FirstLevel();
         ((FirstLevel) level).readNote();
-        assertEquals(true, Player.reading.isVisible());
+        assertTrue(Player.reading.isVisible());
     }
 
     @Test
@@ -73,6 +65,6 @@ class PlayerTest {
         level = new FirstLevel();
         ((FirstLevel) level).readNote();
         player.closeNote();
-        assertEquals(false, Player.reading.isVisible());
+        assertFalse(Player.reading.isVisible());
     }
 }
