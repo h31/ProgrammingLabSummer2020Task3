@@ -144,7 +144,7 @@ public class Main extends Application {
                 gc.setFill(Color.BLUEVIOLET);
                 gc.fillText(String.valueOf(score[0]), width + 75, 330);
 
-                gc.setFill(Color.BLUEVIOLET);
+
                 Figure.x[0] = xCurrentFigure;
                 Figure.y[0] = 0;
                 currentFigure.startIndex(gc, randomCurrentFigure[0]);

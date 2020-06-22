@@ -4,9 +4,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testng.Assert.assertTrue;
 
@@ -23,25 +20,17 @@ class FigureTest {
                 array[i][j] = 0;
             }
         }
-        Figure.x[1] = Figure.x[0];
-        Figure.y[1] = Figure.y[0] + 30;
-        Figure.x[2] = Figure.x[1];
-        Figure.y[2] = Figure.y[1] + 30;
-        Figure.x[3] = Figure.x[2];
-        Figure.y[3] = Figure.y[2] + 30;
+        figure.startIndex(gc, 1);
         assertTrue(figure.can(array, 0, 1));
         assertTrue(figure.can(array, 1, 0));
         assertTrue(figure.can(array, -1, 0));
+        assertFalse(figure.can(array, -10, 0));
+
     }
 
     @Test
     void transfer() {
-        Figure.x[1] = Figure.x[0];
-        Figure.y[1] = Figure.y[0] + 30;
-        Figure.x[2] = Figure.x[1];
-        Figure.y[2] = Figure.y[1] + 30;
-        Figure.x[3] = Figure.x[2];
-        Figure.y[3] = Figure.y[2] + 30;
+        figure.startIndex(gc, 1);
 
         figure.transfer(gc, 0, 1);
         assertEquals(210, Figure.y[3]);
@@ -58,12 +47,7 @@ class FigureTest {
 
     @Test
     void inArray() {
-        Figure.x[1] = Figure.x[0];
-        Figure.y[1] = Figure.y[0] + 30;
-        Figure.x[2] = Figure.x[1];
-        Figure.y[2] = Figure.y[1] + 30;
-        Figure.x[3] = Figure.x[2];
-        Figure.y[3] = Figure.y[2] + 30;
+        figure.startIndex(gc, 1);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -82,12 +66,7 @@ class FigureTest {
 
     @Test
     void rotate() {
-        Figure.x[1] = Figure.x[0];
-        Figure.y[1] = Figure.y[0] + 30;
-        Figure.x[2] = Figure.x[1];
-        Figure.y[2] = Figure.y[1] + 30;
-        Figure.x[3] = Figure.x[2];
-        Figure.y[3] = Figure.y[2] + 30;
+        figure.startIndex(gc, 1);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
