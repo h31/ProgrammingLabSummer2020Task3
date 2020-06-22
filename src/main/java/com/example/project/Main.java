@@ -2,197 +2,192 @@ package com.example.project;
 
 import javafx.animation.*;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        //размеры всей игры
+        int fieldWidth = 510;
+        int width = fieldWidth - 210;
+        int height = 600;
+
         Group root = new Group();
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        Canvas canvas = new Canvas(510, 600);
+        Canvas canvas = new Canvas(fieldWidth, height);
         root.getChildren().add(canvas);
 
-        ArrayList<String> input = new ArrayList<>();
-
-        scene.setOnKeyPressed(
-                event -> {
-                    String code = event.getCode().toString();
-                    if (!input.contains(code)) input.add(code);
-                });
-        scene.setOnKeyReleased(
-                e -> {
-                    String code = e.getCode().toString();
-                    input.remove(code);
-                });
-
+        // создаем массив кубиков, где последний столбик - кол-во заполненных кубиков
+        // предварительно вычислим размеры массива
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        int iArray = width / 30 + 1;
+        int jArray = height / 30;
+        Integer[][] array = new Integer[iArray][jArray];
+        for (int i = 0; i < iArray; i++) {
+            for (int j = 0; j < jArray; j++) {
+                if (i == iArray - 1) array[i][j] = -10;
+                else
+                    array[i][j] = 0;
+            }
+        }
 
         // заполняем...
         gc.setFill(Color.LAVENDER);
-        gc.fillRect(300, 0, 210, 600);
+        gc.fillRect(width, 0, 210, height);
         gc.setFill(Color.WHITE);
-        gc.fillRect(330, 30, 150, 180);
+        gc.fillRect(width + 30, 30, 150, 180);
 
         // создаем следующую фигуру
-        int[] random2 = {1 + (int) (Math.random() * 7)};
-        Figure figure2 = new Figure(new int[]{390, 390, 390, 390}, new int[]{60, 90, 120, 150});
-        figure2.startIndex(gc, random2[0]);
-        figure2.draw(gc);
+        int[] randomNextFigure = {1 + (int) (Math.random() * 7)};
+        int xNextFigure = width + 90;
+        Figure nextFigure = new Figure(xNextFigure, 60);
+        nextFigure.startIndex(gc, randomNextFigure[0]);
+        nextFigure.draw(gc);
 
-        // создаем массив кубиков, где последний столбик - кол-во заполненных кубиков
-        Integer[][] array = new Integer[13][21];
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 21; j++) {
-                if (i == 0 || i == 11 || j == 20) array[i][j] = -8;
-                else array[i][j] = 0;
-            }
-        }
         int[] lines = {0};
         final int[] score = {0};
-
+        int xText = width + 75;
         gc.setFill(Color.BLUEVIOLET);
         Font theFont;
         theFont = Font.font(25);
         gc.setFont(theFont);
-        gc.fillText("next", 375, 240);
-        gc.fillText("score", 375, 300);
-        gc.fillText("0", 375, 330);
+        gc.fillText("next", xText, 240);
+        gc.fillText("score", xText, 300);
+        gc.fillText("0", xText, 330);
 
         // создаем текущую фигуру
-        int[] random1 = {1 + (int) (Math.random() * 7)};
-        Figure figure1 = new Figure(new int[]{150, 150, 150, 150}, new int[]{0, 30, 60, 90});
-        figure1.startIndex(gc, random1[0]);
-        figure1.draw(gc);
+        int[] randomCurrentFigure = {1 + (int) (Math.random() * 7)};
+        int xCurrentFigure = iArray / 2 * 30;
+        Figure currentFigure = new Figure(xCurrentFigure, 0);
+        currentFigure.startIndex(gc, randomCurrentFigure[0]);
+        currentFigure.draw(gc);
 
         Timeline timeline;
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.7), actionEvent -> {
-            if (figure1.canDown(array)) {
-
-                figure1.clear(gc);
-                Figure.y[0] += 30;
-                Figure.y[1] += 30;
-                Figure.y[2] += 30;
-                Figure.y[3] += 30;
-                figure1.draw(gc);
+            if (currentFigure.can(array, 0, 1)) {
+                currentFigure.transfer(gc, 0, 1);
             } else {
 
-                figure1.inArray(array, random1[0]);
-                random1[0] = random2[0];
+                currentFigure.inArray(array, randomCurrentFigure[0]);
+                randomCurrentFigure[0] = randomNextFigure[0];
 
-                while (random2[0] == random1[0])
-                    random2[0] = 1 + (int) (Math.random() * 7);
+                while (randomNextFigure[0] == randomCurrentFigure[0])
+                    randomNextFigure[0] = 1 + (int) (Math.random() * 7);
 
                 gc.setFill(Color.WHITE);
-                gc.fillRect(330, 30, 150, 180);
+                gc.fillRect(width + 30, 30, 150, 180);
 
-                figure2.for2();
-                figure2.startIndex(gc, random2[0]);
-                figure2.draw(gc);
+                Figure.x[0] = xNextFigure;
+                Figure.y[0] = 60;
+                nextFigure.startIndex(gc, randomNextFigure[0]);
+                nextFigure.draw(gc);
 
 
-                for (int jj = 0; jj < 20; jj++) {
-                    if (array[12][jj] == 10) {
+                for (int jj = 0; jj < jArray; jj++) {
+
+                    if (array[iArray - 1][jj] == -10 * iArray) {
                         lines[0] += 1;
                         for (int j = jj; j > 0; j--) {
-                            for (int i = 10; i > 0; i--) {
-                                gc.clearRect((i - 1) * 30, (j * 30), 30, 30);
-                                if (array[i][j - 1] < 0) {
-                                    if (array[i][j - 1] == -1) {
-                                        gc.setFill(Color.BLUEVIOLET);
-                                    }
-                                    if (array[i][j - 1] == -2) {
-                                        gc.setFill(Color.INDIGO);
-                                    }
-                                    if (array[i][j - 1] == -3) {
-                                        gc.setFill(Color.DARKVIOLET);
-                                    }
-                                    if (array[i][j - 1] == -4) {
-                                        gc.setFill(Color.MEDIUMPURPLE);
-                                    }
-                                    if (array[i][j - 1] == -5) {
-                                        gc.setFill(Color.DARKMAGENTA);
-                                    }
-                                    if (array[i][j - 1] == -6) {
-                                        gc.setFill(Color.MEDIUMORCHID);
-                                    }
-                                    if (array[i][j - 1] == -7) {
-                                        gc.setFill(Color.PURPLE);
-                                    }
-                                    gc.fillRect((i - 1) * 30, (j) * 30, 30, 30);
-
-
+                            for (int i = iArray - 2; i >= 0; i--) {
+                                gc.clearRect(i * 30, j * 30, 30, 30);
+                                gc.setFill(Color.WHITE);
+                                if (array[i][j - 1] == 1) {
+                                    gc.setFill(Color.BLUEVIOLET);
                                 }
-                                array[i][j] = array[i][j - 1];
-                                array[12][j] = array[12][j-1];
-                            }
+                                if (array[i][j - 1] == 2) {
+                                    gc.setFill(Color.INDIGO);
+                                }
+                                if (array[i][j - 1] == 3) {
+                                    gc.setFill(Color.DARKVIOLET);
+                                }
+                                if (array[i][j - 1] == 4) {
+                                    gc.setFill(Color.MEDIUMPURPLE);
+                                }
+                                if (array[i][j - 1] == 5) {
+                                    gc.setFill(Color.DARKMAGENTA);
+                                }
+                                if (array[i][j - 1] == 6) {
+                                    gc.setFill(Color.MEDIUMORCHID);
+                                }
+                                if (array[i][j - 1] == 7) {
+                                    gc.setFill(Color.PURPLE);
+                                }
+                                gc.fillRect((i) * 30, (j) * 30, 30, 30);
 
+                                array[i][j] = array[i][j - 1];
+                            }
+                            array[iArray - 1][j] = array[iArray - 1][j - 1];
                         }
-                        if (lines[0] == 1) score[0] += 100;
-                        if (lines[0] == 2) score[0] += 300;
-                        if (lines[0] == 3) score[0] += 700;
-                        if (lines[0] == 4) score[0] += 1500;
-                        lines[0] = 0;
-                        gc.setFill(Color.LAVENDER);
-                        gc.fillRect(375, 300, 100, 30);
-                        gc.setFill(Color.BLUEVIOLET);
-                        gc.fillText(String.valueOf(score[0]), 375, 330);
                     }
 
                 }
+                if (lines[0] == 1) score[0] += 100;
+                if (lines[0] == 2) score[0] += 300;
+                if (lines[0] == 3) score[0] += 700;
+                if (lines[0] == 4) score[0] += 1500;
+                lines[0] = 0;
+                gc.setFill(Color.LAVENDER);
+                gc.fillRect(width + 75, 300, 100, 30);
+                gc.setFill(Color.BLUEVIOLET);
+                gc.fillText(String.valueOf(score[0]), width + 75, 330);
 
                 gc.setFill(Color.BLUEVIOLET);
-                figure1.for1();
-                figure1.startIndex(gc, random1[0]);
-                figure1.draw(gc);
+                Figure.x[0] = xCurrentFigure;
+                Figure.y[0] = 0;
+                currentFigure.startIndex(gc, randomCurrentFigure[0]);
+                currentFigure.draw(gc);
+                if (!currentFigure.can(array, 0, 1)) {
+                    gc.clearRect(0, 0, fieldWidth, height);
+                    gc.setFill(Color.BLUEVIOLET);
+                    int textX = fieldWidth / 2 - 100;
+                    int textY = height / 2 - 30;
+                    gc.fillText("ВЫ ПРОИГРАЛИ", textX, textY);
+                }
 
             }
         }));
+        List<KeyCode> input = new ArrayList<>();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        scene.setOnKeyPressed(
+                event -> {
+                    KeyCode code = event.getCode();
+                    if (!input.contains(code)) input.add(code);
+                });
+        scene.setOnKeyReleased(
+                e -> {
+                    KeyCode code = e.getCode();
+                    input.remove(code);
+                });
 
         Timeline keyboardControl = new Timeline(new KeyFrame(Duration.seconds(0.2), actionEvent -> {
-            if (input.contains("RIGHT") && figure1.canRight(array)) {
-                figure1.clear(gc);
-                Figure.x[0] += 30;
-                Figure.x[1] += 30;
-                Figure.x[2] += 30;
-                Figure.x[3] += 30;
-                figure1.draw(gc);
+            if (input.contains(KeyCode.RIGHT) && currentFigure.can(array, 1, 0)) {
+                currentFigure.transfer(gc, 1, 0);
             }
-            if (input.contains("LEFT") && figure1.canLeft(array)) {
-                figure1.clear(gc);
-                Figure.x[0] -= 30;
-                Figure.x[1] -= 30;
-                Figure.x[2] -= 30;
-                Figure.x[3] -= 30;
-                figure1.draw(gc);
+            if (input.contains(KeyCode.LEFT) && currentFigure.can(array, -1, 0)) {
+                currentFigure.transfer(gc, -1, 0);
             }
-            if (input.contains("DOWN") && figure1.canDown(array)) {
-                figure1.clear(gc);
-                Figure.y[0] += 30;
-                Figure.y[1] += 30;
-                Figure.y[2] += 30;
-                Figure.y[3] += 30;
-                figure1.draw(gc);
+            if (input.contains(KeyCode.DOWN) && currentFigure.can(array, 0, 1)) {
+                currentFigure.transfer(gc, 0, 1);
             }
-            if (input.contains("UP")) {
-                
+            if (input.contains(KeyCode.UP)) {
+                currentFigure.rotate(gc, array);
             }
         }));
+
         keyboardControl.setCycleCount(Timeline.INDEFINITE);
         keyboardControl.play();
 
