@@ -18,6 +18,7 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 
 public class View {
@@ -30,9 +31,8 @@ public class View {
         Pane root = new FXMLLoader(new File("src/main/resources/Grid.fxml").toURI().toURL()).load();
         root.setPrefSize(width, height);
 
-        ImageView background = new ImageView(new Image(new File("background/field.jpg").toURI().toURL().toString(),
-                width, height, false, true));
-        root.getChildren().add(0, background);
+
+        root.getChildren().add(0, addBackground());
 
         Group snakeBody = new Group();
         Model.snake = snakeBody.getChildren();
@@ -84,5 +84,10 @@ public class View {
         rect.setFill(Color.PURPLE);
 
         return rect;
+    }
+
+    public static ImageView addBackground() throws MalformedURLException {
+         return new ImageView(new Image(new File("background/field.jpg").toURI().toURL().toString(),
+                Model.width, Model.height, false, true));
     }
 }
