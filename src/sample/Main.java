@@ -33,6 +33,7 @@ public class Main extends Application {
         Group root = new Group();
         root.getChildren().add(pane);
         Scene scene = new Scene(root);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("2048");
         primaryStage.setScene(scene);
         primaryStage.show();
