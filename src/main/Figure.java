@@ -9,64 +9,67 @@ public class Figure{
     Piece piece3;
     Piece piece4;
     int position;
+    int pieceSize;
 
-    Figure(int x, int y) {
+    Figure(int x, int y, int pieceSize) {
         this.x = x;
         this.y = y;
+        this.pieceSize = pieceSize+1;
     }
 
-    public void newFigure(int figureNum){
+    public Figure newFigure(int figureNum){
         position = 1;
         switch (figureNum) {
             case 0: {
-                piece1 = new Piece(new Image("square1.png"), x, y);
-                piece2 = new Piece(new Image("square1.png"), x+26, y);
-                piece3 = new Piece(new Image("square1.png"), x+26, y+26);
-                piece4 = new Piece(new Image("square1.png"), x, y+26);
+                piece1 = new Piece(new Image("square1.png"), x, y, pieceSize);
+                piece2 = new Piece(new Image("square1.png"), x+pieceSize, y, pieceSize);
+                piece3 = new Piece(new Image("square1.png"), x+pieceSize, y+pieceSize,pieceSize);
+                piece4 = new Piece(new Image("square1.png"), x, y+pieceSize, pieceSize);
                 break;
             }
             case 1:{
-                piece1 = new Piece(new Image("square2.png"), x, y);
-                piece2 = new Piece(new Image("square2.png"), x-26, y);
-                piece3 = new Piece(new Image("square2.png"), x, y+26);
-                piece4 = new Piece(new Image("square2.png"), x+26, y+26);
+                piece1 = new Piece(new Image("square2.png"), x, y, pieceSize);
+                piece2 = new Piece(new Image("square2.png"), x-pieceSize, y, pieceSize);
+                piece3 = new Piece(new Image("square2.png"), x, y+pieceSize, pieceSize);
+                piece4 = new Piece(new Image("square2.png"), x+pieceSize, y+pieceSize, pieceSize);
                 break;
             }
             case 2:{
-                piece1 = new Piece(new Image("square3.png"), x, y);
-                piece2 = new Piece(new Image("square3.png"), x+26, y);
-                piece3 = new Piece(new Image("square3.png"), x-26, y);
-                piece4 = new Piece(new Image("square3.png"), x, y+26);
+                piece1 = new Piece(new Image("square3.png"), x, y, pieceSize);
+                piece2 = new Piece(new Image("square3.png"), x+pieceSize, y, pieceSize);
+                piece3 = new Piece(new Image("square3.png"), x-pieceSize, y, pieceSize);
+                piece4 = new Piece(new Image("square3.png"), x, y+pieceSize, pieceSize);
                 break;
             }
             case 3:{
-                piece1 = new Piece(new Image("square4.png"), x, y);
-                piece2 = new Piece(new Image("square4.png"), x, y+26);
-                piece3 = new Piece(new Image("square4.png"), x, y+52);
-                piece4 = new Piece(new Image("square4.png"), x+26, y+52);
+                piece1 = new Piece(new Image("square4.png"), x, y, pieceSize);
+                piece2 = new Piece(new Image("square4.png"), x, y+pieceSize, pieceSize);
+                piece3 = new Piece(new Image("square4.png"), x, y+pieceSize*2, pieceSize);
+                piece4 = new Piece(new Image("square4.png"), x+pieceSize, y+pieceSize*2, pieceSize);
                 break;
             }
             case 4:{
-                piece1 = new Piece(new Image("square5.png"), x, y);
-                piece2 = new Piece(new Image("square5.png"), x+26, y);
-                piece3 = new Piece(new Image("square5.png"), x, y+26);
-                piece4 = new Piece(new Image("square5.png"), x-26, y+26);
+                piece1 = new Piece(new Image("square5.png"), x, y, pieceSize);
+                piece2 = new Piece(new Image("square5.png"), x+pieceSize, y, pieceSize);
+                piece3 = new Piece(new Image("square5.png"), x, y+pieceSize, pieceSize);
+                piece4 = new Piece(new Image("square5.png"), x-pieceSize, y+pieceSize, pieceSize);
                 break;
             }
             case 5:{
-                piece1 = new Piece(new Image("square6.png"), x, y);
-                piece2 = new Piece(new Image("square6.png"), x, y+26);
-                piece3 = new Piece(new Image("square6.png"), x, y+52);
-                piece4 = new Piece(new Image("square6.png"), x-26, y+52);
+                piece1 = new Piece(new Image("square6.png"), x, y, pieceSize);
+                piece2 = new Piece(new Image("square6.png"), x, y+pieceSize, pieceSize);
+                piece3 = new Piece(new Image("square6.png"), x, y+pieceSize*2, pieceSize);
+                piece4 = new Piece(new Image("square6.png"), x-pieceSize, y+pieceSize*2, pieceSize);
                 break;
             }
             case 6: {
-                piece1 = new Piece(new Image("square7.png"), x, y);
-                piece2 = new Piece(new Image("square7.png"), x+26, y);
-                piece3 = new Piece(new Image("square7.png"), x+52, y);
-                piece4 = new Piece(new Image("square7.png"), x-26, y);
+                piece1 = new Piece(new Image("square7.png"), x, y, pieceSize);
+                piece2 = new Piece(new Image("square7.png"), x+pieceSize, y, pieceSize);
+                piece3 = new Piece(new Image("square7.png"), x+pieceSize*2, y, pieceSize);
+                piece4 = new Piece(new Image("square7.png"), x-pieceSize, y, pieceSize);
             }
         }
+        return new Figure(x, y, pieceSize);
     }
 
     public void nextFigure(Figure nextFigure) {
@@ -132,26 +135,39 @@ public class Figure{
     }
 
     public void moveRight() {
-        piece1.positionX += 26;
-        piece2.positionX += 26;
-        piece3.positionX += 26;
-        piece4.positionX += 26;
+        piece1.positionX += pieceSize;
+        piece2.positionX += pieceSize;
+        piece3.positionX += pieceSize;
+        piece4.positionX += pieceSize;
     }
+
     public void moveLeft() {
-        piece1.positionX -= 26;
-        piece2.positionX -= 26;
-        piece3.positionX -= 26;
-        piece4.positionX -= 26;
+        piece1.positionX -= pieceSize;
+        piece2.positionX -= pieceSize;
+        piece3.positionX -= pieceSize;
+        piece4.positionX -= pieceSize;
     }
 
     public void moveDown() {
-        piece1.positionY += 26;
-        piece2.positionY += 26;
-        piece3.positionY += 26;
-        piece4.positionY += 26;
+        piece1.positionY += pieceSize;
+        piece2.positionY += pieceSize;
+        piece3.positionY += pieceSize;
+        piece4.positionY += pieceSize;
     }
 
-    public void rotate(int figureNum) {
+    public void moveUp() {
+        piece1.positionY -= pieceSize;
+        piece2.positionY -= pieceSize;
+        piece3.positionY -= pieceSize;
+        piece4.positionY -= pieceSize;
+    }
+
+    public boolean possibleToRotate(Integer[][] playingField){
+        return !(piece1.intersectsAny(playingField) || piece2.intersectsAny(playingField) ||
+                piece3.intersectsAny(playingField) || piece4.intersectsAny(playingField));
+    }
+
+    public void rotate(int figureNum, Integer[][] playingField) {
         switch (figureNum) {
             case 0: {
                 break;
@@ -160,20 +176,20 @@ public class Figure{
                 switch (position) {
                     case 1:
                     case 3:{
-                        piece1 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY-26);
-                        piece3 = new Piece(new Image("square2.png"), piece1.positionX-26, piece1.positionY);
-                        piece4 = new Piece(new Image("square2.png"), piece1.positionX-26, piece1.positionY+26);
-                        position =2;
+                        piece1 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY-pieceSize, pieceSize);
+                        piece3 = new Piece(new Image("square2.png"), piece1.positionX-pieceSize, piece1.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square2.png"), piece1.positionX-pieceSize, piece1.positionY+pieceSize, pieceSize);
+                        position = 2;
                         break;
                     }
                     case 2:
                     case 4:{
-                        piece1 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square2.png"), piece1.positionX-26, piece1.positionY);
-                        piece3 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY+26);
-                        piece4 = new Piece(new Image("square2.png"), piece1.positionX+26, piece1.positionY+26);
-                        position =1;
+                        piece1 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square2.png"), piece1.positionX-pieceSize, piece1.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square2.png"), piece1.positionX, piece1.positionY+pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square2.png"), piece1.positionX+pieceSize, piece1.positionY+pieceSize, pieceSize);
+                        position = 1;
                         break;
                     }
                 }
@@ -182,34 +198,34 @@ public class Figure{
             case 2:{
                 switch (position) {
                     case 1:{
-                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY+26);
-                        piece3 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY-26);
-                        piece4 = new Piece(new Image("square3.png"), piece1.positionX-26, piece1.positionY);
+                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY+pieceSize, pieceSize);
+                        piece3 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY-pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square3.png"), piece1.positionX-pieceSize, piece1.positionY, pieceSize);
                         position = 2;
                         break;
                     }
                     case 2:{
-                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square3.png"), piece1.positionX-26, piece1.positionY);
-                        piece3 = new Piece(new Image("square3.png"), piece1.positionX+26, piece1.positionY);
-                        piece4 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY-26);
+                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square3.png"), piece1.positionX-pieceSize, piece1.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square3.png"), piece1.positionX+pieceSize, piece1.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY-pieceSize, pieceSize);
                         position = 3;
                         break;
                     }
                     case 3:{
-                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY-26);
-                        piece3 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY+26);
-                        piece4 = new Piece(new Image("square3.png"), piece1.positionX+26, piece1.positionY);
+                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY-pieceSize, pieceSize);
+                        piece3 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY+pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square3.png"), piece1.positionX+pieceSize, piece1.positionY, pieceSize);
                         position = 4;
                         break;
                     }
                     case 4:{
-                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square3.png"), piece1.positionX+26, piece1.positionY);
-                        piece3 = new Piece(new Image("square3.png"), piece1.positionX-26, piece1.positionY);
-                        piece4 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY+26);
+                        piece1 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square3.png"), piece1.positionX+pieceSize, piece1.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square3.png"), piece1.positionX-pieceSize, piece1.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square3.png"), piece1.positionX, piece1.positionY+pieceSize, pieceSize);
                         position = 1;
                         break;
                     }
@@ -219,35 +235,35 @@ public class Figure{
             case 3:{
                 switch (position) {
                     case 1:{
-                        piece1 = new Piece(new Image("square4.png"), piece2.positionX+26, piece2.positionY);
-                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square4.png"), piece2.positionX-26, piece2.positionY);
-                        piece4 = new Piece(new Image("square4.png"), piece2.positionX-26, piece2.positionY+26);
+                        piece1 = new Piece(new Image("square4.png"), piece2.positionX+pieceSize, piece2.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square4.png"), piece2.positionX-pieceSize, piece2.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square4.png"), piece2.positionX-pieceSize, piece2.positionY+pieceSize, pieceSize);
                         position = 2;
                         break;
                     }
                     case 2:{
-                        piece1 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY+26);
-                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY-26);
-                        piece4 = new Piece(new Image("square4.png"), piece2.positionX-26, piece2.positionY-26);
+                        piece1 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY+pieceSize, pieceSize);
+                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY-pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square4.png"), piece2.positionX-pieceSize, piece2.positionY-pieceSize, pieceSize);
                         position = 3;
                         break;
                     }
                     case 3:{
-                        piece1 = new Piece(new Image("square4.png"), piece2.positionX-26, piece2.positionY);
-                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square4.png"), piece2.positionX+26, piece2.positionY);
-                        piece4 = new Piece(new Image("square4.png"), piece2.positionX+26, piece2.positionY-26);
+                        piece1 = new Piece(new Image("square4.png"), piece2.positionX-pieceSize, piece2.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square4.png"), piece2.positionX+pieceSize, piece2.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square4.png"), piece2.positionX+pieceSize, piece2.positionY-pieceSize, pieceSize);
 
                         position = 4;
                         break;
                     }
                     case 4:{
-                        piece1 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY-26);
-                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY+26);
-                        piece4 = new Piece(new Image("square4.png"), piece2.positionX+26, piece2.positionY+26);
+                        piece1 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY-pieceSize, pieceSize);
+                        piece2 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square4.png"), piece2.positionX, piece2.positionY+pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square4.png"), piece2.positionX+pieceSize, piece2.positionY+pieceSize, pieceSize);
                         position = 1;
                         break;
                     }
@@ -258,19 +274,19 @@ public class Figure{
                 switch (position) {
                     case 1:
                     case 3:{
-                        piece1 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY+26);
-                        piece3 = new Piece(new Image("square5.png"), piece1.positionX-26, piece1.positionY);
-                        piece4 = new Piece(new Image("square5.png"), piece1.positionX-26, piece1.positionY-26);
+                        piece1 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY+pieceSize, pieceSize);
+                        piece3 = new Piece(new Image("square5.png"), piece1.positionX-pieceSize, piece1.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square5.png"), piece1.positionX-pieceSize, piece1.positionY-pieceSize, pieceSize);
                         position = 2;
                         break;
                     }
                     case 2:
                     case 4:{
-                        piece1 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square5.png"), piece1.positionX+26, piece1.positionY);
-                        piece3 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY+26);
-                        piece4 = new Piece(new Image("square5.png"), piece1.positionX-26, piece1.positionY+26);
+                        piece1 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square5.png"), piece1.positionX+pieceSize, piece1.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square5.png"), piece1.positionX, piece1.positionY+pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square5.png"), piece1.positionX-pieceSize, piece1.positionY+pieceSize, pieceSize);
                         position = 1;
                         break;
                     }
@@ -280,34 +296,34 @@ public class Figure{
             case 5:{
                 switch (position) {
                     case 1:{
-                        piece1 = new Piece(new Image("square6.png"), piece2.positionX+26, piece2.positionY);
-                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square6.png"), piece2.positionX-26, piece2.positionY);
-                        piece4 = new Piece(new Image("square6.png"), piece2.positionX-26, piece2.positionY-26);
+                        piece1 = new Piece(new Image("square6.png"), piece2.positionX+pieceSize, piece2.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square6.png"), piece2.positionX-pieceSize, piece2.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square6.png"), piece2.positionX-pieceSize, piece2.positionY-pieceSize, pieceSize);
                         position = 2;
                         break;
                     }
                     case 2:{
-                        piece1 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY+26);
-                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY-26);
-                        piece4 = new Piece(new Image("square6.png"), piece2.positionX+26, piece2.positionY-26);
+                        piece1 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY+pieceSize, pieceSize);
+                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY-pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square6.png"), piece2.positionX+pieceSize, piece2.positionY-pieceSize, pieceSize);
                         position = 3;
                         break;
                     }
                     case 3:{
-                        piece1 = new Piece(new Image("square6.png"), piece2.positionX-26, piece2.positionY);
-                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square6.png"), piece2.positionX+26, piece2.positionY);
-                        piece4 = new Piece(new Image("square6.png"), piece2.positionX+26, piece2.positionY+26);
+                        piece1 = new Piece(new Image("square6.png"), piece2.positionX-pieceSize, piece2.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square6.png"), piece2.positionX+pieceSize, piece2.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square6.png"), piece2.positionX+pieceSize, piece2.positionY+pieceSize, pieceSize);
                         position = 4;
                         break;
                     }
                     case 4:{
-                        piece1 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY-26);
-                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY);
-                        piece3 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY+26);
-                        piece4 = new Piece(new Image("square6.png"), piece2.positionX-26, piece2.positionY+26);
+                        piece1 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY-pieceSize, pieceSize);
+                        piece2 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square6.png"), piece2.positionX, piece2.positionY+pieceSize, pieceSize);
+                        piece4 = new Piece(new Image("square6.png"), piece2.positionX-pieceSize, piece2.positionY+pieceSize, pieceSize);
                         position = 1;
                         break;
                     }
@@ -318,19 +334,19 @@ public class Figure{
                 switch (position) {
                     case 1:
                     case 3: {
-                        piece1 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY+26);
-                        piece3 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY+52);
-                        piece4 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY-26);
+                        piece1 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY+pieceSize, pieceSize);
+                        piece3 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY+pieceSize*2, pieceSize);
+                        piece4 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY-pieceSize, pieceSize);
                         position = 2;
                         break;
                     }
                     case 2:
                     case 4: {
-                        piece1 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY);
-                        piece2 = new Piece(new Image("square7.png"), piece1.positionX+26, piece1.positionY);
-                        piece3 = new Piece(new Image("square7.png"), piece1.positionX+52, piece1.positionY);
-                        piece4 = new Piece(new Image("square7.png"), piece1.positionX-26, piece1.positionY);
+                        piece1 = new Piece(new Image("square7.png"), piece1.positionX, piece1.positionY, pieceSize);
+                        piece2 = new Piece(new Image("square7.png"), piece1.positionX+pieceSize, piece1.positionY, pieceSize);
+                        piece3 = new Piece(new Image("square7.png"), piece1.positionX+pieceSize*2, piece1.positionY, pieceSize);
+                        piece4 = new Piece(new Image("square7.png"), piece1.positionX-pieceSize, piece1.positionY, pieceSize);
                         position = 1;
                         break;
                     }
