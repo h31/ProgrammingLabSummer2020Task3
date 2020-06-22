@@ -32,8 +32,6 @@ public class View {
         root.setPrefSize(width, height);
 
 
-        root.getChildren().add(0, addBackground());
-
         Group snakeBody = new Group();
         Model.snake = snakeBody.getChildren();
 
@@ -86,7 +84,7 @@ public class View {
         return rect;
     }
 
-    public static ImageView addBackground() throws MalformedURLException {
+    public  ImageView addBackground() throws MalformedURLException {
          return new ImageView(new Image(new File("background/field.jpg").toURI().toURL().toString(),
                 Model.width, Model.height, false, true));
     }

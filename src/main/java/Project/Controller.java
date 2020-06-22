@@ -1,8 +1,10 @@
 package Project;
 
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
@@ -14,7 +16,9 @@ public class Controller {
     private boolean gameStopped = false;
 
     public Scene control() throws IOException {
-        Scene scene = new Scene(b.createParent());
+        Pane root = new Pane();
+        root.getChildren().addAll(b.addBackground(), b.createParent());
+        Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case W:

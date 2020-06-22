@@ -13,10 +13,6 @@ class SnakeTest {
 
     @Test
     public void modelInitializationTest() throws IOException {
-        new Thread(() -> {
-            String[] m = {"", ""};
-            Main.main(m);
-        }).start();
         a.createParent();
         Model.snake.add(new Rectangle());
         Model.snake.add(new Rectangle());
@@ -32,10 +28,6 @@ class SnakeTest {
 
     @Test
     public void startTest() throws IOException {
-        new Thread(() -> {
-            String[] m = {"", ""};
-            Main.main(m);
-        }).start();
         a.createParent();
         b.startGame();
         View.timeline.stop();
@@ -45,10 +37,6 @@ class SnakeTest {
 
     @Test
     public void classicGameTest() throws IOException {
-        new Thread(() -> {
-            String[] m = {"", ""};
-            Main.main(m);
-        }).start();
         Model.alternativeGame = false;
         a.createParent();
         b.startGame();
@@ -67,10 +55,6 @@ class SnakeTest {
 
     @Test
     public void alternativeGameTest() throws IOException {
-        new Thread(() -> {
-            String[] m = {"", ""};
-            Main.main(m);
-        }).start();
         Model.alternativeGame = true;
         a.createParent();
         b.startGame();
@@ -90,10 +74,6 @@ class SnakeTest {
 
     @Test
     public void gameOverTest() throws IOException {
-        new Thread(() -> {
-            String[] m = {"", ""};
-            Main.main(m);
-        }).start();
         Model.alternativeGame = false;
         a.createParent();
         Model.snake.add(new Rectangle());
