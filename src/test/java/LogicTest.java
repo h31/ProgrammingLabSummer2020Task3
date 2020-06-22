@@ -5,13 +5,13 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogicTest {
-    int[][] testWin = new int[][]{
+    int[][] testWin = new int[][] {
             {0, 1024, 0, 0},
             {0, 1024, 8, 2},
             {2, 16, 0, 0},
             {0, 0, 8, 0}
     };
-    int[][] testLogic = new int[][]{
+    int[][] testLogic = new int[][] {
             {0, 2, 2, 0},
             {0, 0, 8, 2},
             {2, 16, 0, 0},
@@ -27,7 +27,7 @@ class LogicTest {
 
     @org.junit.jupiter.api.Test
     void up() {
-        int[][] testBoard = new int[][]{
+        int[][] testBoard = new int[][] {
                 {2, 2, 0, 0},
                 {8, 2, 0, 0},
                 {2, 16, 0, 0},
@@ -40,7 +40,7 @@ class LogicTest {
 
     @org.junit.jupiter.api.Test
     void down() {
-        int[][] testBoard = new int[][]{
+        int[][] testBoard = new int[][] {
                 {0, 0, 2, 2},
                 {0, 0, 8, 2},
                 {0, 0, 2, 16},
@@ -53,7 +53,7 @@ class LogicTest {
 
     @org.junit.jupiter.api.Test
     void right() {
-        int[][] testBoard = new int[][]{
+        int[][] testBoard = new int[][] {
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 2, 2, 0},
@@ -66,7 +66,7 @@ class LogicTest {
 
     @org.junit.jupiter.api.Test
     void left() {
-        int[][] testBoard = new int[][]{
+        int[][] testBoard = new int[][] {
                 {2, 2, 2, 2},
                 {0, 16, 16, 0},
                 {0, 0, 0, 0},
