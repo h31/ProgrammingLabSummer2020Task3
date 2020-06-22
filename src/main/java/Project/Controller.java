@@ -1,12 +1,19 @@
 package Project;
 
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+
+import java.io.IOException;
+
 
 public class Controller {
+    @FXML
+    CheckBox alternative;
     View b = new View();
     private boolean gameStopped = false;
 
-    public Scene control() {
+    public Scene control() throws IOException {
         Scene scene = new Scene(b.createParent());
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -44,7 +51,9 @@ public class Controller {
         return scene;
     }
 
-    public void startNewGame() {
+    public void startNewGame() throws IOException {
+        if (alternative.isSelected()) Model.alternativeGame = true;
+        else Model.alternativeGame = false;
         this.b = new View();
         Main.primaryStage.setScene(control());
         startGame();
@@ -54,7 +63,7 @@ public class Controller {
         View.timeline.stop();
         View.timeline.getKeyFrames().remove(0);
         Model.snake.clear();
-        Main.primaryStage.setScene(Menu.playNewGame());
+        Main.primaryStage.setScene(Main.mainMenu);
     }
 
     public void startGame() {

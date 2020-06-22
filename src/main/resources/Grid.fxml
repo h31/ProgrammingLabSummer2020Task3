@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+
+
+<AnchorPane prefHeight="700.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Line endX="850.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="50.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="100.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="150.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="200.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="250.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="300.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="350.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="400.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="450.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="500.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="550.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="600.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="650.0" strokeWidth="2.0" />
+      <Line endX="850.0" layoutY="700.0" strokeWidth="2.0" />
+      <Line endY="700.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="50.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="100.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="150.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="200.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="250.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="300.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="350.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="400.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="450.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="500.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="550.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="600.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="650.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="700.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="750.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="800.0" strokeWidth="2.0" />
+      <Line endY="700.0" layoutX="850.0" strokeWidth="2.0" />
+   </children>
+</AnchorPane>

@@ -3,6 +3,8 @@ package Project;
 import javafx.scene.shape.Rectangle;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SnakeTest {
@@ -10,7 +12,7 @@ class SnakeTest {
     Controller b = new Controller();
 
     @Test
-    public void modelInitializationTest() {
+    public void modelInitializationTest() throws IOException {
         a.createParent();
         Model.snake.add(new Rectangle());
         Model.snake.add(new Rectangle());
@@ -25,7 +27,7 @@ class SnakeTest {
     }
 
     @Test
-    public void startTest() {
+    public void startTest() throws IOException {
         a.createParent();
         b.startGame();
         View.timeline.stop();
@@ -34,7 +36,7 @@ class SnakeTest {
     }
 
     @Test
-    public void classicGameTest() {
+    public void classicGameTest() throws IOException {
         Model.alternativeGame = false;
         a.createParent();
         b.startGame();
@@ -52,7 +54,7 @@ class SnakeTest {
     }
 
     @Test
-    public void alternativeGameTest() {
+    public void alternativeGameTest() throws IOException {
         Model.alternativeGame = true;
         a.createParent();
         b.startGame();
@@ -71,7 +73,7 @@ class SnakeTest {
     }
 
     @Test
-    public void gameOverTest() {
+    public void gameOverTest() throws IOException {
         Model.alternativeGame = false;
         a.createParent();
         Model.snake.add(new Rectangle());
