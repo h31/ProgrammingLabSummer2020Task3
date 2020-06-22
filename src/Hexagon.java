@@ -5,7 +5,7 @@ class Hexagon {
     private boolean mine;
     private boolean visible;
     private boolean flag;
-//+-
+
     Hexagon(int x, int y) {
         this.x = x;
         this.y = y;

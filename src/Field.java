@@ -2,27 +2,33 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-class Field {
+public class Field {
     private Hexagon[][] zone;
+    private int width;
+    private int height;
+    private int minesCount;
     private int closedHexagon;
 
-    Field() {
-        zone = new Hexagon[40][10];
-        for (int i = 0; i < 40; i++) {
-            for (int j = 0; j < 10; j++) {
+    public Field(int width, int height, int minesCount) {
+        this.width = width;
+        this.height = height;
+        this.minesCount = minesCount;
+        zone = new Hexagon[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 zone[i][j] = new Hexagon(j, i);
             }
         }
         setMines();
         setMinesCount();
-        closedHexagon = 400;
+        closedHexagon = width * height;
     }
 
     private void setMines() {
         int minesRemained = 58;
         while (minesRemained != 0) {
-            int x = ThreadLocalRandom.current().nextInt(0, 10);
-            int y = ThreadLocalRandom.current().nextInt(0, 40);
+            int x = ThreadLocalRandom.current().nextInt(0, width);
+            int y = ThreadLocalRandom.current().nextInt(0, height);
             if (!zone[y][x].getMine()) {
                 zone[y][x].setMine();
                 minesRemained--;
@@ -31,8 +37,8 @@ class Field {
     }
 
     private void setMinesCount() {
-        for (int i = 0; i < 40; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 int count = 0;
                 for (Hexagon hexagon : getHexagon(j, i)) {
                     if (hexagon.getMine()) {
@@ -45,7 +51,7 @@ class Field {
     }
 
     private void addHexagon(List<Hexagon> list, int x, int y) {
-        if (x < 0 || x >= 10 || y < 0 || y >= 40) return;
+        if (x < 0 || x >= width || y < 0 || y >= height) return;
         list.add(zone[y][x]);
     }
 
@@ -91,6 +97,8 @@ class Field {
 
     void changeFlag(int x, int y) {
         zone[y][x].changeFlag();
-        Scanning.update();
+        Renovation.update();
     }
+
+    public int getMines() { return minesCount; }
 }
