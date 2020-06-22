@@ -119,7 +119,7 @@ public class Effect extends Animated {
      * Метод запускающий слушателей, реагирующих на изменение координат ImageView.
      * Позволяет синхронно передвигать картинку и триггер за ней
      */
-    private void moveCollision() {
+    public void moveCollision() {
         DoubleProperty xValue = new SimpleDoubleProperty();
         DoubleProperty yValue = new SimpleDoubleProperty();
         xValue.bind(getImgView().translateXProperty());

@@ -1,8 +1,5 @@
 package Model;
 
-import Controller.Controller;
-import javafx.scene.image.ImageView;
-
 public class FirstLevel extends Level {
     /**
      * Конструктор - создание объекта первого уровня.
