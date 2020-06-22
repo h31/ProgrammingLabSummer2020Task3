@@ -33,13 +33,14 @@ public class Turn {
     }
 
     public void startTurn(Board board) {
+        Move move = new Move(this,board);
         turnCount++;
         moveList(diceRoll());
         if (notEmptyBar.get(playerNumber())) {
-            Move.setBarMove(playerNumber() == 0 ? ChipColor.WHITE : ChipColor.BLACK, this, board);
+            move.setBarMove(playerNumber() == 0 ? ChipColor.WHITE : ChipColor.BLACK);
         } else if (board.getHomes().get(playerNumber()) == 15) {
-            Move.setEndspielMove(playerNumber() == 0 ? ChipColor.WHITE : ChipColor.BLACK, this, board);
-        } else Move.setNormalMove(this, board);
+            move.setEndspielMove(playerNumber() == 0 ? ChipColor.WHITE : ChipColor.BLACK);
+        } else move.setNormalMove();
 
         newTurnAlert();
         board.getGrid().add(diceView(), 13, 0);

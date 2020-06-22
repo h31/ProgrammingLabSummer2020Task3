@@ -12,16 +12,21 @@ import static BG_model.ChipColor.*;
 
 
 public class Move {
-    private static final int[] prevI = {-1};
-    private static final boolean[] firstClick = {true};
+    private int[] prevI = {-1};
+    private boolean[] firstClick = {true};
+    private Turn t;
+    private Board board;
 
-    public static void setNormalMove(Turn t, Board board) {
+    public Move(Turn t, Board board){
+        this.t = t;
+        this.board = board;
+    }
+
+    public void setNormalMove() {
         final ChipColor[] color = new ChipColor[1];
         board.getGrid().getChildren().get(25).setStyle("-fx-background-color: #808080");
         board.getGrid().getChildren().get(24).setStyle("-fx-background-color: #808080");
-
         for (int i = 0; i < 24; i++) {
-
             int finalI = i;
             board.getGrid().getChildren().get(i).setOnMouseClicked(mouseEvent -> {
                 if (firstClick[0]) {
@@ -35,12 +40,12 @@ public class Move {
                     int moveLength = color[0] == WHITE ? prevI[0] - finalI : finalI - prevI[0];
                     if (t.getMoveList().contains(moveLength)) {
                         if (board.getBoard().get(finalI).size() == 0 || color[0] == board.getBoard().get(finalI).onTop()) {
-                            move(prevI[0], finalI, board, t);
-                            normalMoveListChange(moveLength, t, board);
+                            move(prevI[0], finalI);
+                            normalMoveListChange(moveLength);
                         } else if (board.getBoard().get(finalI).size() == 1) {
-                            toBarMove(finalI, board, t);
-                            move(prevI[0], finalI, board, t);
-                            normalMoveListChange(moveLength, t, board);
+                            toBarMove(finalI);
+                            move(prevI[0], finalI);
+                            normalMoveListChange(moveLength);
 
                         }
                     }
@@ -54,7 +59,7 @@ public class Move {
         }
     }
 
-    static void setBarMove(ChipColor color, Turn t, Board board) {
+    void setBarMove(ChipColor color) {
         board.getGrid().getChildren().get(24 + color.ordinal()).setStyle("-fx-background-color: #00ffff");
         int prevI = color == WHITE ? 24 : -1;
         List<Integer> canMove = new ArrayList<>();
@@ -70,14 +75,14 @@ public class Move {
                 int moveLength = color == WHITE ? prevI - finalI : finalI - prevI;
                 if (t.getMoveList().contains(moveLength) && canMove.contains(finalI)) {
                     if (board.getBoard().get(finalI).size() == 1 && board.getBoard().get(finalI).onTop() != color) {
-                        toBarMove(finalI, board, t);
+                        toBarMove(finalI);
                     }
-                    move(prevI == -1 ? 25 : prevI, finalI, board, t);
-                    normalMoveListChange(moveLength, t, board);
+                    move(prevI == -1 ? 25 : prevI, finalI);
+                    normalMoveListChange(moveLength);
 
                     if (board.getBoard().get(24 + color.ordinal()).size() == 0) {
                         t.setNotEmptyBar(false, color.ordinal());
-                        setNormalMove(t, board);
+                        setNormalMove();
                     }
                 }
             });
@@ -88,16 +93,16 @@ public class Move {
 
     }
 
-    static void setEndspielMove(ChipColor color, Turn t, Board board) {
+    void setEndspielMove(ChipColor color) {
         final int[] maxMove = {0};
         if (t.getMoveList().size() > 1 && t.getMoveList().get(1) > maxMove[0]) maxMove[0] = t.getMoveList().get(1);
         if (color == WHITE) {
             for (int i = 0; i < 6; i++) {
-                endSpielMoveW(maxMove, i, t, board);
+                endSpielMoveW(maxMove, i);
             }
         } else {
             for (int i = 23; i > 17; i--) {
-                endSpielMoveB(maxMove, i, t, board);
+                endSpielMoveB(maxMove, i);
             }
 
         }
@@ -105,26 +110,26 @@ public class Move {
 
     }
 
-    private static void endSpielMoveW(int[] maxMove, int to, Turn t, Board board) {
+    private void endSpielMoveW(int[] maxMove, int to) {
         if (board.getBoard().get(to).onTop() != BLACK) {
             if (t.getMoveList().indexOf(to + 1) < 2 && t.getMoveList().contains(to + 1)) {
                 board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
                     if (firstClick[0]) {
                         if (board.getBoard().get(to).size() != 0 && WHITE == board.getBoard().get(to).onTop()) {
                             board.getBoard().get(to).remove();
-                            if (board.getBoard().get(to).size() == 0 && isWin(WHITE, board)) t.winnerAlert(board);
+                            if (board.getBoard().get(to).size() == 0 && isWin(WHITE)) t.winnerAlert(board);
                             Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
                             prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), true));
-                            normalMoveListChange(to + 1, t, board);
+                            normalMoveListChange(to + 1);
 
                             if (t.getMoveList().size() != 0)
                                 maxMove[0] = t.getMoveList().get(0);
-                            endSpielMoveW(maxMove, to, t, board);
+                            endSpielMoveW(maxMove, to);
                             if (board.getBoard().get(to).size() == 0) {
 
                                 for (int i = to - 1; i >= 0; i--) {
                                     if (board.getBoard().get(i).size() != 0) {
-                                        endSpielMoveW(maxMove, i, t, board);
+                                        endSpielMoveW(maxMove, i);
                                         break;
                                     }
                                 }
@@ -134,14 +139,14 @@ public class Move {
                         int moveLength = prevI[0] - to;
                         if (t.getMoveList().contains(moveLength)) {
                             if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
-                                endSpielMoveW(maxMove, to, t, board);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
+                                endSpielMoveW(maxMove, to);
                             } else if (board.getBoard().get(to).size() == 1) {
-                                toBarMove(to, board, t);
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
-                                endSpielMoveW(maxMove, to, t, board);
+                                toBarMove(to);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
+                                endSpielMoveW(maxMove, to);
                             }
                         }
                         firstClick[0] = true;
@@ -162,18 +167,18 @@ public class Move {
                         if (firstClick[0]) {
                             if (board.getBoard().get(to).size() != 0 && WHITE == board.getBoard().get(to).onTop()) {
                                 board.getBoard().get(to).remove();
-                                if (board.getBoard().get(to).size() == 0 && isWin(WHITE, board)) t.winnerAlert(board);
+                                if (board.getBoard().get(to).size() == 0 && isWin(WHITE)) t.winnerAlert(board);
                                 Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
                                 prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), true));
-                                normalMoveListChange(maxMove[0], t, board);
+                                normalMoveListChange(maxMove[0]);
 
                                 if (t.getMoveList().size() != 0)
                                     maxMove[0] = t.getMoveList().get(0);
-                                endSpielMoveW(maxMove, to, t, board);
+                                endSpielMoveW(maxMove, to);
                                 if (board.getBoard().get(to).size() == 0) {
                                     for (int i = to - 1; i >= 0; i--) {
                                         if (board.getBoard().get(i).size() != 0) {
-                                            endSpielMoveW(maxMove, i, t, board);
+                                            endSpielMoveW(maxMove, i);
                                             break;
                                         }
                                     }
@@ -183,16 +188,16 @@ public class Move {
                             int moveLength = prevI[0] - to;
                             if (t.getMoveList().contains(moveLength)) {
                                 if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
 
-                                    endSpielMoveW(maxMove, to, t, board);
+                                    endSpielMoveW(maxMove, to);
                                 } else if (board.getBoard().get(to).size() == 1) {
-                                    toBarMove(to, board, t);
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
+                                    toBarMove(to);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
 
-                                    endSpielMoveW(maxMove, to, t, board);
+                                    endSpielMoveW(maxMove, to);
                                 }
                             }
                             firstClick[0] = true;
@@ -206,15 +211,15 @@ public class Move {
                             int moveLength = prevI[0] - to;
                             if (t.getMoveList().contains(moveLength)) {
                                 if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                    endSpielMoveW(maxMove, to, t, board);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
+                                    endSpielMoveW(maxMove, to);
                                 } else if (board.getBoard().get(to).size() == 1) {
-                                    toBarMove(to, board, t);
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
+                                    toBarMove(to);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
 
-                                    endSpielMoveW(maxMove, to, t, board);
+                                    endSpielMoveW(maxMove, to);
                                 }
                             }
                             firstClick[0] = true;
@@ -236,16 +241,16 @@ public class Move {
                         int moveLength = prevI[0] - to;
                         if (t.getMoveList().contains(moveLength)) {
                             if (board.getBoard().get(to).size() == 0 || WHITE == board.getBoard().get(to).onTop()) {
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
 
-                                endSpielMoveW(maxMove, to, t, board);
+                                endSpielMoveW(maxMove, to);
                             } else if (board.getBoard().get(to).size() == 1) {
-                                toBarMove(to, board, t);
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
+                                toBarMove(to);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
 
-                                endSpielMoveW(maxMove, to, t, board);
+                                endSpielMoveW(maxMove, to);
 
                             }
                         }
@@ -260,24 +265,24 @@ public class Move {
 
     }
 
-    private static void endSpielMoveB(int[] maxMove, int to, Turn t, Board board) {
+    private void endSpielMoveB(int[] maxMove, int to) {
         if (board.getBoard().get(to).onTop() != WHITE) {
             if (t.getMoveList().indexOf(24 - to) < 2 && t.getMoveList().contains(24 - to)) {
                 board.getGrid().getChildren().get(to).setOnMouseClicked(mouseEvent -> {
                     if (firstClick[0]) {
                         if (board.getBoard().get(to).size() != 0 && BLACK == board.getBoard().get(to).onTop()) {
                             board.getBoard().get(to).remove();
-                            if (board.getBoard().get(to).size() == 0 && isWin(BLACK, board)) t.winnerAlert(board);
+                            if (board.getBoard().get(to).size() == 0 && isWin(BLACK)) t.winnerAlert(board);
                             Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
                             prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), false));
-                            normalMoveListChange(24 - to, t, board);
+                            normalMoveListChange(24 - to);
                             if (t.getMoveList().size() != 0)
                                 maxMove[0] = t.getMoveList().get(0);
-                            endSpielMoveB(maxMove, to, t, board);
+                            endSpielMoveB(maxMove, to);
                             if (board.getBoard().get(to).size() == 0) {
                                 for (int i = to + 1; i < 24; i++) {
                                     if (board.getBoard().get(i).size() != 0) {
-                                        endSpielMoveB(maxMove, i, t, board);
+                                        endSpielMoveB(maxMove, i);
                                         break;
                                     }
                                 }
@@ -287,14 +292,14 @@ public class Move {
                         int moveLength = to - prevI[0];
                         if (t.getMoveList().contains(moveLength)) {
                             if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
-                                endSpielMoveB(maxMove, to, t, board);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
+                                endSpielMoveB(maxMove, to);
                             } else if (board.getBoard().get(to).size() == 1) {
-                                toBarMove(to, board, t);
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
-                                endSpielMoveB(maxMove, to, t, board);
+                                toBarMove(to);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
+                                endSpielMoveB(maxMove, to);
                             }
                         }
                         firstClick[0] = true;
@@ -315,18 +320,18 @@ public class Move {
                         if (firstClick[0]) {
                             if (board.getBoard().get(to).size() != 0 && BLACK == board.getBoard().get(to).onTop()) {
                                 board.getBoard().get(to).remove();
-                                if (board.getBoard().get(to).size() == 0 && isWin(BLACK, board)) t.winnerAlert(board);
+                                if (board.getBoard().get(to).size() == 0 && isWin(BLACK)) t.winnerAlert(board);
                                 Pane prevNode = (Pane) board.getGrid().getChildren().get(to);
                                 prevNode.getChildren().set(0, Board.column(board.getBoard().getBoard().get(to), false));
-                                normalMoveListChange(maxMove[0], t, board);
+                                normalMoveListChange(maxMove[0]);
                                 if (t.getMoveList().size() != 0)
                                     maxMove[0] = t.getMoveList().get(0);
-                                endSpielMoveB(maxMove, to, t, board);
+                                endSpielMoveB(maxMove, to);
                                 if (board.getBoard().get(to).size() == 0) {
 
                                     for (int i = to + 1; i < 24; i++) {
                                         if (board.getBoard().get(i).size() != 0) {
-                                            endSpielMoveB(maxMove, i, t, board);
+                                            endSpielMoveB(maxMove, i);
                                             break;
                                         }
                                     }
@@ -336,14 +341,14 @@ public class Move {
                             int moveLength = to - prevI[0];
                             if (t.getMoveList().contains(moveLength)) {
                                 if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                    endSpielMoveB(maxMove, to, t, board);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
+                                    endSpielMoveB(maxMove, to);
                                 } else if (board.getBoard().get(to).size() == 1) {
-                                    toBarMove(to, board, t);
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                    endSpielMoveB(maxMove, to, t, board);
+                                    toBarMove(to);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
+                                    endSpielMoveB(maxMove, to);
                                 }
                             }
                             firstClick[0] = true;
@@ -357,14 +362,14 @@ public class Move {
                             int moveLength = to - prevI[0];
                             if (t.getMoveList().contains(moveLength)) {
                                 if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                    endSpielMoveB(maxMove, to, t, board);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
+                                    endSpielMoveB(maxMove, to);
                                 } else if (board.getBoard().get(to).size() == 1) {
-                                    toBarMove(to, board, t);
-                                    move(prevI[0], to, board, t);
-                                    normalMoveListChange(moveLength, t, board);
-                                    endSpielMoveB(maxMove, to, t, board);
+                                    toBarMove(to);
+                                    move(prevI[0], to);
+                                    normalMoveListChange(moveLength);
+                                    endSpielMoveB(maxMove, to);
                                 }
                             }
                             firstClick[0] = true;
@@ -385,14 +390,14 @@ public class Move {
                         int moveLength = to - prevI[0];
                         if (t.getMoveList().contains(moveLength)) {
                             if (board.getBoard().get(to).size() == 0 || BLACK == board.getBoard().get(to).onTop()) {
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
-                                endSpielMoveB(maxMove, to, t, board);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
+                                endSpielMoveB(maxMove, to);
                             } else if (board.getBoard().get(to).size() == 1) {
-                                toBarMove(to, board, t);
-                                move(prevI[0], to, board, t);
-                                normalMoveListChange(moveLength, t, board);
-                                endSpielMoveB(maxMove, to, t, board);
+                                toBarMove(to);
+                                move(prevI[0], to);
+                                normalMoveListChange(moveLength);
+                                endSpielMoveB(maxMove, to);
                             }
                         }
                         firstClick[0] = true;
@@ -406,7 +411,7 @@ public class Move {
 
     }
 
-    private static boolean isWin(ChipColor color, Board board) {
+    private boolean isWin(ChipColor color) {
         for (int i = 5; i >= 0; i--) {
             if (board.getBoard().get(color == WHITE ? i : 23 - i).size() != 0) return false;
         }
@@ -414,20 +419,20 @@ public class Move {
 
     }
 
-    private static void move(int from, int to, Board board, Turn t) {
+    private void move(int from, int to) {
         ChipColor color = board.getBoard().get(from).onTop();
         if (color == WHITE) {
             if (from > 5) {
                 if (to < 6) {
                     board.increaseWH();
-                    if (board.getWhiteHome() == 15) setEndspielMove(WHITE, t, board);
+                    if (board.getWhiteHome() == 15) setEndspielMove(WHITE);
                 }
             }
         } else {
             if (from < 18) {
                 if (to > 17) {
                     board.increaseBH();
-                    if (board.getBlackHome() == 15) setEndspielMove(BLACK, t, board);
+                    if (board.getBlackHome() == 15) setEndspielMove(BLACK);
                 }
             }
         }
@@ -438,7 +443,7 @@ public class Move {
         node.getChildren().set(0, Board.column(board.getBoard().get(to), to < 12));
     }
 
-    private static void toBarMove(int from, Board board, Turn t) {
+    private void toBarMove(int from) {
         ChipColor color = board.getBoard().get(from).onTop();
         if (color == WHITE) {
             if (from < 6) board.decreaseWH();
@@ -453,7 +458,7 @@ public class Move {
         node.getChildren().set(0, Board.column(board.getBoard().get(color.ordinal() + 24), color.ordinal() == 1));
     }
 
-    private static void normalMoveListChange(int moveLength, Turn t, Board board) {
+    private void normalMoveListChange(int moveLength) {
         if (t.getMoveList().size() == 3) {
             switch (t.getMoveList().indexOf(moveLength)) {
                 case (2): {

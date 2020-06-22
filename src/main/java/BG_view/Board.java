@@ -1,6 +1,5 @@
 package BG_view;
 
-import BG_control.Move;
 import BG_control.Turn;
 import BG_model.ChipColor;
 import BG_model.Column;
@@ -94,9 +93,6 @@ public class Board {
         grid.add(bb, columnList.get(25).getKey(), columnList.get(25).getValue());
         grid.getChildren().get(25).setStyle("-fx-background-color: #808080");
         grid.add(turnButton(), 13, 1);
-
-
-        Move.setNormalMove(t, this);
         return grid;
     }
 

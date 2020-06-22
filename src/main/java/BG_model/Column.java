@@ -1,27 +1,28 @@
 package BG_model;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Objects;
-import java.util.Stack;
 
 public class Column {
-    private Stack<Chip> column;
+    private Deque<Chip> column;
 
     Column() {
-        this.column = new Stack<>();
+        this.column = new ArrayDeque<>();
     }
 
     Column(ChipColor color, int size) {
         if (size < 1) throw new IllegalArgumentException("");
-        this.column = new Stack<>();
+        this.column = new ArrayDeque<>();
         for (int i=0;i<size;i++){
-            this.column.push(new Chip(color));
+            this.column.addFirst(new Chip(color));
         }
     }
 
     boolean move(Column newColumn){
         if (this.size() != 0) {
             newColumn.put(new Chip(this.onTop()));
-            this.column.pop();
+            this.column.removeFirst();
             return true;
         } else {
             return false;
@@ -35,15 +36,15 @@ public class Column {
 
     public ChipColor onTop(){
         if (column.size() == 0) return null;
-        else return column.peek().getColor();
+        else return column.peekFirst().getColor();
     }
 
     public void remove(){
-        column.pop();
+        column.removeFirst();
     }
 
     private void put(Chip chip){
-        column.push(chip);
+        column.addFirst(chip);
     }
 
     @Override
