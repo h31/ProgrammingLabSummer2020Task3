@@ -71,6 +71,7 @@ public class Controller {
             group.getChildren().remove(view.vBoxGameMenu(buttonCont,buttonRest,buttonQuit));
         });
         buttonCont.setOnMouseClicked(mouseEvent -> {
+            view.vBoxGameMenu(buttonCont,buttonRest,buttonQuit).setManaged(false);
             view.vBoxGameMenu(buttonCont,buttonRest,buttonQuit).setVisible(false);
             view.drawBoard(group, myBoard, logic.getScore());
             group.getChildren().remove(view.vBoxGameMenu(buttonCont,buttonRest,buttonQuit));

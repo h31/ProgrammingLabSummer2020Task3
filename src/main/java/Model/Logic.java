@@ -9,7 +9,7 @@ public class Logic {
         this.cells = cells;
         this.score = 0;
     }
-    
+
     public int getScore() {
         return score;
     }
@@ -19,10 +19,10 @@ public class Logic {
     }
 
     public void start() {
+        score = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 cells[i][j] = 0;
-                score = 0;
             }
         }
         randomCell(cells);
