@@ -1,18 +1,15 @@
 package Model;
 
-import java.util.Arrays;
-
 public class Logic {
 
     private int[][] cells;
-    private int score = 0;
-    private int space = 16;
+    private int score;
 
     public Logic (int[][] cells) {
         this.cells = cells;
         this.score = 0;
     }
-
+    
     public int getScore() {
         return score;
     }
@@ -26,7 +23,6 @@ public class Logic {
             for (int j = 0; j < 4; j++) {
                 cells[i][j] = 0;
                 score = 0;
-                space = 16;
             }
         }
         randomCell(cells);
@@ -38,20 +34,6 @@ public class Logic {
             for (int j = 0; j < 4; j++) {
                 if (board[i][j] == 2048)
                     return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean canMove() {
-        if (space != 0) {
-            return true;
-        }
-        for (int i = 0; i < 4 - 1; i++) {
-            for (int j = 0; j < 4 - 1; j++) {
-                if (cells[i][j] == cells[i][j+1] || cells[i][j] == cells[i+1][j]) {
-                    return true;
-                }
             }
         }
         return false;
@@ -74,7 +56,6 @@ public class Logic {
                             cells[i][j] += cells[i][k];
                             score += cells[i][j];
                             cells[i][k] = 0;
-                            space++;
                         }
                     }
                 }
@@ -99,7 +80,6 @@ public class Logic {
                             cells[i][j] += cells[i][k];
                             score += cells[i][j];
                             cells[i][k] = 0;
-                            space++;
                         }
                     }
                 }
@@ -124,7 +104,6 @@ public class Logic {
                             cells[j][i] += cells[k][i];
                             score += cells[j][i];
                             cells[k][i] = 0;
-                            space++;
                         }
                     }
                 }
@@ -149,7 +128,6 @@ public class Logic {
                             cells[j][i] += cells[k][i];
                             score += cells[j][i];
                             cells[k][i] = 0;
-                            space++;
                         }
                     }
                 }
@@ -180,27 +158,4 @@ public class Logic {
                 done = !isSpots(cells);
         }
     }
-
-    public int[][] clone(int[][] cells) {
-        int[][] newBoard = new int[4][4];
-        Logic board = new Logic(cells);
-        for (int i = 0; i < board.cells.length; i++) {
-            for (int j = 0; j < board.cells[i].length; j++) {
-                newBoard[i][j] = board.cells[i][j];
-            }
-        }
-        return newBoard;
-    }
-
-    public boolean looseGame (int[][] cells) {
-        int[][] myBoard = new int[4][4];
-        Logic test = new Logic(cells);
-        myBoard = test.getCells().clone();
-        test.up();
-        test.down();
-        test.right();
-        test.left();
-        return Arrays.deepEquals(myBoard, test.getCells());
-    }
-
 }

@@ -7,6 +7,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -15,10 +16,37 @@ import java.io.InputStream;
 
 public class View {
 
-    private Group group;
+    public VBox vBoxMenu(MenuButton btn1, MenuButton btn2) {
+        VBox menu = new VBox(30);
+        menu.setTranslateX(350);
+        menu.setTranslateY(400);
+        menu.getChildren().addAll(btn1, btn2);
+        return menu;
+    }
 
-    public View(Group group) {
-        this.group = group;
+    public VBox vBoxWin(MenuButton btn1, MenuButton btn2) {
+        VBox win = new VBox(10);
+        Text winText1 = new Text ("Congratulations!");
+        Text winText2 = new Text ("You win");
+        winText1.setFont(Font.font("Showcard Gothic", 30));
+        winText2.setFont(Font.font("Showcard Gothic", 30));
+        winText1.setFill(Color.DARKBLUE);
+        winText2.setFill(Color.DARKBLUE);
+        win.setTranslateX(320);
+        win.setTranslateY(310);
+        win.getChildren().addAll(winText1,winText2,btn1,btn2);
+        return win;
+    }
+
+    public VBox vBoxGameMenu(MenuButton btn1, MenuButton btn2, MenuButton btn3) {
+        VBox pause = new VBox(20);
+        Text text = new Text("Вы действительно хотите выйти из игры ?");
+        text.setFill(Color.YELLOW);
+        text.setFont(Font.font("Arial", 25));
+        pause.setTranslateX(350);
+        pause.setTranslateY(400);
+        pause.getChildren().addAll(btn1,btn2, btn3);
+        return pause;
     }
 
     public void createMenu(Group group){
@@ -36,12 +64,12 @@ public class View {
     }
 
     public void createWin(Group group) {
-        InputStream input = getClass().getResourceAsStream("/Test.png");
+        InputStream input = getClass().getResourceAsStream("/Win.png");
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
         StackPane stackPane = new StackPane(imageView);
-        stackPane.setLayoutX(450);
-        stackPane.setLayoutY(450);
+        stackPane.setLayoutX(150);
+        stackPane.setLayoutY(200);
         group.getChildren().add(stackPane);
     }
 
