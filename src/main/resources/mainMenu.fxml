@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="260.0" prefWidth="207.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="284.0" prefWidth="207.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ButtonBar layoutX="5.0" layoutY="255.0" prefHeight="25.0" prefWidth="195.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="255.0">
+      <ButtonBar layoutX="5.0" layoutY="255.0" prefHeight="15.0" prefWidth="195.0">
         <buttons>
-            <Button mnemonicParsing="false" onAction="#playNewGame" prefHeight="42.0" text="Play" />
-          <Button layoutX="17.0" minWidth="55.0" mnemonicParsing="false" onAction="#exit" prefHeight="25.0" text="Exit" />
+            <Button mnemonicParsing="false" onAction="#playNewGame" prefHeight="0.0" text="Play" />
+          <Button layoutX="17.0" minWidth="55.0" mnemonicParsing="false" onAction="#exit" prefHeight="0.0" text="Exit" />
         </buttons>
       </ButtonBar>
       <Label layoutX="29.0" layoutY="15.0" prefHeight="25.0" prefWidth="147.0" text="Hexsweeper" textAlignment="CENTER">
@@ -21,12 +21,13 @@
       <Label layoutX="13.0" layoutY="56.0" prefHeight="17.0" prefWidth="150.0" text="Choose difficulty:" AnchorPane.leftAnchor="13.0" />
       <Group layoutX="50.0" layoutY="96.0">
          <children>
-            <RadioButton fx:id="hard" layoutX="-23.0" layoutY="38.0" mnemonicParsing="false" text="Hard">
+            <RadioButton fx:id="easy" layoutX="-23.0" layoutY="-18.0" mnemonicParsing="false" selected="true" text="Easy">
                <toggleGroup>
                   <ToggleGroup fx:id="difficulty" />
                </toggleGroup></RadioButton>
-            <RadioButton fx:id="easy" layoutX="-23.0" layoutY="-18.0" mnemonicParsing="false" selected="true" text="Easy" toggleGroup="$difficulty" />
-            <RadioButton fx:id="normal" layoutX="-23.0" layoutY="8.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="65.0" text="Normal" toggleGroup="$difficulty" />
+            <RadioButton fx:id="normal" layoutX="-23.0" layoutY="7.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="65.0" text="Normal" toggleGroup="$difficulty" />
+            <RadioButton fx:id="hard" layoutX="-23.0" layoutY="38.0" mnemonicParsing="false" text="Hard" toggleGroup="$difficulty" />
+            <RadioButton fx:id="custom" layoutX="-23.0" layoutY="65.0" mnemonicParsing="false" onAction="#setCustom" text="Custom" toggleGroup="$difficulty" />
          </children></Group>
       <Separator layoutX="4.0" layoutY="250.0" prefWidth="200.0" />
       <TextField disable="true" layoutX="13.0" layoutY="186.0" prefHeight="25.0" prefWidth="35.0" promptText="x" AnchorPane.leftAnchor="12.0" fx:id="x" />
@@ -36,7 +37,6 @@
          <font>
             <Font size="10.0" />
          </font></Label>
-      <RadioButton fx:id="custom" layoutX="27.0" layoutY="160.0" mnemonicParsing="false" onAction="#setCustom" text="Custom" toggleGroup="$difficulty" />
       <Label layoutX="13.0" layoutY="218.0" text="Max size: 30x30" underline="true" AnchorPane.leftAnchor="15.0">
          <font>
             <Font size="10.0" />
