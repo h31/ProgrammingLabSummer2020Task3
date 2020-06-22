@@ -36,7 +36,7 @@
          <font>
             <Font size="10.0" />
          </font></Label>
-      <RadioButton fx:id="custom" layoutX="26.0" layoutY="160.0" mnemonicParsing="false" onAction="#setCustom" text="Custom" toggleGroup="$difficulty" />
+      <RadioButton fx:id="custom" layoutX="27.0" layoutY="160.0" mnemonicParsing="false" onAction="#setCustom" text="Custom" toggleGroup="$difficulty" />
       <Label layoutX="13.0" layoutY="218.0" text="Max size: 30x30" underline="true" AnchorPane.leftAnchor="15.0">
          <font>
             <Font size="10.0" />
