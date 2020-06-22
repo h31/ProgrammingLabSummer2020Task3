@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="540.0" prefWidth="450.0" style="-fx-background-color: #faf8ef;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <Label layoutX="20.0" layoutY="14.0" text="2048" textFill="#84776e">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="64.0" />
+         </font>
+      </Label>
+      <Region layoutX="20.0" layoutY="110.0" prefHeight="410.0" prefWidth="410.0" style="-fx-background-color: #afa196; -fx-background-radius: 5;" />
+   </children>
+</AnchorPane>
