@@ -15,7 +15,7 @@ import static main.java.screens.GameScreen.game;
 public class Score {
     public static int c, b;
     static BitmapFont font;
-    static float timeSeconds = 0f;
+    public static float timeSeconds = 0f;
     static float period = 180f;
 
     public static void initialize() {
@@ -37,7 +37,7 @@ public class Score {
 
     }
 
-    public static void handleEvent() {
+    static void handleEvent() {
         game.setScreen(new EndGame(game));
     }
 

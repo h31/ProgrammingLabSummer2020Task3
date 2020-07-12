@@ -1,5 +1,6 @@
 package main.java.stages;
 
+import main.java.network.Server;
 import main.java.resources.Load;
 import main.java.screens.GameScreen;
 import main.java.screens.MainMenuScreen;
@@ -8,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import main.java.start.Aero;
+import main.java.screens.OnlineScreen;
 
 import static main.java.screens.MainMenuScreen.game;
 
@@ -58,6 +59,16 @@ public class StageMenu {
             public boolean touchDown(InputEvent event, float x,
                                      float y, int pointer, int button) {
                 Gdx.app.exit();
+                return true;
+            }
+        });
+        duelb.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x,
+                                     float y, int pointer, int button) {
+                if (s) Load.click.play();
+                game.setScreen(new OnlineScreen(game));
+                Server server = new Server();
+                server.start();
                 return true;
             }
         });

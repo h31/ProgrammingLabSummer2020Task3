@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Load {
-    public static Texture pause, resume, restart, mainmenu, fon, duel, exit, sound, soundoff, startTexture, puckg, con, fonw;
+    public static Texture pause, resume, restart, mainmenu, fon, duel, exit, sound, soundoff, startTexture, puckg, con, fonw, connect, back;
     public static Sound hit, hip, click;
 
     public static void load() {
@@ -25,6 +25,8 @@ public class Load {
         hit = new Gdx().audio.newSound(Gdx.files.internal("sound/hit.mp3"));
         hip = new Gdx().audio.newSound(Gdx.files.internal("sound/hip.mp3"));
         click = new Gdx().audio.newSound(Gdx.files.internal("sound/click.mp3"));
+        connect = new Texture(Gdx.files.internal("img/connect.png"));
+        back = new Texture(Gdx.files.internal("img/back.png"));
     }
 
 }

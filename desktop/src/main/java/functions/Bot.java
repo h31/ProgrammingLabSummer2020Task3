@@ -7,8 +7,8 @@ import java.util.Random;
 import static main.java.screens.GameScreen.puck;
 
 public class Bot {
-    public static float xp = 0.5f;
-    public static float yp = 1f;
+    public static Float xp = 0.5f;
+    public static Float yp = 1f;
     public static float xo, yo;
     private static boolean dif = false;
 
@@ -57,8 +57,6 @@ public class Bot {
         if (vec.x > 1) vec.x = 1;
         if (vec.x < 0) vec.x = 0;
         if (vec.y > 1.9) vec.y = 1.9f;
-
-
         return vec;
 
     }

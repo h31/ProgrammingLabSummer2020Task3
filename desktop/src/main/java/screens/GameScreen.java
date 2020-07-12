@@ -1,8 +1,5 @@
 package main.java.screens;
 
-import main.java.bodies.Controll;
-import main.java.bodies.Puck;
-import main.java.bodies.Walls;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,10 +7,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import main.java.start.Aero;
+import main.java.bodies.Controll;
+import main.java.bodies.Puck;
+import main.java.bodies.Walls;
 import main.java.functions.MyContact;
 import main.java.functions.Score;
 import main.java.stages.StageGame;
+import main.java.start.Aero;
 
 
 public class GameScreen implements Screen {
@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
     public static Walls walls;
     public static boolean k = true;
     public static Aero game;
-    World world;
+     World world;
     public static Stage stage;
     //  Box2DDebugRenderer rend;
     SpriteBatch batch;
@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        synchronized (this){
         world = new World(new Vector2(0, 0), false);
         world.setContactListener(new MyContact());
         World.setVelocityThreshold(0f);
@@ -50,6 +51,7 @@ public class GameScreen implements Screen {
         Score.initialize();
         batch = new SpriteBatch();
         StageGame.setStage();
+        notifyAll();}
     }
 
     @Override
