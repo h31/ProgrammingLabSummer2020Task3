@@ -1,9 +1,8 @@
 package main.java.network;
 
-import main.java.functions.Bot;
 import main.java.functions.Score;
+import main.java.functions.Velocity;
 import main.java.screens.GameScreen;
-import main.java.screens.OnlineScreen;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,45 +11,51 @@ import java.net.Socket;
  * создание клиента со всеми необходимыми утилитами, точка входа в программу в классе Client
  */
 
-class ClientSomthing {
+public class Client {
 
-    private Socket socket;
+    public static String ipAddr;
+    public static int port;
+    public static Socket socket;
     private BufferedReader in; // поток чтения из сокета
     private BufferedWriter out; // поток чтения в сокет
     private BufferedReader inputUser; // поток чтения с консоли
-    private String addr; // ip адрес клиента
-    private int port; // порт соединения
 
+    /**
+     * создание клиент-соединения с узананными адресом и номером порта
+     * <p>
+     * //* @param args
+     */
+    public Client(String t) {
+        ipAddr = t;
+    }
 
-
-    public ClientSomthing(String addr, int port) {
-        synchronized (this){
-        this.addr = addr;
-        this.port = port;
-        try {
-            this.socket = new Socket(addr, port);
-            wait();
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Socket failed");
+    public void main() throws IOException {
+        synchronized (this) {
+            port = Integer.parseInt(ipAddr.split(":")[1]);
+            ipAddr = ipAddr.split(":")[0];
+         //   System.out.println(ipAddr + ":" + port);
+            try {
+                socket = new Socket(ipAddr, port);
+            } catch (IOException e) {
+                System.err.println("Socket failed");
+            }
+            try {
+                // Server.server.close();
+                // потоки чтения из сокета / записи в сокет, и чтения с консоли
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//                GameScreen.game.wait();
+                new ReadMsg().start(); // нить читающая сообщения из сокета в бесконечном цикле
+                new WriteMsg().start(); // нить пишущая сообщения в сокет приходящие с консоли в бесконечном цикле
+            } catch (IOException e) {
+                // Сокет должен быть закрыт при любой
+                // ошибке, кроме ошибки конструктора сокета:
+                this.downService();
+            }
+            // В противном случае сокет будет закрыт
+            // в методе run() нити.
         }
-        try {
-            // потоки чтения из сокета / записи в сокет, и чтения с консоли
-           // Server.server.close();
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        //      synchronized (OnlineScreen.game){
-            //            OnlineScreen.game.setScreen(new GameScreen(OnlineScreen.game));
-            //            wait();}
-            new ReadMsg().start(); // нить читающая сообщения из сокета в бесконечном цикле
-            new WriteMsg().start(); // нить пишущая сообщения в сокет приходящие с консоли в бесконечном цикле
-        } catch (IOException e) {
-            // Сокет должен быть закрыт при любой
-            // ошибке, кроме ошибки конструктора сокета:
-            ClientSomthing.this.downService();
-        }
-        // В противном случае сокет будет закрыт
-        // в методе run() нити.
-    }}
+    }
 
 
     /**
@@ -74,60 +79,45 @@ class ClientSomthing {
             String[] pos;
             try {
                 while (true) {
-                    pos = in.readLine().split(" "); // ждем сообщения с сервера
                     if (Score.timeSeconds > 180f) {
-                        ClientSomthing.this.downService(); // харакири
+                        Client.this.downService(); // харакири
                         break; // выходим из цикла если пришло "stop"
                     }
-                    Bot.xp = Float.parseFloat(pos[0]);
-                    Bot.yp = Float.parseFloat(pos[1]);
+                    if (!in.readLine().isEmpty()) {
+                        pos = in.readLine().split(" "); // ждем сообщения с сервера
+                        Velocity.xo2 = 1 - Float.parseFloat(pos[0]);
+                        Velocity.yo2 = 2 - Float.parseFloat(pos[1]);
+                        if (!Boolean.parseBoolean(pos[2])) GameScreen.stage.keyDown(131);
+                    }
                 }
             } catch (IOException e) {
-                ClientSomthing.this.downService();
+                Client.this.downService();
             }
         }
     }
 
     // нить отправляющая сообщения приходящие с консоли на сервер
     public class WriteMsg extends Thread {
-
         @Override
         public void run() {
             while (true) {
                 try {
                     if (Score.timeSeconds > 180f) {
-                        ClientSomthing.this.downService(); // харакири
+                        Client.this.downService(); // харакири
                         break; // выходим из цикла если пришло "stop"
                     } else {
-                      out.write(GameScreen.control1.getX() + " " + GameScreen.control1.getY()+"\n"); // отправляем на сервер
+                        if (GameScreen.stage != null) {
+                            out.write(GameScreen.control1.getX() + " " + GameScreen.control1.getY() + " " + GameScreen.k + "\n"); // отправляем на сервер
+                          //  System.out.println(out);
+                        }
                     }
                     out.flush(); // чистим
                 } catch (IOException e) {
-                    ClientSomthing.this.downService(); // в случае исключения тоже харакири
+                    Client.this.downService(); // в случае исключения тоже харакири
 
                 }
 
             }
         }
-    }
-}
-
-public class Client {
-
-    public static String ipAddr;
-    public static int port;
-
-    /**
-     * создание клиент-соединения с узананными адресом и номером порта
-     *
-     //* @param args
-     */
-
-    public static void main() throws IOException {
-        port=Integer.parseInt(ipAddr.split(":")[1]);
-        ipAddr = ipAddr.split(":")[0];
-        System.out.println(ipAddr+":"+port);
-
-        new ClientSomthing(ipAddr, port);
     }
 }

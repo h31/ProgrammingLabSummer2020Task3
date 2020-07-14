@@ -51,6 +51,7 @@ public class StageMenu {
                     public boolean touchDown(InputEvent event, float x,
                                              float y, int pointer, int button) {
                         if (s) Load.click.play();
+                        GameScreen.flag=1;
                         game.setScreen(new GameScreen(game));
                         return true;
                     }
@@ -66,6 +67,7 @@ public class StageMenu {
             public boolean touchDown(InputEvent event, float x,
                                      float y, int pointer, int button) {
                 if (s) Load.click.play();
+                GameScreen.flag=2;
                 game.setScreen(new OnlineScreen(game));
                 Server server = new Server();
                 server.start();

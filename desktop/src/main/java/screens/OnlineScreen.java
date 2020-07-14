@@ -8,13 +8,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import main.java.network.Client;
 import main.java.network.Server;
 import main.java.resources.Load;
 import main.java.stages.OnlineStage;
 import main.java.start.Aero;
 
 public class OnlineScreen implements Screen {
-   public static Aero game;
+    public static Aero game;
     public static Stage stage;
     static BitmapFont font;
     SpriteBatch batch;
@@ -38,15 +39,14 @@ public class OnlineScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         GlyphLayout glyphLayout = new GlyphLayout();
         if (Server.p != null)
-        glyphLayout.setText(font,  Server.p.toString());
-        if (Server.socket!= null && Server.socket.isConnected()) game.setScreen(new GameScreen(game));
+            glyphLayout.setText(font, Server.p.toString());
+        if (Client.socket != null && Client.socket.isConnected() || Server.socket != null && Server.socket.isConnected())
+            game.setScreen(new GameScreen(game));
         batch.begin();
         batch.draw(Load.fon, 0, 0);
         font.draw(batch, glyphLayout, 450 - 90f, 900 * 0.95f);
         batch.end();
         stage.draw();
-
-
     }
 
     @Override

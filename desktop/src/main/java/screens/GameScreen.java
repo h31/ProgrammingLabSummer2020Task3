@@ -26,6 +26,7 @@ public class GameScreen implements Screen {
     public static Stage stage;
     //  Box2DDebugRenderer rend;
     SpriteBatch batch;
+    public static int flag;
 
 
     public GameScreen(final Aero gam) {
@@ -35,12 +36,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        synchronized (this){
+      //  synchronized (this){
         world = new World(new Vector2(0, 0), false);
         world.setContactListener(new MyContact());
         World.setVelocityThreshold(0f);
-        control1 = new Controll(world, 0.5f, 0.2f, false);
-        control2 = new Controll(world, 0.5f, 1.8f, true);
+        world.setContinuousPhysics(true);
+        control1 = new Controll(world, 0.5f, 0.2f, 0);
+        control2 = new Controll(world, 0.5f, 1.8f, flag);
         puck = new Puck(world);
         walls = new Walls(world);
         control1.body.setUserData("player");
@@ -51,7 +53,7 @@ public class GameScreen implements Screen {
         Score.initialize();
         batch = new SpriteBatch();
         StageGame.setStage();
-        notifyAll();}
+//        game.notifyAll();}
     }
 
     @Override

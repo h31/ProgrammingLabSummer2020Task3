@@ -17,6 +17,7 @@ import java.io.IOException;
 import static main.java.screens.OnlineScreen.game;
 
 public class OnlineStage {
+    public static Client client = null;
 
     public static void setStage() {
         game.skin.add("connect", Load.connect);
@@ -59,9 +60,9 @@ public class OnlineStage {
     static class MyTextInputListener implements Input.TextInputListener {
         @Override
         public void input (String text) {
-            Client.ipAddr = text;
+            client = new Client(text);
             try {
-                Client.main();
+                client.main();
             } catch (IOException e) {
                 e.printStackTrace();
             }

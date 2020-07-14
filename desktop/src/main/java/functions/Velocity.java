@@ -3,12 +3,12 @@ package main.java.functions;
 import com.badlogic.gdx.math.Vector2;
 
 public class Velocity {
+    volatile public static double xo2 = 0.5;
+    volatile public static double yo2 = 1.8;
+    public static double xo1, yo1;
     static double x2 = 0.5;
     static double y2 = 0.2;
     static double x1, y1;
-    public static double xo2 = 0.5;
-    public static double yo2 = 1.8;
-    public static double xo1, yo1;
 
     public static Vector2 velbot(Float x, Float y) {
         xo1 = xo2;
