@@ -100,7 +100,7 @@ public class Game_checkers {
             this.skipIndex = endIndex;
         }
         if (!midValid || getAttackList(
-                    board.copy(), endIndex).isEmpty()) {
+                board.copy(), endIndex).isEmpty()) {
             switchTurn = true;
         }
         if (switchTurn) {
@@ -193,7 +193,7 @@ public class Game_checkers {
             if (Board.isValidPoint(new Point(p.x - delta, p.y - delta))) {
                 if (b.get(Board.toIndex(new Point(p.x - delta, p.y - delta))) == Chip.BLANK &&
                         (b.get(Board.toIndex(new Point(p.x - (delta - 1), p.y - (delta - 1)))) == enemy ||
-                        b.get(Board.toIndex(new Point(p.x - (delta - 1), p.y - (delta - 1)))) == enemyKing)) {
+                                b.get(Board.toIndex(new Point(p.x - (delta - 1), p.y - (delta - 1)))) == enemyKing)) {
                     AttackList.add(new Segment(new Point(p.x, p.y), new Point(p.x - delta, p.y - delta)));
                 }
             }
@@ -201,7 +201,7 @@ public class Game_checkers {
             if (Board.isValidPoint(new Point(p.x - delta, p.y + delta))) {
                 if (b.get(Board.toIndex(new Point(p.x - delta, p.y + delta))) == Chip.BLANK &&
                         (b.get(Board.toIndex(new Point(p.x - 1, p.y + 1))) == enemy ||
-                        b.get(Board.toIndex(new Point(p.x - 1, p.y - 1))) == enemyKing)) {
+                                b.get(Board.toIndex(new Point(p.x - 1, p.y - 1))) == enemyKing)) {
                     AttackList.add(new Segment(new Point(p.x, p.y), new Point(p.x - delta, p.y + delta)));
                 }
             }
@@ -212,7 +212,7 @@ public class Game_checkers {
             if (Board.isValidPoint( new Point(p.x + delta, p.y - delta))){
                 if (b.get(Board.toIndex(new Point(p.x + delta, p.y - delta))) == Chip.BLANK &&
                         (b.get(Board.toIndex(new Point(p.x + 1, p.y - 1))) == enemy ||
-                        b.get(Board.toIndex(new Point(p.x + 1, p.y - 1))) == enemyKing)){
+                                b.get(Board.toIndex(new Point(p.x + 1, p.y - 1))) == enemyKing)){
                     AttackList.add(new Segment(new Point(p.x, p.y), new Point(p.x + delta, p.y - delta)));
                 }
             }
@@ -220,7 +220,7 @@ public class Game_checkers {
             if (Board.isValidPoint(new Point(p.x + delta, p.y + delta))) {
                 if (b.get(Board.toIndex(new Point(p.x + delta, p.y + delta))) == Chip.BLANK &&
                         (b.get(Board.toIndex(new Point(p.x + 1, p.y + 1))) == enemy ||
-                        b.get(Board.toIndex(new Point(p.x + 1, p.y + 1))) == enemyKing)) {
+                                b.get(Board.toIndex(new Point(p.x + 1, p.y + 1))) == enemyKing)) {
                     AttackList.add(new Segment(new Point(p.x, p.y), new Point(p.x + delta, p.y + delta)));
                 }
             }
@@ -304,10 +304,10 @@ public class Game_checkers {
     }
 
     /**
-         * Получаем копию текущей доски
-         *
-         * @return копию состояния доски
-         */
+     * Получаем копию текущей доски
+     *
+     * @return копию состояния доски
+     */
     public Board getBoard() {
         return board.copy();
     }

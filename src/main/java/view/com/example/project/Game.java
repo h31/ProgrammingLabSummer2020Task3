@@ -115,7 +115,7 @@ public class Game extends Application {
                         board.selectCellGraphics(rowIndex, colIndex, gridPane);
 
                     }
-                        });
+                });
                 drawCheckers(board, gridPane);
                 primaryStage.setScene(sceneBoard);
             }
