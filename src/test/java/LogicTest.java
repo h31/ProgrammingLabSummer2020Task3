@@ -1,7 +1,5 @@
-import Model.Logic;
-
+import model.Logic;
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogicTest {

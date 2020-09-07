@@ -1,7 +1,7 @@
-package Controller;
+package controller;
 
-import Model.Logic;
-import View.View;
+import model.Logic;
+import view.View;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -10,6 +10,7 @@ public class Controller {
     private View view;
     private Logic logic;
     private KeyCode keyPressed;
+    private boolean winner;
 
     public Controller(Group group, Scene scene) {
         this.view = new View();
@@ -33,32 +34,35 @@ public class Controller {
             view.drawBoard(group,myBoard,logic.getScore());
             scene.setOnKeyPressed(keyEvent -> {
                 keyPressed = keyEvent.getCode();
-                switch (keyPressed) {
-                    case ESCAPE:
-                        group.getChildren().add(view.vBoxGameMenu(buttonCont,buttonRest,buttonQuit));
-                        break;
-                    case UP:
-                        logic.up();
-                        logic.randomCell(myBoard);
-                        view.drawBoard(group, myBoard, logic.getScore());
-                        break;
-                    case DOWN:
-                        logic.down();
-                        logic.randomCell(myBoard);
-                        view.drawBoard(group, myBoard, logic.getScore());
-                        break;
-                    case RIGHT:
-                        logic.right();
-                        logic.randomCell(myBoard);
-                        view.drawBoard(group, myBoard, logic.getScore());
-                        break;
-                    case LEFT:
-                        logic.left();
-                        logic.randomCell(myBoard);
-                        view.drawBoard(group, myBoard, logic.getScore());
-                        break;
+                if (!winner) {
+                    switch (keyPressed) {
+                        case ESCAPE:
+                            group.getChildren().add(view.vBoxGameMenu(buttonCont, buttonRest, buttonQuit));
+                            break;
+                        case UP:
+                                logic.up();
+                                logic.randomCell(myBoard);
+                                view.drawBoard(group, myBoard, logic.getScore());
+                            break;
+                        case DOWN:
+                                logic.down();
+                                logic.randomCell(myBoard);
+                                view.drawBoard(group, myBoard, logic.getScore());
+                            break;
+                        case RIGHT:
+                                logic.right();
+                                logic.randomCell(myBoard);
+                                view.drawBoard(group, myBoard, logic.getScore());
+                            break;
+                        case LEFT:
+                                logic.left();
+                                logic.randomCell(myBoard);
+                                view.drawBoard(group, myBoard, logic.getScore());
+                            break;
+                    }
                 }
                 if (logic.isWin(myBoard)) {
+                    winner = true;
                     view.createWin(group);
                     group.getChildren().add(view.vBoxWin(buttonRest,buttonQuit));
                 }
@@ -69,6 +73,7 @@ public class Controller {
             logic.start();
             view.drawBoard(group, myBoard, logic.getScore());
             group.getChildren().remove(view.vBoxGameMenu(buttonCont,buttonRest,buttonQuit));
+            winner = false;
         });
         buttonCont.setOnMouseClicked(mouseEvent -> {
             view.vBoxGameMenu(buttonCont,buttonRest,buttonQuit).setManaged(false);

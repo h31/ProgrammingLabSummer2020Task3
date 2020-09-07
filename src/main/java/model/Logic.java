@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 public class Logic {
 
@@ -64,8 +64,8 @@ public class Logic {
     }
 
     public void down() {
-        for (int i = 4 - 1; i >= 0; i--) {
-            for (int j = 4 - 1; j >= 0; j--) {
+        for (int i = 3; i >= 0; i--) {
+            for (int j = 3; j >= 0; j--) {
                 if (cells[i][j] == 0) {
                     for (int k = j - 1; k >= 0; k--) {
                         if (cells[i][k] != 0) {
@@ -88,8 +88,8 @@ public class Logic {
     }
 
     public void right() {
-        for (int i =  4 - 1; i >= 0; i--) {
-            for (int j = 4 - 1; j >= 0; j--) {
+        for (int i = 3; i >= 0; i--) {
+            for (int j = 3; j >= 0; j--) {
                 if (cells[j][i] == 0) {
                     for (int k = j - 1; k >= 0; k--) {
                         if (cells[k][i] != 0) {
@@ -135,7 +135,7 @@ public class Logic {
         }
     }
 
-    private boolean isSpots(int [][] cells) {
+    private boolean isZero(int [][] cells) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (cells[i][j] == 0)
@@ -155,7 +155,7 @@ public class Logic {
                 done = true;
             }
             if (!done)
-                done = !isSpots(cells);
+                done = !isZero(cells);
         }
     }
 }
