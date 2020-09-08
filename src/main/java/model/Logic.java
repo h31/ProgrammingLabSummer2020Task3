@@ -56,6 +56,7 @@ public class Logic {
                             cells[i][j] += cells[i][k];
                             score += cells[i][j];
                             cells[i][k] = 0;
+                            break;
                         }
                     }
                 }
@@ -80,6 +81,7 @@ public class Logic {
                             cells[i][j] += cells[i][k];
                             score += cells[i][j];
                             cells[i][k] = 0;
+                            break;
                         }
                     }
                 }
@@ -104,6 +106,7 @@ public class Logic {
                             cells[j][i] += cells[k][i];
                             score += cells[j][i];
                             cells[k][i] = 0;
+                            break;
                         }
                     }
                 }
@@ -128,6 +131,7 @@ public class Logic {
                             cells[j][i] += cells[k][i];
                             score += cells[j][i];
                             cells[k][i] = 0;
+                            break;
                         }
                     }
                 }
@@ -154,8 +158,9 @@ public class Logic {
                 cells[randomY][randomX] = Math.random() < 0.9 ? 2 : 4;
                 done = true;
             }
-            if (!done)
+            if (!done) {
                 done = !isZero(cells);
+            }
         }
     }
 }
