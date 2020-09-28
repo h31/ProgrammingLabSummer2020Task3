@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
 import java.io.InputStream;
 
 public class View {
@@ -26,15 +27,15 @@ public class View {
 
     public VBox vBoxWin(MenuButton btn1, MenuButton btn2) {
         VBox win = new VBox(10);
-        Text winText1 = new Text ("Congratulations!");
-        Text winText2 = new Text ("You win");
+        Text winText1 = new Text("Congratulations!");
+        Text winText2 = new Text("You win");
         winText1.setFont(Font.font("Showcard Gothic", 30));
         winText2.setFont(Font.font("Showcard Gothic", 30));
         winText1.setFill(Color.DARKBLUE);
         winText2.setFill(Color.DARKBLUE);
         win.setTranslateX(320);
         win.setTranslateY(310);
-        win.getChildren().addAll(winText1,winText2,btn1,btn2);
+        win.getChildren().addAll(winText1, winText2, btn1, btn2);
         return win;
     }
 
@@ -45,11 +46,11 @@ public class View {
         text.setFont(Font.font("Arial", 25));
         pause.setTranslateX(350);
         pause.setTranslateY(400);
-        pause.getChildren().addAll(btn1,btn2, btn3);
+        pause.getChildren().addAll(btn1, btn2, btn3);
         return pause;
     }
 
-    public void createMenu(Group group){
+    public void createMenu(Group group) {
         InputStream input = getClass().getResourceAsStream("/MainMenu.png");
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
@@ -74,7 +75,7 @@ public class View {
     }
 
     public void drawBoard(Group group, int[][] board, int score) {
-       group.getChildren().clear();
+        group.getChildren().clear();
         Text scoreText = new Text(String.valueOf(score));
         scoreText.setFont(Font.font("Showcard Gothic", 60));
         scoreText.setFill(Color.YELLOW);
@@ -87,8 +88,8 @@ public class View {
                     InputStream block = getClass().getResourceAsStream("/Numbers/" + board[i][j] + ".png");
                     Image image = new Image(block);
                     ImageView imageView = new ImageView(image);
-                    imageView.setLayoutX(i*232+1);
-                    imageView.setLayoutY(j*232+90);
+                    imageView.setLayoutX(i * 232 + 1);
+                    imageView.setLayoutY(j * 232 + 90);
                     group.getChildren().addAll(imageView);
                 }
             }
@@ -97,7 +98,7 @@ public class View {
     }
 
     public static class MenuButton extends StackPane {
-        public MenuButton(String name){
+        public MenuButton(String name) {
             Text text = new Text(name);
             text.setFont(Font.font("Arial", 35));
             Rectangle bg = new Rectangle(200, 30);
@@ -106,7 +107,7 @@ public class View {
             setAlignment(Pos.CENTER_LEFT);
             setRotate(-0.5);
             getChildren().addAll(bg, text);
-            setOnMouseEntered(event ->{
+            setOnMouseEntered(event -> {
                 bg.setTranslateX(10);
                 text.setTranslateX(10);
                 bg.setFill(Color.WHITE);
