@@ -98,15 +98,15 @@ public class Logic {
     }
 
     public void randomCell(int[][] cells) {
-        boolean done = false;
-        while (!done) {
+        boolean done = true;
+        while (done) {
             int randomX = (int) (Math.random() * 4);
             int randomY = (int) (Math.random() * 4);
-            if (cells[randomY][randomX] == 0) {
-                cells[randomY][randomX] = Math.random() < 0.9 ? 2 : 4;
+            if (cells[randomX][randomY] == 0) {
+                cells[randomX][randomY] = Math.random() < 0.9 ? 2 : 4;
                 return;
             }
-            done = !isZero(cells);
+            done = isZero(cells);
         }
     }
 
