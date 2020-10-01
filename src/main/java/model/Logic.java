@@ -42,7 +42,7 @@ public class Logic {
     public void move(int[][] cells, String key) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (key.equals("Left") || key.equals("Right")) {
+                if (key.equals("Up") || key.equals("Down")) {
                     if (cells[j][i] == 0) {
                         for (int k = j + 1; k < 4; k++) {
                             if (cells[k][i] != 0) {
@@ -53,7 +53,8 @@ public class Logic {
                         }
                     } else if (cells[j][i] != 0) {
                         for (int k = j + 1; k < 4; k++) {
-                            if ((k - 1 == j && cells[k][i] == cells[j][i]) || (cells[k - 1][i] == 0 && cells[k][i] == cells[j][i])) {
+                            if ((k - 1 == j && cells[k][i] == cells[j][i]) ||
+                                    (cells[k - 1][i] == 0 && cells[j + 1][i] == 0 && cells[k][i] == cells[j][i])) {
                                 cells[j][i] += cells[k][i];
                                 score += cells[j][i];
                                 cells[k][i] = 0;
@@ -61,7 +62,7 @@ public class Logic {
                             }
                         }
                     }
-                } else if (key.equals("Up") || key.equals("Down")) {
+                } else if (key.equals("Right") || key.equals("Left")) {
                     if (cells[i][j] == 0) {
                         for (int k = j + 1; k < 4; k++) {
                             if (cells[i][k] != 0) {
@@ -72,7 +73,8 @@ public class Logic {
                         }
                     } else if (cells[i][j] != 0) {
                         for (int k = j + 1; k < 4; k++) {
-                            if ((k - 1 == j && cells[i][k] == cells[i][j]) || (cells[i][k - 1] == 0 && cells[i][k] == cells[i][j])) {
+                            if ((k - 1 == j && cells[i][k] == cells[i][j]) ||
+                                    (cells[i][k - 1] == 0 && cells[i][j + 1] == 0 && cells[i][k] == cells[i][j])) {
                                 cells[i][j] += cells[i][k];
                                 score += cells[i][j];
                                 cells[i][k] = 0;
@@ -108,11 +110,11 @@ public class Logic {
         }
     }
 
-    public int[][] rotate(int[][] cells) {
+    public static int[][] rotate(int[][] cells) {
         int[][] b = new int[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                b[i][j] = cells[j][3 - i];
+                b[i][j] = cells[3 - j][i];
             }
         }
         return b;

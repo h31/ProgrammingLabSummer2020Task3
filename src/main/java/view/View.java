@@ -41,9 +41,6 @@ public class View {
 
     public VBox vBoxGameMenu(MenuButton btn1, MenuButton btn2, MenuButton btn3) {
         VBox pause = new VBox(20);
-        Text text = new Text("Вы действительно хотите выйти из игры ?");
-        text.setFill(Color.YELLOW);
-        text.setFont(Font.font("Arial", 25));
         pause.setTranslateX(350);
         pause.setTranslateY(400);
         pause.getChildren().addAll(btn1, btn2, btn3);
@@ -88,8 +85,8 @@ public class View {
                     InputStream block = getClass().getResourceAsStream("/Numbers/" + board[i][j] + ".png");
                     Image image = new Image(block);
                     ImageView imageView = new ImageView(image);
-                    imageView.setLayoutX(i * 232 + 1);
-                    imageView.setLayoutY(j * 232 + 90);
+                    imageView.setLayoutX(j * 232 + 1);
+                    imageView.setLayoutY(i * 232 + 90);
                     group.getChildren().addAll(imageView);
                 }
             }

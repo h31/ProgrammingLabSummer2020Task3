@@ -2,6 +2,7 @@ import model.Logic;
 
 import java.util.Arrays;
 
+import static model.Logic.rotate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogicTest {
@@ -21,17 +22,17 @@ class LogicTest {
     @org.junit.jupiter.api.Test
     void isWin() {
         Logic logic = new Logic(testWin);
-        logic.move(testWin, "Left");
+        logic.move(testWin, "Up");
         assertTrue(logic.isWin(testWin));
     }
 
     @org.junit.jupiter.api.Test
     void up() {
         int[][] testBoard = new int[][]{
-                {2, 2, 0, 0},
-                {8, 2, 0, 0},
-                {2, 16, 0, 0},
-                {8, 0, 0, 0}
+                {2, 2, 2, 2},
+                {0, 16, 16, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0}
         };
         Logic logic = new Logic(testLogic);
         logic.move(testLogic, "Up");
@@ -41,44 +42,44 @@ class LogicTest {
     @org.junit.jupiter.api.Test
     void down() {
         int[][] testBoard = new int[][]{
-                {0, 0, 2, 2},
-                {0, 0, 8, 2},
-                {0, 0, 2, 16},
-                {0, 0, 0, 8}
-        };
-        Logic logic = new Logic(testLogic);
-        testLogic = logic.rotate(testLogic);
-        testLogic = logic.rotate(testLogic);
-        logic.move(testLogic, "Down");
-        testLogic = logic.rotate(testLogic);
-        testLogic = logic.rotate(testLogic);
-        assertTrue(Arrays.deepEquals(testLogic, testBoard));
-    }
-
-    @org.junit.jupiter.api.Test
-    void right() {
-        int[][] testBoard = new int[][]{
                 {0, 0, 0, 0},
                 {0, 0, 0, 0},
                 {0, 2, 2, 0},
                 {2, 16, 16, 2}
         };
         Logic logic = new Logic(testLogic);
-        testLogic = logic.rotate(testLogic);
-        testLogic = logic.rotate(testLogic);
+        testLogic = rotate(testLogic);
+        testLogic = rotate(testLogic);
+        logic.move(testLogic, "Down");
+        testLogic = rotate(testLogic);
+        testLogic = rotate(testLogic);
+        assertTrue(Arrays.deepEquals(testLogic, testBoard));
+    }
+
+    @org.junit.jupiter.api.Test
+    void right() {
+        int[][] testBoard = new int[][]{
+                {0, 0, 2, 2},
+                {0, 0, 8, 2},
+                {0, 0, 2, 16},
+                {0, 0, 0, 8}
+        };
+        Logic logic = new Logic(testLogic);
+        testLogic = rotate(testLogic);
+        testLogic = rotate(testLogic);
         logic.move(testLogic, "Right");
-        testLogic = logic.rotate(testLogic);
-        testLogic = logic.rotate(testLogic);
+        testLogic = rotate(testLogic);
+        testLogic = rotate(testLogic);
         assertTrue(Arrays.deepEquals(testLogic, testBoard));
     }
 
     @org.junit.jupiter.api.Test
     void left() {
         int[][] testBoard = new int[][]{
-                {2, 2, 2, 2},
-                {0, 16, 16, 0},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0}
+                {2, 2, 0, 0},
+                {8, 2, 0, 0},
+                {2, 16, 0, 0},
+                {8, 0, 0, 0}
         };
         Logic logic = new Logic(testLogic);
         logic.move(testLogic, "Left");

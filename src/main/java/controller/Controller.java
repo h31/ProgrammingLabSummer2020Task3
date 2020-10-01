@@ -6,6 +6,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
+import static model.Logic.rotate;
+
 public class Controller {
     private View view;
     private Logic logic;
@@ -18,17 +20,16 @@ public class Controller {
         this.view = new View();
         view.createMenu(group);
         //Создание кнопок для главного меню
-        View.MenuButton buttonStart = new View.MenuButton("START");
-        View.MenuButton buttonExit = new View.MenuButton("EXIT");
+        View.MenuButton buttonStart = new View.MenuButton("Start");
+        View.MenuButton buttonExit = new View.MenuButton("Exit");
         //Создание кнопок для внутриигрового меню
         View.MenuButton buttonCont = new View.MenuButton("Continue");
         View.MenuButton buttonRest = new View.MenuButton("Restart");
-        View.MenuButton buttonQuit = new View.MenuButton("Quit");
+
         group.getChildren().add(view.vBoxMenu(buttonStart, buttonExit));
 
         buttonStart.setOnMouseClicked(mouseEvent -> {
             logic = new Logic(myBoard);
-            view.createBoard(group);
             logic.start(myBoard);
             view.drawBoard(group, myBoard, logic.getScore());
             scene.setOnKeyPressed(keyEvent -> {
@@ -36,7 +37,7 @@ public class Controller {
                 if (!winner) {
                     switch (keyPressed) {
                         case ESCAPE:
-                            group.getChildren().add(view.vBoxGameMenu(buttonCont, buttonRest, buttonQuit));
+                            group.getChildren().add(view.vBoxGameMenu(buttonCont, buttonRest, buttonExit));
                             break;
                         case UP:
                         case LEFT:
@@ -46,11 +47,11 @@ public class Controller {
                             break;
                         case DOWN:
                         case RIGHT:
-                            myBoard = logic.rotate(myBoard);
-                            myBoard = logic.rotate(myBoard);
+                            myBoard = rotate(myBoard);
+                            myBoard = rotate(myBoard);
                             logic.move(myBoard, keyPressed.getName());
-                            myBoard = logic.rotate(myBoard);
-                            myBoard = logic.rotate(myBoard);
+                            myBoard = rotate(myBoard);
+                            myBoard = rotate(myBoard);
                             logic.randomCell(myBoard);
                             view.drawBoard(group, myBoard, logic.getScore());
                             break;
@@ -59,20 +60,19 @@ public class Controller {
                 if (logic.isWin(myBoard)) {
                     winner = true;
                     view.createWin(group);
-                    group.getChildren().add(view.vBoxWin(buttonRest, buttonQuit));
+                    group.getChildren().add(view.vBoxWin(buttonRest, buttonExit));
                 }
             });
         });
-        buttonQuit.setOnMouseClicked(mouseEvent -> System.exit(0));
         buttonRest.setOnMouseClicked(mouseEvent -> {
             logic.start(myBoard);
             view.drawBoard(group, myBoard, logic.getScore());
-            group.getChildren().remove(view.vBoxGameMenu(buttonCont, buttonRest, buttonQuit));
+            group.getChildren().remove(view.vBoxGameMenu(buttonCont, buttonRest, buttonExit));
             winner = false;
         });
         buttonCont.setOnMouseClicked(mouseEvent -> {
             view.drawBoard(group, myBoard, logic.getScore());
-            group.getChildren().remove(view.vBoxGameMenu(buttonCont, buttonRest, buttonQuit));
+            group.getChildren().remove(view.vBoxGameMenu(buttonCont, buttonRest, buttonExit));
         });
         buttonExit.setOnMouseClicked(mouseEvent -> System.exit(0));
     }
