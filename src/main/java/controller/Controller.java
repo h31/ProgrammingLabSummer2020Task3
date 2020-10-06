@@ -13,11 +13,12 @@ public class Controller {
     private Logic logic;
     private KeyCode keyPressed;
     private boolean winner;
+    private boolean lose;
     int[][] myBoard = new int[4][4];
 
     public Controller(Group group, Scene scene) {
 
-        this.view = new View();
+        view = new View();
         view.createMenu(group);
         //Создание кнопок для главного меню
         View.MenuButton buttonStart = new View.MenuButton("Start");
@@ -34,7 +35,7 @@ public class Controller {
             view.drawBoard(group, myBoard, logic.getScore());
             scene.setOnKeyPressed(keyEvent -> {
                 keyPressed = keyEvent.getCode();
-                if (!winner) {
+                if (!lose && !winner) {
                     switch (keyPressed) {
                         case ESCAPE:
                             group.getChildren().add(view.vBoxGameMenu(buttonCont, buttonRest, buttonExit));
@@ -60,7 +61,12 @@ public class Controller {
                 if (logic.isWin(myBoard)) {
                     winner = true;
                     view.createWin(group);
-                    group.getChildren().add(view.vBoxWin(buttonRest, buttonExit));
+                    view.winScene(buttonRest, buttonExit, group);
+                }
+                if (logic.isLose(myBoard)) {
+                    lose = true;
+                    view.createLose(group);
+                    view.loseScene(buttonRest, buttonExit, logic.getScore(), group);
                 }
             });
         });
@@ -69,6 +75,7 @@ public class Controller {
             view.drawBoard(group, myBoard, logic.getScore());
             group.getChildren().remove(view.vBoxGameMenu(buttonCont, buttonRest, buttonExit));
             winner = false;
+            lose = false;
         });
         buttonCont.setOnMouseClicked(mouseEvent -> {
             view.drawBoard(group, myBoard, logic.getScore());

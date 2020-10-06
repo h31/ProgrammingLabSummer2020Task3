@@ -17,6 +17,31 @@ import java.io.InputStream;
 
 public class View {
 
+    public void createLose(Group group) {
+        InputStream input = getClass().getResourceAsStream("/Lose.jpg");
+        Image image = new Image(input);
+        ImageView imageView = new ImageView(image);
+        group.getChildren().add(imageView);
+    }
+
+    public void loseScene(MenuButton btn1, MenuButton btn2, int score, Group group) {
+        VBox loseText = new VBox(10);
+        VBox loseBtn = new VBox(10);
+        Text gameOver = new Text("Game Over");
+        Text finalScore = new Text("Your final score: " + score);
+        gameOver.setFont(Font.font("Showcard Gothic", 70));
+        finalScore.setFont(Font.font("Showcard Gothic", 30));
+        gameOver.setFill(Color.YELLOW);
+        finalScore.setFill(Color.YELLOW);
+        loseText.setTranslateX(280);
+        loseText.setTranslateY(310);
+        loseBtn.setTranslateX(280);
+        loseBtn.setTranslateY(450);
+        loseText.getChildren().addAll(gameOver, finalScore);
+        loseBtn.getChildren().addAll(btn1, btn2);
+        group.getChildren().addAll(loseText, loseBtn);
+    }
+
     public VBox vBoxMenu(MenuButton btn1, MenuButton btn2) {
         VBox menu = new VBox(30);
         menu.setTranslateX(350);
@@ -25,18 +50,22 @@ public class View {
         return menu;
     }
 
-    public VBox vBoxWin(MenuButton btn1, MenuButton btn2) {
-        VBox win = new VBox(10);
-        Text winText1 = new Text("Congratulations!");
-        Text winText2 = new Text("You win");
-        winText1.setFont(Font.font("Showcard Gothic", 30));
-        winText2.setFont(Font.font("Showcard Gothic", 30));
-        winText1.setFill(Color.DARKBLUE);
-        winText2.setFill(Color.DARKBLUE);
-        win.setTranslateX(320);
-        win.setTranslateY(310);
-        win.getChildren().addAll(winText1, winText2, btn1, btn2);
-        return win;
+    public void winScene(MenuButton btn1, MenuButton btn2, Group group) {
+        VBox winText = new VBox(10);
+        VBox winBtn = new VBox(10);
+        Text congrats = new Text("Congratulations!");
+        Text youWin = new Text("You win");
+        congrats.setFont(Font.font("Showcard Gothic", 30));
+        youWin.setFont(Font.font("Showcard Gothic", 30));
+        congrats.setFill(Color.DARKBLUE);
+        youWin.setFill(Color.DARKBLUE);
+        winText.setTranslateX(320);
+        winText.setTranslateY(310);
+        winBtn.setTranslateX(320);
+        winBtn.setTranslateY(400);
+        winText.getChildren().addAll(congrats, youWin);
+        winBtn.getChildren().addAll(btn1, btn2);
+        group.getChildren().addAll(winText, winBtn);
     }
 
     public VBox vBoxGameMenu(MenuButton btn1, MenuButton btn2, MenuButton btn3) {
@@ -51,14 +80,14 @@ public class View {
         InputStream input = getClass().getResourceAsStream("/MainMenu.png");
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
-        group.getChildren().addAll(imageView);
+        group.getChildren().add(imageView);
     }
 
     public void createBoard(Group group) {
         InputStream input = getClass().getResourceAsStream("/backGround.jpg");
         Image image = new Image(input);
         ImageView imageView = new ImageView(image);
-        group.getChildren().addAll(imageView);
+        group.getChildren().add(imageView);
     }
 
     public void createWin(Group group) {
@@ -87,7 +116,7 @@ public class View {
                     ImageView imageView = new ImageView(image);
                     imageView.setLayoutX(j * 232 + 1);
                     imageView.setLayoutY(i * 232 + 90);
-                    group.getChildren().addAll(imageView);
+                    group.getChildren().add(imageView);
                 }
             }
         }

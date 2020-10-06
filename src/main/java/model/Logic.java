@@ -7,7 +7,7 @@ public class Logic {
 
     public Logic(int[][] cells) {
         this.cells = cells;
-        this.score = 0;
+        score = 0;
     }
 
     public int getScore() {
@@ -62,7 +62,7 @@ public class Logic {
                             }
                         }
                     }
-                } else if (key.equals("Right") || key.equals("Left")) {
+                } else if (key.equals("Left") || key.equals("Right")) {
                     if (cells[i][j] == 0) {
                         for (int k = j + 1; k < 4; k++) {
                             if (cells[i][k] != 0) {
@@ -119,4 +119,15 @@ public class Logic {
         }
         return b;
     }
+
+    public boolean isLose(int[][] cells) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (cells[i][j] == cells[i][j + 1] || cells[j][i] == cells[j + 1][i] ||
+                        cells[i][j] == 0 || cells[i][j + 1] == 0) return false;
+            }
+        }
+        return true;
+    }
 }
+
